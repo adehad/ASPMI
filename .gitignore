@@ -26,3 +26,9 @@ octave-workspace
 
 # macOS
 .DS_Store
+
+# TexStudio
+*.synctex.gz
+*.aux
+*.toc
+*.log
