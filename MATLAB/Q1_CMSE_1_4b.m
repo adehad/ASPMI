@@ -91,20 +91,45 @@ for ii = 1:length(modelOrder)
         hold off
     %         drawnow; pause; % comment out for interactive-ish mode
 end
-    
+%%
 fH{length(fH)+1} = figure;  
-    plot(modelOrder, pow2db(sigma_w));
-    title(sprintf("{AR} Process Noise Power against Model Order ${N = %d}$", N));
-    xlabel("Model Order, $p$");
-    ylabel("Noise Power, $\sigma_{w}^{2}$ (dB)");
+    plot(w/pi, pow2db(abs(idealFreqResponse).^2), "DisplayName", "ideal",'LineStyle',':');
+    hold on
+    for ii = [1,2,3,5,8,11]
+        plot(w/pi, pow2db(abs(peaks(:, ii)).^2), "DisplayName", sprintf("$p=%d$",modelOrder(ii)));
+    end
+    hold off
+    title(sprintf("{AR(%d)} Spectral Estimation \n ${N = %d}$", modelOrder(ii), N));
+    xlabel("Normalised Frequency");
+    ylabel("Power Spectral Density (dB)");
     grid on; grid minor;
+%     axis([0.15, 0.35, 0, 55]);
+    axis([0.175, 0.45, 25, 52]);
+%     legend("show",'NumColumns', 4,'Location','south','Orientation', 'horizontal' );
+    legend("show",'NumColumns', 2 );
+    hold off
+    %%
+fH{length(fH)+1} = figure;  
+    yyaxis left
+    plot(modelOrder, pow2db(sigma_w));
+    ylabel("Noise Power, $\sigma_{w}^{2}$ (dB)",'Color','k');
+    yyaxis right
+    plot(modelOrder(3:end), pow2db(sigma_w(3:end)));
+    title(sprintf("{AR} Process Noise Power against Model Order \n ${N = %d}$", N));
+    xlabel("Model Order, $p$");
+    grid on; grid minor;
+    xticks(modelOrder)
     
 fH{length(fH)+1} = figure; 
+    yyaxis left
     plot(modelOrder, error);
+    ylabel("Mean Square Error",'Color','k');
+    yyaxis right
+    plot(modelOrder(3:end), error(3:end));
     title(sprintf("{AR} Process MSE against Model Order \n ${N = %d}$", N));
     xlabel("Model Order, $p$");
-    ylabel("Mean Square Error");
     grid on; grid minor;
+    xticks(modelOrder)
     
 %% Save Figures
 
