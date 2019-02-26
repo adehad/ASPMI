@@ -21,7 +21,7 @@ questionNum = 1;
 q_initialise;
 
 % Set the SAVE_FIGS to true if you want to save all figures
-% SAVE_FIGS = true;
+SAVE_FIGS = true;
 
 
 %% Initialising Input Data and Variables
@@ -41,7 +41,7 @@ relZNums_prePro = detrend(recenter(relZNums));
 
 % Preprocess data (natural log)
 relZNums_log = log(relZNums +eps); % +eps prevent log(0)
-relZNums_log_recenter = recenter(relZNums);
+relZNums_log_recenter = recenter(relZNums_log);
 
 fs = 1; % 1 year per sample
 N = size(sunspot,1); % Total Signal Length
@@ -103,6 +103,24 @@ fH = []; % clear the figure handle variable
 fAx = 0:2*fs/K:1-fs/K; % normalised frequency axis
 
 fH{1} = figure;
+    hold on
+    plot(years, relZNums); 
+%     drawnow; pause;
+    plot(years, relZNums_prePro);
+%     drawnow; pause;
+%     plot(fAx, P_sunspot_log(oneSide));
+%     drawnow; pause;
+    plot(years, relZNums_log_recenter);
+%     drawnow; pause;
+    title('SunSpot Dataset');
+    xlabel("Years");
+    ylabel("Zurich Sunspot Number");
+    legend(legendString([1,2,4]), 'NumColumns', 3)
+    yLims = ylim; yLims(2) = yLims(2) + 70;
+    ylim(yLims)
+    grid minor
+
+fH{2} = figure;
     hold on
     plot(fAx, P_sunspot(oneSide)); 
 %     drawnow; pause;
