@@ -58,6 +58,7 @@ for ii = 1:size(testSignal.Names,2)
         ylabel("PSD, $P(\omega)$");
         title(sprintf("\\textbf{%s}: Autocorrelation Function", testSignal.Names{ii}));
         legend('show');
+        xlim([-N N])
         
     fH{length(fH)+1} = figure;
         hold on;

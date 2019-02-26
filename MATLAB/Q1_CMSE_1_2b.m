@@ -29,7 +29,7 @@ questionNum = 1;
 q_initialise;
 
 % Set the SAVE_FIGS to true if you want to save all figures
-% SAVE_FIGS = true;
+SAVE_FIGS = true;
 
 
 %% Initialising Input Data and Variables
@@ -93,11 +93,12 @@ legendString = [legendString, "{ }1s Window"];
 %% Plots
 close all % close current figures
 fH = []; % clear the figure handle variable
+plotH = []; % clear the plot handle variable
 % fAx = 0:EEG.fs/K:1-EEG.fs/K;
 
 fH{1} = figure;
     plot(fAx.stan,pow2db(P_EEG.stan))
-    title("Full Size Rectangular Window: EEG Periodogram");
+    title("Full Size Rectangular Window EEG Periodogram");
     xlabel("Frequency (Hz)");
     ylabel("Power Density (dB)");
     grid minor;
@@ -116,12 +117,12 @@ fH{2} = figure;
 
     %
         
-    title("Varied Window Size: EEG Bartlett Average Periodogram");
+    title("Varied Window Size EEG Bartlett Average Periodogram");
     xlabel("Frequency (Hz)");
     ylabel("Power Density (dB)");
     grid minor;
     xlim([0 60])
-    legend( plotH, legendString([2:end]) )
+    legend( plotH, legendString([2:end]), 'NumColumns', 3, 'Location', 'South' )
 
 %% Save Figures
 

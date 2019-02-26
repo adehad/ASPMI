@@ -23,7 +23,7 @@ questionNum = 1;
 q_initialise;
 
 % Set the SAVE_FIGS to true if you want to save all figures
-% SAVE_FIGS = true;
+SAVE_FIGS = true;
 
 
 %% Initialise Test Signals
@@ -89,13 +89,16 @@ fH{1} = figure;
         legendString(ii) = sprintf("$n=%d$", nSamples(ii));
     end
     yLims = ylim;
+    yLims(2) = yLims(2)+6;
     plot([fHz(1), fHz(1)], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
     plot([fHz(2), fHz(2)], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
     xlabel("Frequency ($\pi$ radians)");
     ylabel("PSD (dB)");
-    title(strcat("PSD of Complex Exponentials"));
-    legend(plotH,legendString);
+    title(strcat("PSD of Summed Complex Exponentials"));
+    legend(plotH,legendString,'NumColumns',2);
     xlim([0.2 0.6])
+    ylim(yLims)
+    grid minor
     
 %% Save Figures
 

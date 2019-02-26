@@ -68,7 +68,7 @@ FFT_sunspot = (relZNums .* win_BKH)'; % apply the window
 FFT_sunspot = [ FFT_sunspot zeros(1, K-N) ]; % zero padd the signal
 FFT_sunspot = fftshift(fft(FFT_sunspot)); % apply the fft
 P_sunspot = pow2db( abs(FFT_sunspot).^2 /(N *2*pi) )'; % convert to power spectrum (db)
-legendString = [legendString, "Raw SunSpots"];
+legendString = [legendString, "Raw"];
 
 % Detrended+Recentered Sunspot Data
 FFT_sunspot_prePro = (relZNums_prePro .* win_BKH)'; % apply the window
@@ -115,7 +115,8 @@ fH{1} = figure;
     title(sprintf("{%s} Window Periodogram ", winLabel));
     xlabel("Normalised Frequency ($\frac{\pi\ rad}{sample}$)");
     ylabel("Power Density (dB)");
-    legend(legendString([1,2,4]))
+    legend(legendString([1,2,4]), 'NumColumns', 3)
+    ylim([-inf 50])
     grid minor
     
 %% Save Figures

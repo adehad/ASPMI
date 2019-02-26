@@ -80,7 +80,7 @@ fH{1} = figure;
     plot(fs*effectiveFs, mean(real(PSD_biased),1)', 'Color', COLORS(1, :));
     xlabel("Frequency ($\pi$ radians)");
     ylabel("PSD, $P(\omega)$");
-    title(strcat("PSD ", num2str(numRealisations), " Realisations \& Mean"));
+    title(strcat(num2str(numRealisations), " PSD Realisations \& Mean"));
 %     legend('show');
     xlim([0 2])
     
@@ -90,7 +90,7 @@ fH{2} = figure;
     plot(fs*effectiveFs, std(real(PSD_biased),1)', 'Color', COLORS(2, :));
     xlabel("Frequency ($\pi$ radians)");
     ylabel("PSD, $P(\omega)$");
-    title(strcat("PSD ", num2str(numRealisations), " Realisations Standard Deviation"));
+    title(strcat(num2str(numRealisations), " PSD Realisations Standard Deviation"));
 %     legend('show');
     xlim([0 2])
 %% Save Figures

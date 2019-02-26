@@ -23,7 +23,7 @@ questionNum = 1;
 q_initialise;
 
 % Set the SAVE_FIGS to true if you want to save all figures
-% SAVE_FIGS = true;
+SAVE_FIGS = true;
 
 
 %% Initialise Test Signals
@@ -81,7 +81,7 @@ fH{1} = figure;
     plot(fs*effectiveFs, pow2db(mean(real(PSD_biased),1))', 'Color', COLORS(1, :));
     xlabel("Frequency ($\pi$ radians)");
     ylabel("PSD (dB)");
-    title(strcat("PSD ", num2str(numRealisations), " Realisations \& Mean"));
+    title(strcat( num2str(numRealisations)," PSD Realisations \& Mean"));
 %     legend('show');
     xlim([0 2])
     
@@ -91,13 +91,13 @@ fH{2} = figure;
     plot(fs*effectiveFs, std(pow2db(real(PSD_biased)),1)', 'Color', COLORS(2, :));
     xlabel("Frequency ($\pi$ radians)");
     ylabel("PSD (dB)");
-    title(strcat("PSD ", num2str(numRealisations), " Realisations Standard Deviation"));
+    title(strcat( num2str(numRealisations), " PSD Realisations Standard Deviation"));
 %     legend('show');
     xlim([0 2])
 %% Save Figures
 
 if SAVE_FIGS
     for ii=1:length(fH) % For all figure handles
-        savefig(fH{ii},['figures', filesep,'q1_3c_fig',num2str(ii,'%02i')])
+        saveas(fH{ii},['figures', filesep,'q1_3c_fig',num2str(ii,'%02i')],'pdf')
     end
 end

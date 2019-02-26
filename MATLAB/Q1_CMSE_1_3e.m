@@ -23,7 +23,7 @@ questionNum = 1;
 q_initialise;
 
 % Set the SAVE_FIGS to true if you want to save all figures
-% SAVE_FIGS = true;
+SAVE_FIGS = true;
 
 
 %% Initialise Test Signals
@@ -99,14 +99,14 @@ for jj=1:length(sigSpaceDim)
         xlim([0.25 0.4])
         xlabel("Frequency ($\pi$ radians)");
         ylabel("PSD");
-        title(sprintf("MUSIC Estimate: %d Realisations and Mean \n $n=%d$, $p=%d$",numRealisations,nSamples,sigSpaceDim(jj)));
+        title(sprintf("%d MUSIC Estimate Realisations and Mean \n $n=%d$, $p=%d$",numRealisations,nSamples,sigSpaceDim(jj)));
 
     fH{length(fH)+1} = figure;
         plot(Fs, std(PSE.(structName)), 'Color', COLORS(2, :));
         xlim([0.25 0.4])
         xlabel("Frequency ($\pi$ radians)");
         ylabel("PSD");
-        title(sprintf("MUSIC Estimate: %d Realisations Standard Deviation \n $n=%d$, $p=%d$",numRealisations,nSamples,sigSpaceDim(jj)));
+        title(sprintf("%d MUSIC Estimate Realisations Standard Deviation \n $n=%d$, $p=%d$",numRealisations,nSamples,sigSpaceDim(jj)));
 end
     
 %% Save Figures
