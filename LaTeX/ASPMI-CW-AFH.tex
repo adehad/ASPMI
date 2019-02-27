@@ -73,7 +73,7 @@
 	\subsection{Properties of Power Spectral Density (PSD)} \label{sec: 1-1-prop-PSD}
 	
 	\subsubsection{Approximation in the Definition of PSD} \label{sec: 1-1a-prop-PSD}
-	Starting with the equation provided, (\ref{proof: periodogram:starter}), we: use the relationship between modulus and complex conjugate for complex numbers, we move out the summation terms from the expectation operator, we factor out the exponential terms - as they are independent of the random variable $x$ and we finally use the property that the expectation of a complex conjugate is .........
+	Starting with the equation provided, (\ref{proof: periodogram:starter}), we: use the relationship between modulus and complex conjugate for complex numbers, we move out the summation terms from the expectation operator, we factor out the exponential terms - as they are independent of the random variable $x$ and we finally use the following substitution:  $g(\tau) = r_{xx}(\tau) e^{-j\omega\tau}$.
 	\begin{align}
 		P(\omega)   & =\lim_{N\to\infty} \E \bigg\{ \frac{1}{N} \bigg| \sum_{n=0}^{N-1} x(n) e^{-j\omega n} \bigg|^{2} \bigg\}
 		\label{proof: periodogram:starter}\\
@@ -90,9 +90,7 @@
 		\label{proof: periodogram}
 	\end{align}
 	
-	where $g(\tau) = r_{xx}(\tau) e^{-j\omega\tau}$
-	\newline
-	We can convert the double summation into a single summation using:
+	We can convert the double summation into a single summation using Equation \ref{proof: periodogram:helper}, and recalling the earlier substitution:
 	
 	\begin{equation}
 		\sum_{m=-N}^{N} \sum_{k=-N}^{N} g(m-k) = \sum_{\tau=-2N}^{2N}(2N + 1 - |\tau|)g(\tau)
@@ -111,10 +109,21 @@
 	
 	\subsubsection{Simulation of the Limiting Case} \label{sec: 1-1b-prop-PSD}
 	
+	An unbiased estimator of the autocorrelation will provide a case where the correlation does not rapidly decay. This would violate the derivation shown in Section \ref{sec: 1-1a-prop-PSD}, thereby hindering equivalence.
+	An example is shown in Figure \ref{fig: 1-1b}, here we see a sine function with an unbiased estimator:
+	
+	\begin{figure}[H]
+		\centering
+		\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_1b_fig01.pdf} 
+		\captionsetup{justification=centering}
+		\caption{An example of the Limiting Case of the Periodogram Definition}
+		\label{fig: 1-1b}
+	\end{figure}
+	
 	
 	\subsection{Periodogram-based Methods Applied to Real–World Data} \label{sec: 1-2-PSD-real-world}
 	\subsubsection{The SunSpot Dataset}
-	The mean's influence on data is the offset DC bias, captured in the $f=0$ component of the periodogram. Hence as we would expect, subtracting the \texttt{mean} reduces its magnitude in the periodogram. \texttt{detrend} removes linear trends, it seems in the case of this data set that most linear trends are captured at $f\lessapprox 0.02 rad/sample$. \\
+	Figure \ref{fig: 1-2a}. The mean's influence on data is the offset DC bias, captured in the $f=0$ component of the periodogram. Hence as we would expect, subtracting the \texttt{mean} reduces its magnitude in the periodogram. \texttt{detrend} removes linear trends, it seems in the case of this data set that most linear trends are captured at $f\lessapprox 0.02 rad/sample$. \\
 	
 	The natural logarithm was taken using: \texttt{log}. As the logarithm has a compression effect on magnitude we see that the magnitude of both raw and periodogram is greatly attenuated. We note that frequencies of interest and its harmonics appear as more distinct when compared to the rest of the periodogram.
 
@@ -190,11 +199,12 @@
 			{Power-Line} & $50$ & $50$ \\
 			\hline
 		\end{tabular}
+		\captionsetup{justification=centering}
 		\caption{EEG Frequency Peaks of the Periodogram. $n$ refers to harmonics}
 		\label{tab: 1-2b}
 	\end{table}
 	
-	The standard periodogram has identifiable peaks - except for the 3rd harmonic of the SSVEP, at 52Hzs it is too close to the power-line interference at 50Hz. The main difference in the 10s window averaged periodogram is clearer peak isolation compared to the surrounding periodogram and emphasis on the range of frequencies of the alpha-rhythm, rather than a single discrete peak.
+	The standard periodogram has identifiable peaks, showing in Figure \ref{fig: 1-2b}, quantified in Table \ref{tab: 1-2b}. We are unable to identify the 3rd harmonic of the SSVEP, at 52Hzs it is too close to the power-line interference at 50Hz. The main difference in the 10s window averaged periodogram is clearer peak isolation compared to the surrounding periodogram and emphasis on the range of frequencies of the alpha-rhythm, rather than a single discrete peak.
 
 	\subsection{Correlation Estimation} \label{sec: 1-3-correlation-est}
 	
@@ -234,7 +244,7 @@
 		\label{fig: 1-3a}
 	\end{figure}
 	
-	For the autocorrelation functions: we can see that the biased estimator tends to 0 for increasing lag magnitude, whereas the unbiased estimator remains somewhat constant, although at the extremes it begins to increase to approximately double the constant value.\\
+	Figure \ref{fig: 1-3a}. For the autocorrelation functions: we can see that the biased estimator tends to 0 for increasing lag magnitude, whereas the unbiased estimator remains somewhat constant, although at the extremes it begins to increase to approximately double the constant value.\\
 	For the correlograms: we observe that the biased estimator does not contain negative values.
 	
 	\subsubsection{Biased ACF Estimator PSDs}
@@ -264,7 +274,7 @@
 		\label{fig: 1-3b}
 	\end{figure}
 
-	It is interesting to see the low frequency resolution influences the accuracy of the peak with respect to the actual frequencies used.
+	It is interesting to see the low frequency resolution influences the accuracy of the peak with respect to the actual frequencies used, Figure \ref{fig: 1-3b}.
 
 	\subsubsection{Biased ACF Estimator PSDs on the dB Scale}
 
@@ -288,22 +298,22 @@
 		\label{fig: 1-3c}
 	\end{figure}
 
-	It is advantageous that the standard deviation decreases around our frequencies of interest instead of increase.
+	Figure \ref{fig: 1-3c}. It is advantageous that the standard deviation decreases around our frequencies of interest instead of increases. 
 
 	\subsubsection{Influence of Data Samples on the PSD}
 	
 	\begin{figure}[H]%{R}{0.49\textwidth}
 %	\begin{figure}[H]
-		\begin{centering}
+		\centering
 			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=0.49\textwidth]{../MATLAB/figures/q1_3d_fig01.pdf} 
-		\end{centering}
+%		\end{centering}
 %	\end{figure}
 	\captionsetup{justification=centering}
 	\caption{PSD while varying $n$, the number of Data Samples used}
 	\label{fig: 1-3d}
 	\end{figure}
 	
-	Here we can clearly see that the frequency resolution is insufficient at lower sample numbers, resulting in aliasing of the desired frequency peaks.
+	In Figure \ref{fig: 1-3d} we can clearly see that the frequency resolution is insufficient at lower sample numbers, resulting in aliasing of the desired frequency peaks.
 	
 	\subsubsection{MUltiple SIgnal Classification (MUSIC) Estimator}
 	
@@ -341,7 +351,19 @@
 		\label{fig: 1-3e}
 	\end{figure}
 
-
+	The MUSIC estimate identifies eigenvalues of an autocorrelation matrix in descending magnitude order - which indicate directions of largest variability in the subspace. \\
+	The first line creates the 14 dimensional modified correlation matrix $R_{xx}$ for the dataset, which is subsequently used by the MUSIC algorithm with $p$ setting the Signal Subspace Dimensionality in the second line. \\
+	The third line plots the Pseudospectrum (PSD Estimate) against the frequency axis. \\
+	
+	Figure \ref{fig: 1-3e} shows the MUSIC estimate plots for the given equation. The spectrum is not very detailed, peaks are not all sharp, but are clearly distinguishable from the surrounding periodogram. In the general case the MUSIC estimator is a good choice if the signal space dimensionality is known, especially as it works on such a limited set of samples. \\
+	
+	The periodogram is equally suitable for resolving peaks, but requires more samples for a meaningful resolution. \\
+	
+	In both periodogram and MUSIC estimators we see that the standard deviation, hence variance increase around the peaks, except when using the log scale of the periodogram, where it decreases.
+	
+	% TODO: A figure doing a direct comparison for the same signal maybe.
+	
+	% TODO: Bias and Variance
 	
 	\subsection{Spectrum of Autoregressive (AR) Processes} \label{sec: 1-4-spectrums-AR}
 
@@ -397,10 +419,9 @@
 		\label{fig: 1-4c}
 	\end{figure}
 
-	The same trend is observed as we was with $N=500$, although the estimate now matches the underlying model much better, reflected in the drastically lower MSE. \\
+	The same trend is seen in Figure \ref{fig: 1-4c}, as we saw with $N=500$, although the estimate now matches the underlying model much better, reflected in the drastically lower MSE. \\
 	
-	It is noted that for a more valid comparison of model order's influence on the estimate's error the Akaike
-	Information Criterion (AIC) or the Bayesian Information Criterion (BIC) are more suitable quantifiers than MSE. But the trend reflected in MSE is still valid.
+	It is noted that for a more valid comparison of model order's influence on the estimate's error the Akaike Information Criterion (AIC) or the Bayesian Information Criterion (BIC) are more suitable quantifiers of model order suitability than MSE. But the accuracy trend reflected in the MSE is still valid for our comparisons.
 	
 	\pagebreak
 	
@@ -437,7 +458,7 @@
 			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_5a_fig06.pdf} 
 		\end{subfigure}
 		\captionsetup{justification=centering}
-		\caption{Standard and Bartlett Average Periodograms. \\ $W_L$ is the Window Length used}
+		\caption{Standard and Bartlett Average Periodograms. \\ $W_L$ is the Window Length used. First 4 harmonics denoted by vertical black lines. Zero Padded Signal Length: $4096$.}
 		\label{fig: 1-5a}
 	\end{figure}
 
@@ -455,42 +476,63 @@
 			{Slow (Trial 3)} & $7.5$ & $0.125\times60=7.5$ \\
 			\hline
 		\end{tabular}
-		\caption{Breaths Per Minute (BPM), i.e. Observed Frequency $\times 60$, for all trials. \\ First 4 harmonics denoted by vertical black lines. Zero Padded Signal Length: $4096$}
+		\captionsetup{justification=centering}
+		\caption{Breaths Per Minute (BPM), i.e. Observed Frequency $\times 60$, for all trials.}
 		\label{tab: 1-5a}
 	\end{table}
 
 
 	\subsubsection{Analysis of the RRI PSD Estimates}
 	
-	We can observe distinct peaks for each trial that somewhat agrees with the breathing expected. We note that harmonics are difficult to distinguish, despite the large zero padding of the signal.
+	Figure \ref{fig: 1-5a} shows us distinct peaks for each trial that somewhat agrees with the breathing expected. We note that harmonics are difficult to distinguish, despite the large zero padding of the signal. Table \ref{tab: 1-5a} highlights how the observed peaks align with the expected peaks.
 	\pagebreak
 	
 	\subsubsection{AR PSD Estimate for the RRI Dataset}
 	
-	\begin{wrapfigure}{r}{0.49\textwidth}
-		\vspace{-20pt}
-		\begin{centering}
-			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=0.49\textwidth]{../MATLAB/figures/q1_5c_fig01.pdf} 
-		\end{centering}
+%	\begin{wrapfigure}{r}{0.49\textwidth}
 %		\vspace{-20pt}
-%		\vspace{-10pt}
-		\begin{centering}
-			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=0.49\textwidth]{../MATLAB/figures/q1_5c_fig02.pdf} 
-		\end{centering}
-%		\vspace{-20pt}
-%		\vspace{-10pt}
-		\begin{centering}
-			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=0.49\textwidth]{../MATLAB/figures/q1_5c_fig03.pdf} 
-		\end{centering}
-%		\vspace{-20pt}
-		\captionsetup{justification=centering}
-		\caption{AR Estimate Periodograms. \\ $p$ is the model order.}
-		\label{fig: 1-5c}
-%		\vspace{-10pt}
-	\end{wrapfigure}
-		The AR spectral estimate correctly identified the peak from models of order $p\gtrapprox10$. We note that the estimate resembles a smooth envelope over our PSD and correctly identifies clear peaks in the standard PSD at $p=10$. We also can see for higher order models that there are move fluctuations as the model starts to overfit for the input data's natural noisiness. \\
-		
-	\pagebreak
+%		\begin{centering}
+%			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=0.49\textwidth]{../MATLAB/figures/q1_5c_fig01.pdf} 
+%		\end{centering}
+%%		\vspace{-20pt}
+%%		\vspace{-10pt}
+%		\begin{centering}
+%			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=0.49\textwidth]{../MATLAB/figures/q1_5c_fig02.pdf} 
+%		\end{centering}
+%%		\vspace{-20pt}
+%%		\vspace{-10pt}
+%		\begin{centering}
+%			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=0.49\textwidth]{../MATLAB/figures/q1_5c_fig03.pdf} 
+%		\end{centering}
+%%		\vspace{-20pt}
+%		\captionsetup{justification=centering}
+%		\caption{AR Estimate Periodograms. \\ $p$ is the model order.}
+%		\label{fig: 1-5c}
+%%		\vspace{-10pt}
+%	\end{wrapfigure}
+
+		\begin{figure}[H]
+			\begin{subfigure}{0.49\textwidth}
+				\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_5c_fig01.pdf} 
+			\end{subfigure}
+			\begin{subfigure}{0.49\textwidth}
+				\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_5c_fig02.pdf} 
+			\end{subfigure}
+			
+			\hspace*{0.25\textwidth}
+			\begin{subfigure}{0.49\textwidth}
+				\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_5c_fig03.pdf} 
+			\end{subfigure}
+			\captionsetup{justification=centering}
+			\caption{AR Estimate Periodograms. \\ $p$ is the model order.}
+			\label{fig: 1-5c}
+			%		\vspace{-10pt}
+		\end{figure}
+	
+		The AR spectral estimate in Figure \ref{fig: 1-5c} correctly identified the peak from models of order $p\gtrapprox10$. We note that the estimate resembles a smooth envelope over our PSD and correctly identifies clear peaks in the standard PSD at $p=10$. We also can see for higher order models that there are move fluctuations as the model starts to overfit for the input data's natural noisiness. \\
+%		\vspace{18\baselineskip}
+%		\newline
+%	\pagebreak
 	
 	\subsection{Robust Regression} \label{sec: 1-6-robust-regression}
  
@@ -514,21 +556,36 @@
 		\caption{}
 		\label{fig: 1-6a}
 	\end{figure}
+
+	The rank of the input data would be indicated when the SVD Error increases or the non-zero SVD values end (for pure data) - hence the data is of rank 3. \\
+	Noise makes the SVD magnitude non-zero where we expect it to be zero for the pure input. Hence, in the real world where we would not have the pure dataset we would need to purely look at Figure \ref{fig: 1-6a} (a), if the SVD magnitude of the noise was comparable to that of the signal we would have difficulty establishing a criteria to distinguish signal and noise subspaces from the SVD method. \\
  
+% 	\pagebreak
+ 	
  	\subsubsection{Low Rank Approximation Error}
- 	Text here \\
-	\begin{wrapfigure}{r}{0.49\textwidth}
- 		\vspace{-20pt}
+%	\begin{wrapfigure}{R}{0.49\textwidth}
+%% 		\vspace{-20pt}
+% 		\begin{centering}
+% 			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=0.49\textwidth]{../MATLAB/figures/q1_6b_fig01.pdf} 
+% 		\end{centering}
+% 		\captionsetup{justification=centering}
+% 		\caption{Effect of Changing Rank on the Approximation Error}
+% 		\label{fig: 1-6b}
+% 	\end{wrapfigure}
+	\begin{figure}[H]
  		\begin{centering}
  			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=0.49\textwidth]{../MATLAB/figures/q1_6b_fig01.pdf} 
  		\end{centering}
  		\captionsetup{justification=centering}
  		\caption{Effect of Changing Rank on the Approximation Error}
  		\label{fig: 1-6b}
- 	\end{wrapfigure}
+ 	\end{figure}
+ 
+ 	By looking at the mean square error between the pure signal and the low-rank approximation of the noise, Figure \ref{fig: 1-6b}, we note that the minimum error is when the low-rank approximation matches that of the pure data.
 
  	
  	\subsubsection{Ordinary Least Squares (OLS) \& Principle Component Regression (PCR)  Estimate Errors}
+ 	
  	\begin{figure}[H]
  		\centering
  		\begin{subfigure}{0.49\textwidth}
@@ -548,10 +605,13 @@
  		\caption{}
  		\label{fig: 1-6c}
  	\end{figure}
+ 
+ 	In both datasets we see that at the true model order the differences are tiny, in the training dataset we see that PCR underperforms by $0.85\%$, while in the testing dataset PCR outperforms by $1.05\%$. We can also note that decreasing the PCR model order further than the true model order, improves performance in the Training dataset but reduces performance in the Testing dataset.
 
 
  	\subsubsection{Ordinary Least Squares (OLS) \& Principle Component Regression (PCR)  Estimate Errors - Part 2}
- 	\begin{wrapfigure}{r}{0.49\textwidth}
+ 	 
+ 	\begin{wrapfigure}{R}{0.49\textwidth}
 % 		\vspace{-20pt}
  		\begin{centering}
  			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=0.49\textwidth]{../MATLAB/figures/q1_6d_fig01.pdf} 
@@ -560,5 +620,9 @@
  		\caption{Mean Sqaure Error over several Realisations}
  		\label{fig: 1-6d}
  	\end{wrapfigure}
+ 
+ 	Again if we look at the true model order, Figure \ref{fig: 1-6d}, PCR outperforms OLS by $0.79\%$. We note how further reduction in dimensionality decreases the performance of PCR. In regard to effectiveness of each scheme, if the model order is unknown and cannot be approximated accurately, OLS is a safer choice, however best performance - although marginal - can be achieved if the model order is known and PCR is implemented.
+ 	
+ 	
 \end{document}
 

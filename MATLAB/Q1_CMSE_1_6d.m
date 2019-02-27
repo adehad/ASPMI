@@ -30,7 +30,7 @@ msErr = @(X1,X2) norm(abs(X1 - X2),2).^2; % 2-norm squared
 % SVD - matrix decomposition     U*S*(V') = A
 [U.XNoise, S.XNoise, V.XNoise] = svd(Xnoise);
 
-rankComp = 1:6; % rank components to preserve
+rankComp = 3:8; % rank components to preserve
 
 % OLS
 % weights

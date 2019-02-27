@@ -30,7 +30,7 @@ msErr = @(X1,X2) sum(sum(abs(X1 - X2).^2))/numel(X1);
 [U.XNoise, S.XNoise, V.XNoise] = svd(Xnoise);
 [U.XTest, S.XTest, V.XTest] = svd(Xtest);
 
-rankComp = 1:6; % rank components to preserve
+rankComp = 3:8; % rank components to preserve
 
 % OLS
 % weigts
