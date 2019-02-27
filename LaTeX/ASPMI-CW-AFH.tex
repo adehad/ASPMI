@@ -13,7 +13,9 @@
 \usepackage[]{float}
 \usepackage[]{caption}
 \usepackage[titletoc]{appendix}
-\usepackage{chngcntr}
+\usepackage{chngcntr} % Make nice counter macros availalble
+	\counterwithin{figure}{subsection} % Add Section Number to Figure Counter
+	\counterwithin{table}{subsection} % Add Section Number to Table Counter
 \usepackage{tocbibind}
 \usepackage{tabularx}
 \usepackage{longtable}
@@ -112,7 +114,9 @@
 	
 	\subsection{Periodogram-based Methods Applied to Real–World Data} \label{sec: 1-2-PSD-real-world}
 	\subsubsection{The SunSpot Dataset}
-	I am putting some text
+	The mean's influence on data is the offset DC bias, captured in the $f=0$ component of the periodogram. Hence as we would expect, subtracting the \texttt{mean} reduces its magnitude in the periodogram. \texttt{detrend} removes linear trends, it seems in the case of this data set that most linear trends are captured at $f\lessapprox 0.02 rad/sample$. \\
+	
+	The natural logarithm was taken using: \texttt{log}. As the logarithm has a compression effect on magnitude we see that the magnitude of both raw and periodogram is greatly attenuated. We note that frequencies of interest and its harmonics appear as more distinct when compared to the rest of the periodogram.
 
 	\begin{figure}[H]
 		\centering
@@ -129,6 +133,8 @@
 			\captionsetup{justification=centering}
 			\caption{Periodograms}
 		\end{subfigure}
+		\captionsetup{justification=centering}
+		\caption{}
 		\label{fig: 1-2a}
 	\end{figure}
 %	\begin{figure}[H]
@@ -148,8 +154,8 @@
 %	\end{figure}
 
 
-	\subsubsection{The ECG Dataset}
-	% TODO: the title's say EEG but it is an ECG
+	\subsubsection{The EEG Dataset}
+	
 	\begin{figure}[H]
 		\centering
 		\begin{subfigure}{0.49\textwidth}
@@ -165,8 +171,30 @@
 			\captionsetup{justification=centering}
 			\caption{Bartlett Average Periodograms}
 		\end{subfigure}
+		\captionsetup{justification=centering}
+		\caption{}
 		\label{fig: 1-2b}
 	\end{figure}
+
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{|c|c||c|}
+			\hline
+			\textbf{Response} & \textbf{Expected Range} (Hz) & \textbf{Observed Range} (Hz) \\
+			\hline
+			\hline
+			{Alpha Rhythm} & $8 - 10$ & $8-10$ \\
+			\hline
+			{SSVEP} & \texttt{range}[$11-20$] & $13n$ \\
+			\hline
+			{Power-Line} & $50$ & $50$ \\
+			\hline
+		\end{tabular}
+		\caption{EEG Frequency Peaks of the Periodogram. $n$ refers to harmonics}
+		\label{tab: 1-2b}
+	\end{table}
+	
+	The standard periodogram has identifiable peaks - except for the 3rd harmonic of the SSVEP, at 52Hzs it is too close to the power-line interference at 50Hz. The main difference in the 10s window averaged periodogram is clearer peak isolation compared to the surrounding periodogram and emphasis on the range of frequencies of the alpha-rhythm, rather than a single discrete peak.
 
 	\subsection{Correlation Estimation} \label{sec: 1-3-correlation-est}
 	
@@ -205,8 +233,16 @@
 		\caption{Set of Auto-Correlation Functions (ACFs) and their Correlograms}
 		\label{fig: 1-3a}
 	\end{figure}
-
+	
+	For the autocorrelation functions: we can see that the biased estimator tends to 0 for increasing lag magnitude, whereas the unbiased estimator remains somewhat constant, although at the extremes it begins to increase to approximately double the constant value.\\
+	For the correlograms: we observe that the biased estimator does not contain negative values.
+	
 	\subsubsection{Biased ACF Estimator PSDs}
+
+	The process simulated was the following:
+	\begin{equation}
+	x(n) = 2 sin(2 \pi 0.4 n) + 1.75 sin(2 \pi 0.6 n) + 0.85 sin(2 \pi 0.85 n) + 1.2 sin(2 \pi 0.95 n) + \eta(n) \quad \eta \sim \mathcal{N}(0, 1)
+	\end{equation}
 
 	\begin{figure}[H]
 		\centering
@@ -223,11 +259,15 @@
 			\captionsetup{justification=centering}
 			\caption{Standard Deviation}
 		\end{subfigure}
+		\captionsetup{justification=centering}
+		\caption{The total number of data points used was 512, black vertical lines indicate the model defined frequencies}
 		\label{fig: 1-3b}
 	\end{figure}
 
+	It is interesting to see the low frequency resolution influences the accuracy of the peak with respect to the actual frequencies used.
+
 	\subsubsection{Biased ACF Estimator PSDs on the dB Scale}
-	% TODO: Make vertical lines at the frequencies of your function
+
 	\begin{figure}[H]
 		\centering
 		\begin{subfigure}{0.49\textwidth}
@@ -243,18 +283,27 @@
 			\captionsetup{justification=centering}
 			\caption{Standard Deviation}
 		\end{subfigure}
+		\captionsetup{justification=centering}
+		\caption{The total number of data points used was 512, black vertical lines indicate the model defined frequencies}
 		\label{fig: 1-3c}
 	\end{figure}
 
+	It is advantageous that the standard deviation decreases around our frequencies of interest instead of increase.
+
 	\subsubsection{Influence of Data Samples on the PSD}
 	
-	\begin{figure}[H]
-		\centering
-		\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=0.9\textwidth]{../MATLAB/figures/q1_3d_fig01.pdf} 
-		\captionsetup{justification=centering}
-		\caption{PSD while varying $n$, the number of Data Samples used}
-		\label{fig: 1-3d}
-	\end{figure}	
+	\begin{figure}[H]%{R}{0.49\textwidth}
+%	\begin{figure}[H]
+		\begin{centering}
+			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=0.49\textwidth]{../MATLAB/figures/q1_3d_fig01.pdf} 
+		\end{centering}
+%	\end{figure}
+	\captionsetup{justification=centering}
+	\caption{PSD while varying $n$, the number of Data Samples used}
+	\label{fig: 1-3d}
+	\end{figure}
+	
+	Here we can clearly see that the frequency resolution is insufficient at lower sample numbers, resulting in aliasing of the desired frequency peaks.
 	
 	\subsubsection{MUltiple SIgnal Classification (MUSIC) Estimator}
 	
@@ -291,13 +340,19 @@
 		\caption{Set of Auto-Correlation Functions (ACFs) and their Correlograms. \\ $n$ is the number of samples used, $p$ is the Signal Space Dimensionality}
 		\label{fig: 1-3e}
 	\end{figure}
+
+
 	
 	\subsection{Spectrum of Autoregressive (AR) Processes} \label{sec: 1-4-spectrums-AR}
+
 	
 	\subsubsection{Shortcomings of the Unbiased ACF in finding AR Parameters}
 	
+	As the unbiased estimator allows for negative values, at a computational level it will require more bits to store, especially for larger values.
+	
+	\pagebreak
+	
 	\subsubsection{Error of the AR PSD Estimate}
-	% TODO: BOTH b and c have AR(12) even though we show many orders
 	\begin{figure}[H]
 		\centering
 		\begin{subfigure}{0.49\textwidth}
@@ -313,8 +368,13 @@
 			\captionsetup{justification=centering}
 			\caption{Mean Squared Error}
 		\end{subfigure}
+		\captionsetup{justification=centering}
+		\caption{}
 		\label{fig: 1-4b}
 	\end{figure}
+
+	We can see in (a) of \ref{fig: 1-4b}, that increasing the order tends towards a better solution. But (b) notes that the most drastic difference is at the model order, 4, which matches the order of the process defined, subsequent increases of the model order do increase its likeliness to the true response, but changes are not so drastic.
+	
 
 	\subsubsection{Error of the AR PSD Estimate with more Samples}
 	\begin{figure}[H]
@@ -328,15 +388,24 @@
 		%		~ % forces onto the same row
 		\begin{subfigure}{0.49\textwidth}
 			\centering
-			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_4c_fig16.pdf} 
+			\includegraphics[trim={2.2cm 11.2cm 3cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_4c_fig16.pdf} 
 			\captionsetup{justification=centering}
 			\caption{Mean Squared Error}
 		\end{subfigure}
+		\captionsetup{justification=centering}
+		\caption{}
 		\label{fig: 1-4c}
 	\end{figure}
+
+	The same trend is observed as we was with $N=500$, although the estimate now matches the underlying model much better, reflected in the drastically lower MSE. \\
+	
+	It is noted that for a more valid comparison of model order's influence on the estimate's error the Akaike
+	Information Criterion (AIC) or the Bayesian Information Criterion (BIC) are more suitable quantifiers than MSE. But the trend reflected in MSE is still valid.
+	
+	\pagebreak
 	
 	\subsection{Real World Signals: Respiratory Sinus Arrhythmia from RR-Intervals} \label{sec: 1-5-real-world-signals}
-	% TODO: These ylabels are cut-off, definitely too long
+	
 	\subsubsection{Standard \& Average PSDs of the RRI Dataset}
 	\begin{figure}[H]
 		\centering
@@ -372,10 +441,32 @@
 		\label{fig: 1-5a}
 	\end{figure}
 
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{|c|c||c|}
+			\hline
+			\textbf{Breathing Type} & \textbf{Expected} (BPM) & \textbf{Observed Peak} (BPM) \\
+			\hline
+			\hline
+			{Normal (Trial 1)} & $10-15$ & $0.31\times60\approx18.7$ \\
+			\hline
+			{Fast (Trial 2)} & $25$ & $0.41\times60\approx25$ \\
+			\hline
+			{Slow (Trial 3)} & $7.5$ & $0.125\times60=7.5$ \\
+			\hline
+		\end{tabular}
+		\caption{Breaths Per Minute (BPM), i.e. Observed Frequency $\times 60$, for all trials. \\ First 4 harmonics denoted by vertical black lines. Zero Padded Signal Length: $4096$}
+		\label{tab: 1-5a}
+	\end{table}
+
+
 	\subsubsection{Analysis of the RRI PSD Estimates}
 	
+	We can observe distinct peaks for each trial that somewhat agrees with the breathing expected. We note that harmonics are difficult to distinguish, despite the large zero padding of the signal.
+	\pagebreak
+	
 	\subsubsection{AR PSD Estimate for the RRI Dataset}
-	Test text \\
+	
 	\begin{wrapfigure}{r}{0.49\textwidth}
 		\vspace{-20pt}
 		\begin{centering}
@@ -394,9 +485,11 @@
 %		\vspace{-20pt}
 		\captionsetup{justification=centering}
 		\caption{AR Estimate Periodograms. \\ $p$ is the model order.}
+		\label{fig: 1-5c}
 %		\vspace{-10pt}
 	\end{wrapfigure}
-	
+		The AR spectral estimate correctly identified the peak from models of order $p\gtrapprox10$. We note that the estimate resembles a smooth envelope over our PSD and correctly identifies clear peaks in the standard PSD at $p=10$. We also can see for higher order models that there are move fluctuations as the model starts to overfit for the input data's natural noisiness. \\
+		
 	\pagebreak
 	
 	\subsection{Robust Regression} \label{sec: 1-6-robust-regression}
@@ -417,21 +510,22 @@
 			\captionsetup{justification=centering}
 			\caption{Square Error}
 		\end{subfigure}
+		\captionsetup{justification=centering}
+		\caption{}
 		\label{fig: 1-6a}
 	\end{figure}
  
  	\subsubsection{Low Rank Approximation Error}
- 	 \begin{figure}[H]
- 		\centering
- 		\begin{subfigure}{0.49\textwidth}
- 			\centering
- 			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_6b_fig01.pdf} 
- 			\captionsetup{justification=centering}
- 			\caption{Effect of Lower Ranks on the Approximation Error}
- 		\end{subfigure}
- 		%		~ % forces onto the same row
+ 	Text here \\
+	\begin{wrapfigure}{r}{0.49\textwidth}
+ 		\vspace{-20pt}
+ 		\begin{centering}
+ 			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=0.49\textwidth]{../MATLAB/figures/q1_6b_fig01.pdf} 
+ 		\end{centering}
+ 		\captionsetup{justification=centering}
+ 		\caption{Effect of Changing Rank on the Approximation Error}
  		\label{fig: 1-6b}
- 	\end{figure}
+ 	\end{wrapfigure}
 
  	
  	\subsubsection{Ordinary Least Squares (OLS) \& Principle Component Regression (PCR)  Estimate Errors}
@@ -450,20 +544,21 @@
  			\captionsetup{justification=centering}
  			\caption{Testing Dataset Error}
  		\end{subfigure}
+ 		\captionsetup{justification=centering}
+ 		\caption{}
  		\label{fig: 1-6c}
  	\end{figure}
 
 
  	\subsubsection{Ordinary Least Squares (OLS) \& Principle Component Regression (PCR)  Estimate Errors - Part 2}
-	\begin{figure}[H]
- 		\centering
- 		\begin{subfigure}{0.49\textwidth}
- 			\centering
- 			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_6d_fig01.pdf} 
- 			\captionsetup{justification=centering}
- 			\caption{Mean Sqaure Error over several Realisations }
- 		\end{subfigure}
+ 	\begin{wrapfigure}{r}{0.49\textwidth}
+% 		\vspace{-20pt}
+ 		\begin{centering}
+ 			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=0.49\textwidth]{../MATLAB/figures/q1_6d_fig01.pdf} 
+ 		\end{centering}
+ 		\captionsetup{justification=centering}
+ 		\caption{Mean Sqaure Error over several Realisations}
  		\label{fig: 1-6d}
- 	\end{figure}
+ 	\end{wrapfigure}
 \end{document}
 

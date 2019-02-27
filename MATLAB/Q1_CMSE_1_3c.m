@@ -79,16 +79,33 @@ fH{1} = figure;
     hold on;
     plot(fs*effectiveFs, pow2db(real(PSD_biased))', 'Color', COLORS(6, :), 'LineWidth', 0.5);
     plot(fs*effectiveFs, pow2db(mean(real(PSD_biased),1))', 'Color', COLORS(1, :));
+    
+    yLims = ylim;
+    yLims(1) = yLims(1) + 10;
+    yLims(2) = yLims(2) + 10;
+    plot([fs(find(fs>=fHz(1),1)), fs(find(fs>=fHz(1),1))], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+    plot([fs(find(fs>=fHz(2),1)), fs(find(fs>=fHz(2),1))], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+    plot([fs(find(fs>=fHz(3),1)), fs(find(fs>=fHz(3),1))], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+    plot([fs(find(fs>=fHz(4),1)), fs(find(fs>=fHz(4),1))], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+
     xlabel("Frequency ($\pi$ radians)");
     ylabel("PSD (dB)");
     title(strcat( num2str(numRealisations)," PSD Realisations \& Mean"));
 %     legend('show');
     xlim([0 2])
+    ylim(yLims)
     
 % Plot Standard Deviations    
 fH{2} = figure;
     hold on;
     plot(fs*effectiveFs, std(pow2db(real(PSD_biased)),1)', 'Color', COLORS(2, :));
+    
+    yLims = ylim;
+    plot([fs(find(fs>=fHz(1),1)), fs(find(fs>=fHz(1),1))], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+    plot([fs(find(fs>=fHz(2),1)), fs(find(fs>=fHz(2),1))], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+    plot([fs(find(fs>=fHz(3),1)), fs(find(fs>=fHz(3),1))], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+    plot([fs(find(fs>=fHz(4),1)), fs(find(fs>=fHz(4),1))], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+
     xlabel("Frequency ($\pi$ radians)");
     ylabel("PSD (dB)");
     title(strcat( num2str(numRealisations), " PSD Realisations Standard Deviation"));

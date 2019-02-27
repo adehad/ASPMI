@@ -84,7 +84,7 @@ for ii = 1:length(modelOrder)
         plot(w/pi, pow2db(abs(peaks(:, ii)).^2), "DisplayName", "model");
         title(sprintf("{AR(%d)} Spectral Estimation \n ${N = %d}$", modelOrder(ii), N));
         xlabel("Normalised Frequency");
-        ylabel("Power Spectral Density (dB)");
+        ylabel("PSD (dB)");
         grid on; grid minor;
         axis([0.15, 0.35, 0, 50]);
         legend("show");
@@ -99,9 +99,9 @@ fH{length(fH)+1} = figure;
         plot(w/pi, pow2db(abs(peaks(:, ii)).^2), "DisplayName", sprintf("$p=%d$",modelOrder(ii)));
     end
     hold off
-    title(sprintf("{AR(%d)} Spectral Estimation \n ${N = %d}$", modelOrder(ii), N));
+    title(sprintf("{AR} Spectral Estimation \n ${N = %d}$", N));
     xlabel("Normalised Frequency");
-    ylabel("Power Spectral Density (dB)");
+    ylabel("PSD (dB)");
     grid on; grid minor;
 %     axis([0.15, 0.35, 0, 55]);
     axis([0.175, 0.45, 25, 52]);

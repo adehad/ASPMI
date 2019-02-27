@@ -87,13 +87,26 @@ legendString = []; % clear the legend string variable
 fAx_standard = -1:(2/K):1-2/K; % normalised axis - NOTE: starts at -1 (currently not one sided periodogram)
 fAx_standard = fAx_standard*RRI.fs/2;  % Hertz activate
 
+trial_freqs = [0.3115,0.417,0.125];
+
 % Standard Periodograms for all trials
 for ii=1:size(RRI.x,2)
-    fH{length(fH)+1} = figure;
+    fH{length(fH)+1} = figure; hold on
         plot(fAx_standard, PSD_standard{ii});
+        
+        
+         
+        
+        % Harmonic plotter
+        yLims = ylim;
+        yLims(2) = 0;
+        for jj=1:4 
+             plot([fAx{ii}(find(fAx{ii}>=jj*trial_freqs(ii),1)), fAx{ii}(find(fAx{ii}>=jj*trial_freqs(ii),1))], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+        end
+        
         title(sprintf("Standard Periodogram: Trial %d", ii));
         xlabel("Frequency (Hz)");
-        ylabel("Power Spectral Density (dB)");
+        ylabel("PSD (dB)");
         grid on; grid minor;
         xlim([0 2]) % start at 0 to make one-sided , 0-2Hz is relevant range
         ylim([-inf 0])
@@ -113,10 +126,17 @@ for ii=1:size(RRI.x,2)
             
             legendString{jj} = sprintf("$W_L$ : %d", win{jj}); % unfortunately remakes it every loop
         end
+        
+        % Harmonic plotter
+        yLims = ylim;
+        for jj=1:4 
+             plot([fAx{ii}(find(fAx{ii}>=jj*trial_freqs(ii),1)), fAx{ii}(find(fAx{ii}>=jj*trial_freqs(ii),1))], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+        end
+        
         legend(plotH, legendString)
         title(sprintf("Bartlett Averaged Periodogram: Trial %d", ii));
         xlabel("Frequency (Hz)");
-        ylabel("Power Spectral Density (dB)");
+        ylabel("PSD (dB)");
         grid on; grid minor;
         xlim([0 2]) 
 end

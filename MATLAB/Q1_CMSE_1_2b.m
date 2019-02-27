@@ -66,7 +66,7 @@ legendString = [];
 % Standard - Window = length of signal
 [P_EEG.stan, fAx.stan, P_EEG_Conf.stan] = ... 
     periodogram(EEG.POz, rectwin(N), K, EEG.fs, 'onesided', 'power');
-legendString = [legendString, "Standard Window"];
+legendString = [legendString, "Full Signal Window"];
 
 % Averaged Periodogram
 % Note: We use the Welch estimate and specify an overlap of 0 to achieve
@@ -97,29 +97,53 @@ plotH = []; % clear the plot handle variable
 % fAx = 0:EEG.fs/K:1-EEG.fs/K;
 
 fH{1} = figure;
-    plot(fAx.stan,pow2db(P_EEG.stan))
+    hold on
+    % PSD
+    plot(fAx.stan,pow2db(P_EEG.stan), 'Color', COLORS(1,:))
+    
+    % 10, 13, 26, 39, 50
+    yLims = ylim;
+    plot([fAx.win10s(fAx.win10s==10), fAx.win10s(fAx.win10s==10)], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+    plot([fAx.win10s(fAx.win10s==13), fAx.win10s(fAx.win10s==13)], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+    plot([fAx.win10s(fAx.win10s==26), fAx.win10s(fAx.win10s==26)], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+    plot([fAx.win10s(fAx.win10s==39), fAx.win10s(fAx.win10s==39)], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+    plot([fAx.win10s(fAx.win10s==50), fAx.win10s(fAx.win10s==50)], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+    
     title("Full Size Rectangular Window EEG Periodogram");
     xlabel("Frequency (Hz)");
-    ylabel("Power Density (dB)");
+    ylabel("PSD (dB)");
     grid minor;
     xlim([0 60])
     
 fH{2} = figure;
     hold on
+    % PSD
     plotH(1) = plot(fAx.win10s,pow2db(P_EEG.win10s));
     plotH(2) = plot(fAx.win5s,pow2db(P_EEG.win5s));
     plotH(3) = plot(fAx.win1s,pow2db(P_EEG.win1s));
     
-    % Confidence Levels
-    plot(fAx.win10s,pow2db(P_EEG_Conf.win10s),'Color',COLORS(1,:),'LineWidth',0.5,'LineStyle','-.')
-    plot(fAx.win5s,pow2db(P_EEG_Conf.win5s),'Color',COLORS(2,:),'LineWidth',0.5,'LineStyle','-.')
-    plot(fAx.win1s,pow2db(P_EEG_Conf.win1s),'Color',COLORS(3,:),'LineWidth',0.5,'LineStyle','-.')
+    % 10, 13, 26, 39, 50
+    yLims = ylim;
+    plot([fAx.win10s(fAx.win10s==8), fAx.win10s(fAx.win10s==8)], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+    plot([fAx.win10s(fAx.win10s==10), fAx.win10s(fAx.win10s==10)], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+    plot([fAx.win10s(fAx.win10s==13), fAx.win10s(fAx.win10s==13)], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+    plot([fAx.win10s(fAx.win10s==26), fAx.win10s(fAx.win10s==26)], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+    plot([fAx.win10s(fAx.win10s==39), fAx.win10s(fAx.win10s==39)], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+    plot([fAx.win10s(fAx.win10s==50), fAx.win10s(fAx.win10s==50)], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+    plot([fAx.win10s(fAx.win10s==52), fAx.win10s(fAx.win10s==52)], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
 
-    %
+
+    
+    % Confidence Levels
+%     plot(fAx.win10s,pow2db(P_EEG_Conf.win10s),'Color',COLORS(1,:),'LineWidth',0.5,'LineStyle','-.')
+%     plot(fAx.win5s,pow2db(P_EEG_Conf.win5s),'Color',COLORS(2,:),'LineWidth',0.5,'LineStyle','-.')
+%     plot(fAx.win1s,pow2db(P_EEG_Conf.win1s),'Color',COLORS(3,:),'LineWidth',0.5,'LineStyle','-.')
+
+
         
-    title("Varied Window Size EEG Bartlett Average Periodogram");
+    title("Varied Window Size Bartlett Average Periodogram");
     xlabel("Frequency (Hz)");
-    ylabel("Power Density (dB)");
+    ylabel("PSD (dB)");
     grid minor;
     xlim([0 60])
     legend( plotH, legendString([2:end]), 'NumColumns', 3, 'Location', 'South' )
