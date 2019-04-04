@@ -61,4 +61,8 @@ function [y, e, W] = LMS(X, d, mu, varargin)
     
     % discard first weight
     W = W(:, 2:end);
+    
+    if find(isnan(y)==1,1)
+        warning('unstable mu provided, output reached NaN')
+    end
 end
