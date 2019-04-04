@@ -64,8 +64,8 @@ for kk=1:length(gamma)
             % converyt ar process time series to differential eqn form
             [X2, y2] = arima2diffEqns(x(:, jj), [1:2]);
             % LMS Error
-            [~, err.diff(jj, :, ii), tempWeights] = LMS(X2, x(:, jj)', mu(ii), 0);
-            weights{ii}(jj, :, :) = tempWeights';
+            [~, err.diff(jj, :, ii), tempWeights] = LMS(X2, x(:, jj)', mu(ii), gamma(kk));
+            weights{ii,kk}(jj, :, :) = tempWeights';
 
         end
         % MSE: steady-state
@@ -88,6 +88,12 @@ fH = []; % clear the figure handle variable
 plotH = []; % clear the plot handle variable
 legendString = []; % clear the legend string variable
 
+whatMu = 1;
+whatGamma = 1;
+
+selWeightsA = weights{whatMu,whatGamma};
+selWeightsB = weights{whatMu+1,whatGamma};
+
 % Plot misAdjustment variation with time
 fH{length(fH)+1} = figure;
     plot( err.misAdj(:,1), 'DisplayName', sprintf("$\\mu=%.2f$", mu(1)) );
@@ -106,14 +112,14 @@ fH{length(fH)+1} = figure;
     % mu = 0.05
     yyaxis left
     hold on
-    plot( squeeze(mean(weights{1}(:, :, 1))), 'DisplayName', '$\hat{a_{1}}$', 'Color', COLORS(1,:) );
+    plot( squeeze(mean(selWeightsA(:, :, 1))), 'DisplayName', '$\hat{a_{1}}$', 'Color', COLORS(1,:) );
     xLims{1} = xlim;
     plot( xlim, [a(1), a(1)], 'DisplayName', '${a_{1}}$', 'Color', COLORS(1,:), 'LineStyle', ':' );
     hold off
     
     yyaxis right
     hold on
-    plot( squeeze(mean(weights{1}(:, :, 2))), 'DisplayName', '$\hat{a_{2}}$', 'Color', COLORS(2,:) );
+    plot( squeeze(mean(selWeightsA(:, :, 2))), 'DisplayName', '$\hat{a_{2}}$', 'Color', COLORS(2,:) );
     plot( xlim, [a(2), a(2)], 'DisplayName', '${a_{2}}$', 'Color', COLORS(2,:), 'LineStyle', ':' );
     hold off
     
@@ -132,14 +138,14 @@ fH{length(fH)+1} = figure;
     % mu = 0.01
     yyaxis left
     hold on
-    plot( squeeze(mean(weights{2}(:, :, 1))), 'DisplayName', '$\hat{a_{1}}$', 'Color', COLORS(1,:) );
+    plot( squeeze(mean(selWeightsB(:, :, 1))), 'DisplayName', '$\hat{a_{1}}$', 'Color', COLORS(1,:) );
     xLims{1} = xlim;
     plot( xlim, [a(1), a(1)], 'DisplayName', '${a_{1}}$', 'Color', COLORS(1,:), 'LineStyle', ':' );
     hold off
     
     yyaxis right
     hold on
-    plot( squeeze(mean(weights{2}(:, :, 2))), 'DisplayName', '$\hat{a_{2}}$', 'Color', COLORS(2,:) );
+    plot( squeeze(mean(selWeightsB(:, :, 2))), 'DisplayName', '$\hat{a_{2}}$', 'Color', COLORS(2,:) );
     plot( xlim, [a(2), a(2)], 'DisplayName', '${a_{2}}$', 'Color', COLORS(2,:), 'LineStyle', ':' );
     hold off
     
