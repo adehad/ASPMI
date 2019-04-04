@@ -75,9 +75,13 @@ err.emse = err.mse - sigma_sq;
 % MisAdjustment
 err.misAdj = err.emse / sigma_sq;
 
-
+% Misadjustment error
 fprintf('MisAdj = %.4f +/- %.5f \t [mu=%.2f]\n', mean(err.misAdj(:,1)),std(err.misAdj(:,1)), mu(1))
 fprintf('MisAdj = %.4f +/- %.5f \t [mu=%.2f]\n', mean(err.misAdj(:,2)),std(err.misAdj(:,2)), mu(2))
+
+% Estimates of weights
+fprintf('a1 = %.4f , a2 = %.4f \t [mu=%.2f]\n', squeeze(mean(weights{1}(:, end, 1))),squeeze(mean(weights{1}(:, end, 2))), mu(1))
+fprintf('a1 = %.4f , a2 = %.4f \t [mu=%.2f]\n', squeeze(mean(weights{2}(:, end, 1))),squeeze(mean(weights{2}(:, end, 2))), mu(2))
 
 %% Plots
 close all % close current figures
@@ -154,6 +158,6 @@ fH{length(fH)+1} = figure;
 
 if SAVE_FIGS
     for ii=1:length(fH) % For all figure handles
-        saveas(fH{ii},['figures', filesep,'q2_1d_fig',num2str(ii,'%02i')],'pdf')
+        saveas(fH{ii},['figures', filesep,'q2_1cd_fig',num2str(ii,'%02i')],'pdf')
     end
 end
