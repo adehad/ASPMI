@@ -19,133 +19,136 @@ rSeed = 13;
 rng(rSeed)
 
 % number of samples
-N = 2e3;
-% mains frequency
-f0 = 50;
+N = 1.5e3;
 % sampling rate
-fs = 5e3; 
+fs = 1.5e3; 
 
-% voltage phase
-phi = [ 0;
-        -2*pi/3;
-        +2*pi/3 ];
-
-% additional phase shift
-Delta.balanced   = zeros(size(phi));
-Delta.unbalanced = [0.5; 3; 5];         % we change phase and/or magnitude
-
-% amplitude
-V.balanced   = ones(size(phi));
-V.unbalanced = randn(size(phi))*3;      % we change phase and/or magnitude
+% noise
+sigma_sq = 0.05;
+eta = wgn(N, 1, pow2db(sigma_sq), 'complex');
 
 
-voltageGen = @(V,Delta) V.*cos(2*pi*( f0/fs )*(1:N) +Delta +phi);
+% make frequencies
+freq = zeros(1,N);  % pre-allocate
+thresh = [5e2,1e3,1.5e3];        % thresholds
+for n=1:length(freq)
+    if n <= thresh(1)
+        freq(n) = 100; 
+    elseif n <= thresh(2)
+        freq(n) = 100 + (n-500)/2;
+    elseif n <= thresh(3)
+        freq(n) = 100 + ( (n-1000)/25 )^2;
+    else
+        freq(n) = 0;
+    end
+end
 
-% Lecture 6, Slide 11:
-circularity = @(data) abs( mean(data*data.') /mean(data*data') ); % NOTE: {.'} vs {'} operators
-% I would have thought a better one would be to find major and minor axis
-% by PCA and compare magnitude
-
-% Define the Clarke Transform, aka: alpha-beta transform
-clarkeTrans = @(voltage)  sqrt(2/3)*[ sqrt(2)/2, sqrt(2)/2  ,    sqrt(2)/2  ; ...
-                                         1     ,    -1/2    ,       -1/2    ; ... Clarke Matrix
-                                         0     , sqrt(3)/2  ,    -sqrt(3)/2 ] ... 
-                                   *voltage; % Apply to input voltage vector
-                      
-clarkeVec = @(clarkeT) complex( clarkeT(2,:), clarkeT(3,:) );  
+% make phase - by integration
+phi = cumtrapz(freq);
 
 msErr = @(x) mean(abs(x).^2);
+%% AR 
+% noisy signal
+y = exp( (2*pi* phi/fs)* 1j ) + eta.';
 
-% step-size 
-mu =  0.04; 
-% model orders
-M = 1;
-lags = @(order) 0:order-1; % starts at 0 lag, hence -1
-%% Realisations 
+ar_model{1}.p = [1 5 10];
+for ii=1:length(ar_model{1}.p)
+    % AR(p)
+    a = aryule( y, ar_model{1}.p(ii) );
+    
+    % power density estimate
+    [ar_model{1}.h(ii,:), ar_model{1}.w(ii,:)] = freqz(1, a, N, fs);
+    
+    % psd
+    ar_model{1}.psd(ii,:) = mag2db( abs(ar_model{1}.h(ii,:)) );
+end
 
-clarkeVoltage.balanced   = clarkeVec(clarkeTrans( voltageGen(V.balanced,Delta.balanced) ));
-clarkeVoltage.unbalanced = clarkeVec(clarkeTrans( voltageGen(V.unbalanced,Delta.unbalanced) ));
 
-% dDelta=0.25:0.25:1;
-% for ii=1:length(dDelta) % keep voltage balanced and sweep delta
-%     newDelta = Delta.balanced + [ 0; -dDelta(ii); +dDelta(ii) ];
-%     clarkeVoltage.dDel(ii,:) = clarkeVec(clarkeTrans( voltageGen(V.balanced,newDelta) ));
-% end
-% 
-% dVoltage=0.25:0.25:1;
-% for ii=1:length(dVoltage) % keep delta balanced and sweep voltage
-%     newVoltage = V.balanced + [ 0; -dVoltage(ii); +dVoltage(ii) ];
-%     clarkeVoltage.dVolt(ii,:) = clarkeVec(clarkeTrans( voltageGen(newVoltage,Delta.balanced) ));
-% end
+ar_model{2}.p = 1;
+ar_model{2}.thresh = [1, thresh];
+for jj=1:length(ar_model{2}.thresh)-1
+    for ii=1:length(ar_model{2}.p)
+        % segment to look at
+        seg = ar_model{2}.thresh(jj):ar_model{2}.thresh(jj+1);
+        
+        % AR(p)
+        a = aryule( y(seg), ar_model{2}.p );
 
-%% CLMS
-    %% Balanced
-    % create differential equations
-    [X, ~] = arima2diffEqns(clarkeVoltage.balanced, lags(M),1);
+        % power density estimate
+        [ar_model{2}.h(jj,:,ii), ar_model{2}.w(jj,:,ii)] = freqz(1, a, N, fs);
 
-    % CLMS
-    [~, err.CLMS{1}, weight.H_CLMS{1}] = CLMS(X, clarkeVoltage.balanced, mu);
-    % ACLMS
-    [~, err.ACLMS{1}, weight.H_ACLMS{1}, weight.G_ACLMS{1}] = CLMS(X, clarkeVoltage.balanced, mu, 'aug');
+        % psd
+        ar_model{2}.psd(jj,:,ii) = mag2db( abs(ar_model{2}.h(jj,:,ii)) );
+    end
+end
 
-    % f0 estimates
-    est_f0.CLMS{1}  = fs/(2*pi) * atan( imag(weight.H_CLMS{1}) ./ real(weight.H_CLMS{1}) );
-    est_f0.ACLMS{1} = fs/(2*pi) * atan( sqrt( imag(weight.H_ACLMS{1}).^2 - abs(weight.G_ACLMS{1}).^2 ) ./ real(weight.H_ACLMS{1}) );
-    %% UnBalanced
-    % create differential equations
-    [X, ~] = arima2diffEqns(clarkeVoltage.unbalanced, lags(M),1);
-
-    % CLMS
-    [~, err.CLMS{2}, weight.H_CLMS{2}] = CLMS(X, clarkeVoltage.unbalanced, mu);
-    % ACLMS
-    [~, err.ACLMS{2}, weight.H_ACLMS{2}, weight.G_ACLMS{2}] = CLMS(X, clarkeVoltage.unbalanced, mu, 'aug');
-
-    % f0 estimates
-    est_f0.CLMS{2}  = fs/(2*pi) * atan( imag(weight.H_CLMS{2}) ./ real(weight.H_CLMS{2}) );
-    est_f0.ACLMS{2} = fs/(2*pi) * atan( sqrt( imag(weight.H_ACLMS{2}).^2 - abs(weight.G_ACLMS{2}).^2 ) ./ real(weight.H_ACLMS{2}) );
 %% Plots
 close all % close current figures
 fH = []; % clear the figure handle variable
 plotH = []; % clear the plot handle variable
 legendString = []; % clear the legend string variable
 
-balanceTypes = fieldnames(clarkeVoltage);
-balanceLabels = {"Balanced","Unbalanced"};
-
-t_steady = 800;
-
-for ii=1:2
-    %% error plot
-    tempClarke = clarkeVoltage.(balanceTypes{ii});
-    fH{length(fH)+1} = figure; hold on
-        plot(pow2db(abs(err.CLMS{ii}).^2), "DisplayName", "CLMS")
-        plot(pow2db(abs(err.ACLMS{ii}).^2), "DisplayName", "ACLMS")
-        title( sprintf('%s Error \n V=[%.2f;%.2f;%.2f], $\\Delta$=[%.2f,%.2f,%.2f]',...
-                balanceLabels{ii},  V.(balanceTypes{ii})(1), V.(balanceTypes{ii})(2), V.(balanceTypes{ii})(3),...
-                                    Delta.(balanceTypes{ii})(1), Delta.(balanceTypes{ii})(2), Delta.(balanceTypes{ii})(3)))
-        xlabel("Time Index");
-        ylabel("MSE (dB)");
-        legend('show','Location','best')
-        grid minor
-    %% Frequency estimation 
-    fH{length(fH)+1} = figure; hold on
-        plot(abs(est_f0.CLMS{ii}), "DisplayName", "CLMS")
-        plot(abs(est_f0.ACLMS{ii}), "DisplayName", "ACLMS")
-        plot([0 N], [f0 f0], "DisplayName", "$50\ Hz$", "LineStyle", ":", "Color", COLORS(6,:));
-        title( sprintf('%s Frequency Estimate \n V=[%.2f;%.2f;%.2f], $\\Delta$=[%.2f,%.2f,%.2f]',...
-                balanceLabels{ii},  V.(balanceTypes{ii})(1), V.(balanceTypes{ii})(2), V.(balanceTypes{ii})(3),...
-                                    Delta.(balanceTypes{ii})(1), Delta.(balanceTypes{ii})(2), Delta.(balanceTypes{ii})(3)))
-        xlabel("Time Index");
-        ylabel("Frequency (Hz)");
-        ylim([0 150])
-        legend('show','Location','southeast')
-        grid minor
-end
-
+% plot frequencies
+fH{length(fH)+1} = figure; hold on
+%     yyaxis left
+    plot(1:N, freq)
+    title("FM: Frequency, $f(n)$");
+    xlabel("Time Index, $n$");
+    ylabel("Frequency (Hz)");
+    grid on; grid minor;
+    yLim = ylim;
+    ylim([0,yLim(2)])
+    
+% plot phase
+fH{length(fH)+1} = figure; hold on
+%     yyaxis right
+    subplot(2,1,1)
+        plot( 1:N, rad2deg(wrapToPi(phi)), 'Color', COLORS(2,:) )
+        title("FM: Phase, $\phi(n)$");
+    %     xlabel("Time Index, $n$");
+        ylabel("Phase ($^{\circ}$)");
+        grid on; grid minor;
+        xlim([250, 750])
+        yticks([-360:90:360])
+        set(gca,'Position',POSITION.subplot211)
+    subplot(2,1,2)
+        plot( 1:N, rad2deg(wrapToPi(phi)), 'Color', COLORS(2,:) )
+        xlabel("Time Index, $n$");
+        ylabel("Phase ($^{\circ}$)");
+        grid on; grid minor;
+        xlim([750, 1250])
+        yticks([-360:90:360])
+        set(gca,'Position',POSITION.subplot212)
+     
+        
+fH{length(fH)+1} = figure; hold on
+    for ii=1:length(ar_model{1}.p)
+        plot(ar_model{1}.w(ii,:), ar_model{1}.psd(ii,:),'DisplayName', sprintf('$p$=%i',ar_model{1}.p(ii)))
+    end
+    title("FM: \texttt{aryule}-AR");
+    xlabel("Frequency (Hz)");
+    ylabel("PSD (db)");
+    grid on; grid minor;
+    legend('show')
+    xlim([0, 700])
+    
+fH{length(fH)+1} = figure; hold on
+    for jj=1:length(ar_model{2}.thresh)-1
+        for ii=1:length(ar_model{2}.p)
+            plot(ar_model{2}.w(jj,:,ii), ar_model{2}.psd(jj,:,ii),'DisplayName', sprintf('%i:%i',ar_model{2}.thresh(jj),ar_model{2}.thresh(jj+1)))
+        end
+    end
+    title(sprintf("FM: \texttt{aryule}-AR(%i) ",ar_model{2}.p(ii)));
+    xlabel("Frequency (Hz)");
+    ylabel("PSD (db)");
+    grid on; grid minor;
+    legend('show')
+    xlim([0, 700])
+    
 %% Save Figures
 
 if SAVE_FIGS
     for ii=1:length(fH) % For all figure handles
-        saveas(fH{ii},['figures', filesep,'q3_1e_fig',num2str(ii,'%02i')],'pdf')
+        saveas(fH{ii},['figures', filesep,'q3_2a_fig',num2str(ii,'%02i')],'pdf')
     end
 end
