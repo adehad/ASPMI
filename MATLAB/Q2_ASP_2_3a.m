@@ -51,6 +51,7 @@ mu = 0.01; % 0.05];
 ALE.Delay = 0:20;
 
 LMSorder = 5;
+lags = @(order) 0:order-1; % starts at 0 lag, hence -1
 
 % error
 err.diff = zeros(R, N, length(mu));
@@ -77,7 +78,7 @@ for ii=1:length(ALE.Delay)
         s(jj,:) = noisy_signal(N,noise_mu,sigma_sq,b,a);
         
         % converyt ar process time series to differential eqn form
-        [U,~] = arima2diffEqns( s(jj,:), 1:LMSorder, ALE.Delay(ii) );
+        [U,~] = arima2diffEqns( s(jj,:), lags(LMSorder), ALE.Delay(ii) );
         % LMS Error
         [x_pred,~,~] = LMS(U, s(jj,:), mu, 0);
         x_hat{ii}(jj, :) = x_pred';

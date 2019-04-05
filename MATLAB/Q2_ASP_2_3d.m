@@ -10,7 +10,7 @@ questionNum = 2;
 q_initialise;
 
 % Set the SAVE_FIGS to true if you want to save all figures
-SAVE_FIGS = true;
+% SAVE_FIGS = true;
 
 
 %% LMS Parameter
@@ -19,7 +19,7 @@ rSeed = 13;
 rng(rSeed)
 
 % Load EEG Data
-eeg = load('resources/EEG_Data/EEG_Data_Assignment2.mat');
+eeg = load(['resources',filesep,'EEG_Data',filesep,'EEG_Data_Assignment2.mat']);
 
 % sampling frequency
 Fs = eeg.fs;
@@ -167,7 +167,7 @@ fH{length(fH)+1} = figure; hold on
         im = imagesc(mu, M, sqrt(err.mse_db));
         ax = gca; ax.YDir = 'normal'; axis tight;
         title('50Hz RMSE Error (dB)');
-        colorbar('eastoutside');
+        colorbar('eastoutside','TickLabelInterpreter', 'latex', 'FontName', 'Palatino Linotype'); % oh why MATLAB ...
         xLab = xlabel('$\mu$'); set(xLab, 'Units', 'Normalized', 'Position', [1.4405,-0.05325,0]);
         ylabel('M');
         xticks(mu); xticks([min(mu):((max(mu)-min(mu))/(length(mu)-1)):max(mu)-min(mu),max(mu)]); xticklabels(num2str(mu')); xtickangle(45)
@@ -175,7 +175,7 @@ fH{length(fH)+1} = figure; hold on
 
     subplot(1,2,2)
         imagesc(mu, M, sqrt(err.mse_db_no50) );
-        colorbar('eastoutside');
+        colorbar('eastoutside','TickLabelInterpreter', 'latex', 'FontName', 'Palatino Linotype'); % oh why MATLAB ...
         ax = gca; ax.YDir = 'normal'; axis tight;
         title('Non-50Hz RMSE Error (dB)')
 %         xlabel('$\mu$');
@@ -191,6 +191,6 @@ fH{length(fH)+1} = figure; hold on
 
 if SAVE_FIGS
     for ii=1:length(fH) % For all figure handles
-        saveas(fH{ii},['figures', filesep,'q2_3a_fig',num2str(ii,'%02i')],'pdf')
+        saveas(fH{ii},['figures', filesep,'q2_3d_fig',num2str(ii,'%02i')],'pdf')
     end
 end
