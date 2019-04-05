@@ -47,6 +47,8 @@ set(groot,  'DefaultLineLineWidth', 1.75, ...
 %% Global Variables Initialisation (all capital)
 COLORS = get(groot, 'factoryAxesColorOrder');
 SAVE_FIGS = false; % Default is to not save figures
+POSITION.subplot211 = [0.13 0.594109195402299 0.775 0.302765805851453];
+POSITION.subplot212 = [0.13 0.179005029331679 0.775 0.303035200553379];
 %% Define Question specific
 switch questionNum
     case 1
