@@ -1,18 +1,23 @@
 function [y, e, W] = dPerceptron(X, d, mu, varargin)
 % dPerceptron	Dynamic Perceptron, based on the LMS filter.
-%       - X: design matrix, size(X)=[M N]
-%       - d: target vector, size(d)=[1 N]
-%       - mu: step size, scalar
+% Input: 
+%       - X: Design matrix, [M N]
+%       - d: Target vector, [1 N]
+%       - mu: Step size, numeric
 %       varargin:                                  variable input arguments
 %       - varargin{1}   = gamma: leakage coefficient, scalar (default: 0)
 %       - varargin{>1}  = options: bias, amplitude, pre-trained weights struct    (default: 0,1,[])
 %       - varargin{any} = activator: activator, scalar       (default: @tanh)
-%       * y: filter output, size(y)=[1 N]
-%       * e: prediction error, d(n) - y(n)
-%       * W: filter weights, size(W)=[M N]
+% Output: 
+%       * y: Filter output,     [1 N]
+%       * e: Prediction error,  d-y
+%       * W: Filter weights,    [M N]
+% Usage: 
 %   [y, e, w] = dPerceptron(X, d, mu, gamma) train LMS filter on Xd data.
 %   [y, e, w] = dPerceptron(X, d, mu, @tanh) train dPerceptron on Xd 
 %               data, with a tanh activator function and 0 bias, unscaled amplitude.
+%   [y, e, w] = dPerceptron(X, d, mu, @tanh, opts) train dPerceptron on Xd 
+%               using options specified in opts
 %              *if pre-trained weights are specified that are the same
 %               length as the design matrix/target vector - i.e. N, the
 %               weights will not update
@@ -22,32 +27,32 @@ function [y, e, W] = dPerceptron(X, d, mu, varargin)
     optsTemp=opts;
     updateWeights = true;
 
-    % check if design matrix is 2D
+    % Design matrix is 2D
     if ~ismatrix(X)
-        error("design matrix must be 2D");
+        error("Design matrix must be 2D, [M N]");
     end
     
-    % check if target vector is 1D
+    % Target / Ground Truth is 1D
     if ~isvector(d)
-        error("target vector must be 1D");
+        error("Target vector must be 1D, [1 N]");
     end
     
-    % check X-d size consistency
+    % X-d Size Match
     if size(X, 2) ~= size(d, 2)
         if size(X, 2) == size(d.', 2)
             d = d.';    % Using MATLAB {.'} operator to prevent conjugate transpose of complex data
-            warning('auto-transposing design matrix data')
+            warning('Auto-transposing target matrix data')
         else
-            error("design matrix and target vector sizes are inconsistent");
+            error("Design matrix and target vector sizes are incompatible, [M N] and [1 N] required");
         end
     end
     
-    % check if step-size is scalar
+    % Step-size is a numeric scalar
     if ~isa(mu,'numeric')
-        error("step-size parameter must be scalar");
+        error("Step-size parameter (mu) must be numeric");
     end
     
-    % check if leakage coefficient is scalar
+    % Check gamma, and usePerceptron
     if ~isempty(varargin)
         for ii=1:length(varargin)
             if isa(varargin{ii},'numeric') && ii==1 % gamma must be given first
@@ -76,11 +81,11 @@ function [y, e, W] = dPerceptron(X, d, mu, varargin)
     
     % sizes
     [M, N] = size(X);
-    % filter output: init
+    % Filter Output: pre-allocate for speed
     y = zeros(size(d));
-    % prediction error: init
+    % Prediction Error: pre-allocate for speed
     e = zeros(size(d));
-    % LMS filter weights: init
+    % LMS Filter Weights: pre-allocate for speed
     W = zeros(M, N);        % use 0 weights to start with
     if ~isempty(opts.W)
         W(:,1:size(opts.W,2)) = opts.W;    % set initial weights to pre-trained
@@ -90,25 +95,26 @@ function [y, e, W] = dPerceptron(X, d, mu, varargin)
         end
     end
     
-    % iterate over time
+    % Iterate over the discrete time samples
     for n=1:N
-        % filter output n, y(n)
+        % Filter output n, y(n)
         if usePerceptron
             y(n) = opts.ampl *activator(  W(:,n)' *X(:,n) ) ;
         else
             y(n) = W(:,n)' *X(:,n);
         end
-        % prediction error n, e(n)
+        % Prediction error n, e(n)
         e(n) = d(n) - y(n);
-        % weights update rule
+        % Weights update rule
         if updateWeights
             W(:,n+1) = (1 - mu*gamma) * W(:,n) + mu*e(n)*X(:, n);
         end
     end
     
-    % discard first weight
+    % Discard first weight
     W = W(:, 2:end);
     
+    % Check if exploded
     if find(isnan(y)==1,1)
         warning('unstable mu provided, output reached NaN')
     end

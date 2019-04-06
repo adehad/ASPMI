@@ -1,14 +1,11 @@
 %% Check if Question is Defined
 try
     if ~exist('questionNum','var') || isempty(questionNum)
-        error('The variable `questionNum` must be set, e.g. questionNum = 1 for Question 1');
+        questionNum = 0;
     end
 catch ME
-    if strcmp(ME.message,'Undefined function or variable ''questionNum''.')
-        error('The variable `questionNum` must exist, e.g. set questionNum = 1 for Question 1');
-    else
-        rethrow(ME);
-    end
+%     error('The variable `questionNum` must exist, e.g. set questionNum = 1 for Question 1');
+    questionNum = 0;
 end
 %% Add customFunction folder to path
 addpath('customFunctions')
@@ -41,26 +38,26 @@ set(groot,  'DefaultLineLineWidth', 1.75, ...
             'DefaultFigurePaperSize', [6.5, 3], ...
             'DefaultFigurePosition', [0.1, 1, 6.4, 2.9], ...
             'DefaultLineMarkerSize', 18, ...
-            'DefaultAxesFontName', 'Palatino');
+            'DefaultAxesFontName', 'Palatino Linotype');
 
         
 %% Global Variables Initialisation (all capital)
 COLORS = get(groot, 'factoryAxesColorOrder');
 SAVE_FIGS = false; % Default is to not save figures
-POSITION.subplot211 = [0.13 0.594109195402299 0.775 0.302765805851453];
-POSITION.subplot212 = [0.13 0.179005029331679 0.775 0.303035200553379];
+POSITION.subplot211 = [0.13 0.594 0.775 0.303];
+POSITION.subplot212 = [0.13 0.179 0.775 0.303];
 %% Define Question specific
 switch questionNum
     case 1
-        disp('Initialising Q1 specific variables');
+        disp('Q1: Classical and Modern Spectrum Estimation');
         
     case 2
-        disp('Initialising Q2 specific variables');
+        disp('Q2: Adaptive Signal Processing');
         
     case 3
-        disp('Initialising Q3 specific variables');
+        disp('Q3: Widely Linear Filtering and Adaptive Spectrum Estimation');
         
     case 4
-        disp('Initialising Q4 specific variables');
+        disp('Q4: From LMS to Deep Learning');
 end
     

@@ -1,63 +1,81 @@
 function [y, e, W] = NLMS(X, d, mu, varargin)
 % NLMS	Normalised Least Mean Square (NLMS) adaptive filter.
-%       - X: design matrix, size(X)=[M N]
-%       - d: target vector, size(d)=[1 N]
-%       - mu: step size, scalar
-%       - varargin(1) = gamma: leakage coefficient, scalar
-%       * y: filter output, size(y)=[1 N]
-%       * e: prediction error, d(n) - y(n)
-%       * W: filter weights, size(W)=[M N]
-%   [y, e, w] = NLMS(X, d, mu, gamma) train LMS filter on Xd data.
+% Input: 
+%       - X: Design matrix, [M N]
+%       - d: Target vector, [1 N]
+%       - mu: Step size, numeric
+%       varargin:                                  variable input arguments
+%       - varargin{1}   = setGNGD: GNGD Flag (default: false)
+%       - varargin{2}   = rho:               (default: 0)
+% Output: 
+%       * y: Filter output,     [1 N]
+%       * e: Prediction error,  d-y
+%       * W: Filter weights,    [M N]
+% Usage: 
+%   [y, e, w] = LMS(X, d, mu, setGNGD, rho) train NLMS filter on Xd data.
     
-    % check if design matrix is 2D
+    % Design matrix is 2D
     if ~ismatrix(X)
-        error("design matrix must be 2D");
+        error("Design matrix must be 2D, [M N]");
     end
-    % check if target vector is 1D
-    if ~ismatrix(d)
-        error("target vector must be 1D");
+    
+    % Target / Ground Truth is 1D
+    if ~isvector(d)
+        error("Target vector must be 1D, [1 N]");
     end
-    % check X-d size consistency
+    
+    % X-d Size Match
     if size(X, 2) ~= size(d, 2)
-        error("design matrix and target vector sizes are inconsistent");
+        if size(X, 2) == size(d.', 2)
+            d = d.';    % Using MATLAB {.'} operator to prevent conjugate transpose of complex data
+            warning('Auto-transposing target matrix data')
+        else
+            error("Design matrix and target vector sizes are incompatible, [M N] and [1 N] required");
+        end
     end
-    % check if step-size is scalar
-    if ~isscalar(mu)
-        error("step-size parameter must be scalar");
+    
+    % Step-size is a numeric scalar
+    if ~isa(mu,'numeric')
+        error("Step-size parameter (mu) must be numeric");
     end
-    % check if leakage coefficient is scalar
+    
+    % Check if GNGD flag set, if it is, get the rho value
     setGNGD = false;
     if ~isempty(varargin)
         if strcmpi(varargin{1},'gngd')
             setGNGD = true;
-            rho = varargin{2};
+            if length(varargin)>1
+                rho = varargin{2};
+            else
+                error('must specify rho value when using GNGD')
+            end
         end
     end
     
     % sizes
     [M, N] = size(X);
-    % filter output: init
+    % Filter Output: pre-allocate for speed
     y = zeros(size(d));
-    % prediction error: init
+    % Prediction Error: pre-allocate for speed
     e = zeros(size(d));
-    % LMS filter weights: init
-    W = zeros(M, N+1);
-    % regularization factor: 1 / mu
+    % LMS filter weights: pre-allocate for speed
+    W = zeros(M, N);
+    % Regularization Factor: 1 / mu
 %     epsilon = ones(N+1, 1) * eps; % / mu;
     epsilon = ones(N+1, 1) / mu;
     
     beta = 1;
     
-    % iterate over time
+    % Iterate over the discrete time samples
     for n=1:N
-        % filter output n, y(n)
-        y(n) = W(:, n)' * X(:, n);
-        % prediction error n, e(n)
+        % Filter output n, y(n)
+        y(n) = W(:,n)' * X(:,n);
+        % Prediction error n, e(n)
         e(n) = d(n) - y(n);
-        % weights update rule
-        W(:, n+1) = W(:, n) + ...
-                    beta*e(n)*X(:, n)  ...
-                        /( epsilon(n) + X(:, n)'*X(:, n) ) ;
+        % Weights update rule
+        W(:,n+1) = W(:,n) + ...
+                   beta*e(n)*X(:,n)  ...
+                       /( epsilon(n) + X(:,n)'*X(:,n) ) ;
         if n > 1
             if setGNGD
             % epsilon update rule
@@ -68,6 +86,11 @@ function [y, e, W] = NLMS(X, d, mu, varargin)
         end
     end
     
-    % discard first weight
-    W = W(:, 2:end);
+    % Discard first weight
+    W = W(:,2:end);
+    
+    % Check Instability
+    if find(isnan(y)==1,1)
+        warning('unstable mu provided, output reached NaN')
+    end
 end

@@ -1,42 +1,50 @@
 function [y, e, H, G] = CLMS(X, d, mu, varargin)
 % CLMS	Complex Least Mean Square (CLMS) adaptive filter.
-%       - X: design matrix, size(X)=[M N]
-%       - d: target vector, size(d)=[1 N]
-%       - mu: step size, scalar
+% Input: 
+%       - X: Design matrix, [M N]
+%       - d: Target vector, [1 N]
+%       - mu: Step size, numeric
 %       varargin:                                  variable input arguments
-%       - gamma: leakage coefficient, scalar
+%       - gamma: Leakage Coefficient, numeric
 %       - setAug: 'aug' - enables ACLMS instead of CLMS
-%       * y: filter output, size(y)=[1 N]
-%       * e: prediction error, d(n) - y(n)
-%       * H: filter weights, size(W)=[M N]
-%       * G: filter weights, size(W)=[M N]
+% Output: 
+%       * y: Filter output,     [1 N]
+%       * e: Prediction error,  d-y
+%       * H: Filter weights,    [M N]
+%       * G: Filter weights,    [M N]
+% Usage: 
 %   [y, e, H] = CLMS(X, d, mu) train CLMS filter on Xd data.
 %   [y, e, H, G] = CLMS(X, d, mu,'aug') train ACLMS filter on Xd data.
 
     % Default values
     setAug = false; gamma = 0;
 
-    % check if design matrix is 2D
+    % Design matrix is 2D
     if ~ismatrix(X)
-        error("design matrix must be 2D");
+        error("Design matrix must be 2D, [M N]");
     end
-    % check if target vector is 1D
-    if ~ismatrix(d)
-        error("target vector must be 1D");
+    % Target / Ground Truth is 1D
+    if ~isvector(d)
+        error("Target vector must be 1D, [1 N]");
     end
-    % check X-d size consistency
+    % X-d Size Match
     if size(X, 2) ~= size(d, 2)
-        error("design matrix and target vector sizes are inconsistent");
+        if size(X, 2) == size(d.', 2)
+            d = d.';    % Using MATLAB {.'} operator to prevent conjugate transpose of complex data
+            warning('Auto-transposing target matrix data')
+        else
+            error("Design matrix and target vector sizes are  incompatible, [M N] and [1 N] required");
+        end
     end
-    % check if step-size is scalar
-    if ~isscalar(mu)
-        error("step-size parameter must be scalar");
+    % Step-size is a numeric scalar
+    if ~isa(mu,'numeric')
+        error("Step-size parameter (mu) must be numeric");
     end
     
-    % check if leakage coefficient is scalar and if augmented flag is true
+    % Check if leakage coefficient is numeric and if augmented flag is true
     if ~isempty(varargin)
         for ii=1:length(varargin)
-            if isscalar(varargin{ii})
+            if isa(varargin{ii},'numeric')
                 gamma = varargin{ii};
                 if (gamma>1 && gamma<0)
                     warning('Gamma provided, %d, not between 0 and 1. \n Setting gamma to zero ', gamma)
@@ -53,29 +61,29 @@ function [y, e, H, G] = CLMS(X, d, mu, varargin)
     
     % sizes
     [M, N] = size(X);
-    % filter output: init
+    % Filter Output: pre-allocate for speed
     y = complex(zeros(size(d)));
-    % prediction error: init
+    % Prediction Error: pre-allocate for speed
     e = complex(zeros(size(d)));
-    % CLMS filter weights: init
+    % CLMS Filter Weights: pre-allocate for speed
     H = complex(zeros(M, N));
-    % ACLMS filter weights: init
+    % ACLMS filter weights: pre-allocate for speed
     G = complex(zeros(M, N));
     
     % NOTE: Matlab {'} automatically does complex conjugate traspose / Hermitian
     %       Matalab{.'} would do a pure transpose
     
-    % iterate over time
+    % Iterate over the discrete time samples
     for n=1:N
-        % filter output n, y(n)
+        % Filter output n, y(n)
         if setAug   % explicit difference to minimise computation
             y(n) = H(:,n)' *X(:,n) + G(:,n)' *conj( X(:,n) );
         else
             y(n) = H(:,n)' *X(:,n);
         end
-        % prediction error n, e(n)
+        % Prediction error n, e(n)
         e(n) = d(n) - y(n);
-        % weights update rules
+        % Weights update rules
         if setAug   % explicit difference to minimise computation
             G(:,n+1) = (1- gamma*mu) *G(:,n) + mu*conj( e(n) )*conj( X(:,n) );
             H(:,n+1) = (1- gamma*mu) *H(:,n) + mu*conj( e(n) )*X(:,n);
@@ -84,7 +92,12 @@ function [y, e, H, G] = CLMS(X, d, mu, varargin)
         end
     end
     
-    % discard first weight
+    % Discard first weight
     H = H(:, 2:end);
     G = G(:, 2:end);
+    
+    % Check Instability
+    if find(isnan(y)==1,1)
+        warning('unstable mu provided, output reached NaN')
+    end
 end

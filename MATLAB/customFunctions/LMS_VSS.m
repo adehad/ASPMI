@@ -1,72 +1,89 @@
 function [y, e, W] = LMS_VSS(X, d, mu_0, gamma, rho, gassType, varargin)
-% GASS	Gradient Adaptive Step-Size (GASS) Least Mean Square (LMS) adaptive filter.
-%       - X: design matrix, size(X)=[M N]
-%       - d: target vector, size(d)=[1 N]
-%       - mu_0: initial step size, scalar
-%       - rho: learning rate, scalar
-%       - gamma: leakage coefficient, scalar
-%       - algo: algorithm name, string from
+% GASS	Gradient Adaptive Step-Size (GASS) with Least Mean Square (LMS) adaptive filter.
+% Input: 
+%       - X: Design matrix, [M N]
+%       - d: Target vector, [1 N]
+%       - mu_0: Initial step size, numeric
+%       - gamma: leakage coefficient, numeric
+%       - rho: learning rate, numeric
+%       varargin:                                  variable input arguments
+%       - gassType: algorithm name, string from
 %               {'benveniste', 'ang_farhang', 'matthews_xie'}
 %       - alpha: Ang & Farhang learning parameter, scalar
-%       * y: filter output, size(y)=[1 N]
-%       * e: prediction error, d(n) - y(n)
-%       * W: filter weights, size(W)=[M N]
-%   [y, e, W] = LMS_VSS(X, d, mu_0, rho, gamma, algo, alpha) train GASS filter on Xd data.
+% Output: 
+%       * y: Filter output,     [1 N]
+%       * e: Prediction error,  d-y
+%       * W: Filter weights,    [M N]
+% Usage: 
+%   [y, e, W] = LMS_VSS(X, d, mu_0, gamma, rho, gassType, alpha) train GASS filter on Xd data.
+%               alpha only required for Ang & Farhang
 
-    % check if design matrix is 2D
+    alpha = 0; % if not using the Ang & Farhang method, we don't mind if it is zero
+
+    % Design matrix is 2D
     if ~ismatrix(X)
-        error("design matrix must be 2D");
+        error("Design matrix must be 2D, [M N]");
     end
-    % check if target vector is 1D
-    if ~ismatrix(d)
-        error("target vector must be 1D");
+    
+    % Target / Ground Truth is 1D
+    if ~isvector(d)
+        error("Target vector must be 1D, [1 N]");
     end
-    % check X-d size consistency
+    
+    % X-d Size Match
     if size(X, 2) ~= size(d, 2)
-        error("design matrix and target vector sizes are inconsistent");
+        if size(X, 2) == size(d.', 2)
+            d = d.';    % Using MATLAB {.'} operator to prevent conjugate transpose of complex data
+            warning('Auto-transposing target matrix data')
+        else
+            error("Design matrix and target vector sizes are incompatible, [M N] and [1 N] required");
+        end
     end
-    % check if initial step-size is scalar
-    if ~isscalar(mu_0)
-        error("initial step-size parameter must be scalar");
+    
+    % Initial Step-size is a numeric scalar
+    if ~isa(mu_0,'numeric')
+        error("Step-size parameter (mu) must be numeric");
     end
-    % check if learning rate is scalar
-    if ~isscalar(rho)
-        error("learning rate parameter must be scalar");
-    end
-    % check if leakage coefficient is scalar
+    
+    % Check if leakage coefficient is scalar
     if ~isscalar(gamma)
-        error("leakage coefficient parameter must be scalar");
+        error("Leakage coefficient parameter must be scalar");
     end
-    % check if algorithm type is string
+    
+    % Check if learning rate is scalar
+    if ~isa(rho,'numeric')
+        error("Learning rate parameter must be scalar");
+    end
+    
+    % Check if algorithm type is string
     if ~isstring(gassType)
-        error("algorithm type parameter must be string. e.g. ''benveniste'' OR ""benveniste"" ");
+        error("Algorithm type parameter must be string. e.g. ''benveniste'' OR ""benveniste"" ");
     end
-    % check if Ang & Farhang learning parameter is set and is scalar
+    
+    % Check if Ang & Farhang learning parameter is set and is scalar
     if ~isempty(varargin)
         alpha = varargin{1};
-        if ~isscalar(alpha)
+        if ~isa(alpha,'numeric')
             error("Ang & Farhang learning parameter (alpha) must be scalar");
         end
     else
         if strcmpi(gassType,"ang_farhang")
             error("Ang & Farhang learning parameter (alpha) must be specified");
-        else
-            alpha = 0; % if not using the Ang & Farhang method, we don't mind if it is zero
         end
     end
 
     % sizes
     [M, N] = size(X);
-    % filter output: init
+    % Filter Output: pre-allocate for speed
     y = zeros(size(d));
-    % prediction error: init
+    % Prediction Error: pre-allocate for speed
     e = zeros(size(d));
-    % GASS filter weights: init
+    % LMS VSS filter weights: pre-allocate for speed
     W = zeros(M, N+1);
-    % step-size: init
+    % Step-Size: pre-allocate for speed
     mu = zeros(1, N+1);
     mu(1) = mu_0;
-    % phi term init:
+    % phi term: pre-allocate for speed
     phi = zeros(M, N+1);
     
     % Establish what implementation of VSS to use
@@ -83,20 +100,26 @@ function [y, e, W] = LMS_VSS(X, d, mu_0, gamma, rho, gassType, varargin)
         error(' invalid GASS type, must be of: \n {''benveniste'', ''ang_farhang'', ''matthews_xie''}')
     end
     
-    % iterate over time
+    % Iterate over the discrete time samples
     for n=1:N
-        % filter output n, y(n)
-        y(n) = W(:, n)' * X(:, n);
-        % prediction error n, e(n)
+        % Filter output n, y(n)
+        y(n) = W(:,n)' * X(:,n);
+        % Prediction error n, e(n)
         e(n) = d(n) - y(n);
-        % weights update rule
-        W(:, n+1) = (1 - mu(n) * gamma) * W(:, n) + mu(n) * e(n) * X(:, n);
-        % step-size update rule
-        mu(n+1) = mu(n) + rho * e(n) * X(:, n)' * phi(:, n);
-        % update phi
-        phi(:, n+1) = phiFunc(X(:,n), e(n), phi(:,n), mu(n), alpha);
+        % Weights update rule
+        W(:,n+1) = (1 - mu(n)*gamma) * W(:,n) + mu(n) * e(n) * X(:,n);
+        % Step-Size update rule
+        mu(n+1) = mu(n) + rho * e(n) * X(:,n)' * phi(:,n);
+        % Update phi
+        phi(:,n+1) = phiFunc( X(:,n), e(n), phi(:,n), mu(n), alpha );
     end
     
-    % discard first weight
-    W = W(:, 2:end);
+    % Discard first weight
+    W = W(:,2:end);
+    
+    
+    % Check Instability
+    if find(isnan(y)==1,1)
+        warning('unstable mu provided, output reached NaN')
+    end
 end
