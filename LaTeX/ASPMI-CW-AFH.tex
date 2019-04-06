@@ -6,6 +6,7 @@
 \usepackage[a4paper, left=15mm, right=15mm, top=20mm, bottom=20mm]{geometry}
 \usepackage[]{csvsimple}
 \usepackage{graphicx}
+\usepackage{minipage-marginpar}
 \usepackage{enumitem}% http://ctan.org/pkg/enumitem
 \setlist[itemize]{itemsep=-0.5ex,after=\vspace{\baselineskip}, topsep=-0.5ex} % requires enumitem package 
 \setlist[enumerate]{itemsep=-0.5ex,after=\vspace{\baselineskip}, topsep=-0.5ex} % requires enumitem package 
@@ -27,8 +28,7 @@
 \pgfplotsset{compat=1.8} % supress a warning or something
 \usepackage{wrapfig} % allows figures to have text flow around it
 \usepackage{subcaption}
-\usepackage{amsmath} % le math
-\usepackage{amsmath,amssymb,amsfonts,mathrsfs}
+\usepackage{amsmath,amssymb,amsfonts,mathrsfs}  % le math
 \allowdisplaybreaks
 %\usepackage{lscape}
 \usepackage{pdflscape} % enables insertion of pdf in landscape
@@ -66,10 +66,11 @@
 %\maketitle
 
 \newpage
+\setcounter{tocdepth}{2} % only show 2 levels in the table of contents
 \tableofcontents
 
 \newpage
-\section{Classical and Modern Spectrum Estimation}
+\section{Classical and Modern Spectrum Estimation} \label{sec: 1-CMSE}
 	\subsection{Properties of Power Spectral Density (PSD)} \label{sec: 1-1-prop-PSD}
 	
 	\subsubsection{Approximation in the Definition of PSD} \label{sec: 1-1a-prop-PSD}
@@ -372,8 +373,6 @@
 	
 	As the unbiased estimator allows for negative values, at a computational level it will require more bits to store, especially for larger values.
 	
-	\pagebreak
-	
 	\subsubsection{Error of the AR PSD Estimate}
 	\begin{figure}[H]
 		\centering
@@ -514,25 +513,43 @@
 		\begin{figure}[H]
 			\begin{subfigure}{0.49\textwidth}
 				\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_5c_fig01.pdf} 
+				\caption{}
 			\end{subfigure}
 			\begin{subfigure}{0.49\textwidth}
 				\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_5c_fig02.pdf} 
-			\end{subfigure}
-			
-			\hspace*{0.25\textwidth}
-			\begin{subfigure}{0.49\textwidth}
-				\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_5c_fig03.pdf} 
-			\end{subfigure}
-			\captionsetup{justification=centering}
-			\caption{AR Estimate Periodograms. \\ $p$ is the model order.}
-			\label{fig: 1-5c}
+				\caption{}
+			\end{subfigure}%
+%			\hspace*{0.25\textwidth}
+%			\begin{subfigure}{0.49\textwidth}
+%				\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_5c_fig03.pdf} 
+%			\end{subfigure}
+%			\captionsetup{justification=centering}
+%			\caption{AR Estimate Periodograms. \\ $p$ is the model order.}
+%			\label{fig: 1-5c}
 			%		\vspace{-10pt}
+			
+			\begin{minipage}{0.46\textwidth}
+				The AR spectral estimate in Figure \ref{fig: 1-5c} correctly identified the peak from models of order $p\gtrapprox10$. We note that the estimate resembles a smooth envelope over our PSD and correctly identifies clear peaks in the standard PSD at $p=10$. We also can see for higher order models that there are move fluctuations as the model starts to overfit for the input data's natural noisiness. \\
+			\end{minipage}% 
+			\begin{minipage}{0.04\textwidth}
+				\hspace*{0.04\textwidth}
+			\end{minipage}% 
+			\begin{minipage}{0.49\textwidth}
+				\begin{subfigure}{\textwidth}
+					\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_5c_fig02.pdf} 
+					\caption{}
+				\end{subfigure}%
+%				\centering
+%				\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_5c_fig03.pdf} 
+				\captionsetup{justification=centering}
+				\captionof{figure}{AR Estimate Periodograms. \\ $p$ is the model order.}
+				\label{fig: 1-5c}
+			\end{minipage}%
 		\end{figure}
 	
-		The AR spectral estimate in Figure \ref{fig: 1-5c} correctly identified the peak from models of order $p\gtrapprox10$. We note that the estimate resembles a smooth envelope over our PSD and correctly identifies clear peaks in the standard PSD at $p=10$. We also can see for higher order models that there are move fluctuations as the model starts to overfit for the input data's natural noisiness. \\
-%		\vspace{18\baselineskip}
-%		\newline
+
 %	\pagebreak
+	
 	
 	\subsection{Robust Regression} \label{sec: 1-6-robust-regression}
  
@@ -557,33 +574,29 @@
 		\label{fig: 1-6a}
 	\end{figure}
 
+
+
 	The rank of the input data would be indicated when the SVD Error increases or the non-zero SVD values end (for pure data) - hence the data is of rank 3. \\
 	Noise makes the SVD magnitude non-zero where we expect it to be zero for the pure input. Hence, in the real world where we would not have the pure dataset we would need to purely look at Figure \ref{fig: 1-6a} (a), if the SVD magnitude of the noise was comparable to that of the signal we would have difficulty establishing a criteria to distinguish signal and noise subspaces from the SVD method. \\
  
 % 	\pagebreak
  	
  	\subsubsection{Low Rank Approximation Error}
-%	\begin{wrapfigure}{R}{0.49\textwidth}
-%% 		\vspace{-20pt}
-% 		\begin{centering}
-% 			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=0.49\textwidth]{../MATLAB/figures/q1_6b_fig01.pdf} 
-% 		\end{centering}
-% 		\captionsetup{justification=centering}
-% 		\caption{Effect of Changing Rank on the Approximation Error}
-% 		\label{fig: 1-6b}
-% 	\end{wrapfigure}
-	\begin{figure}[H]
- 		\begin{centering}
- 			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=0.49\textwidth]{../MATLAB/figures/q1_6b_fig01.pdf} 
- 		\end{centering}
- 		\captionsetup{justification=centering}
- 		\caption{Effect of Changing Rank on the Approximation Error}
- 		\label{fig: 1-6b}
- 	\end{figure}
- 
- 	By looking at the mean square error between the pure signal and the low-rank approximation of the noise, Figure \ref{fig: 1-6b}, we note that the minimum error is when the low-rank approximation matches that of the pure data.
+ 	\begin{minipage}[b]{0.49\textwidth}
+	By looking at the mean square error between the pure signal and the low-rank approximation of the noise, Figure \ref{fig: 1-6b}, we note that the minimum error is when the low-rank approximation matches that of the pure data.
+	\end{minipage}% 
+	\begin{minipage}{0.04\textwidth}
+		\hspace*{0.04\textwidth}
+	\end{minipage}% 
+	\begin{minipage}{0.49\textwidth}
+		\centering
+		\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_6b_fig01.pdf} 
+		\captionsetup{justification=centering}
+		\captionof{figure}{Effect of Changing Rank on the Approximation Error}
+		\label{fig: 1-6b}
+	\end{minipage}%
 
- 	
+ 
  	\subsubsection{Ordinary Least Squares (OLS) \& Principle Component Regression (PCR)  Estimate Errors}
  	
  	\begin{figure}[H]
@@ -610,19 +623,69 @@
 
 
  	\subsubsection{Ordinary Least Squares (OLS) \& Principle Component Regression (PCR)  Estimate Errors - Part 2}
- 	 
- 	\begin{wrapfigure}{R}{0.49\textwidth}
-% 		\vspace{-20pt}
- 		\begin{centering}
- 			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=0.49\textwidth]{../MATLAB/figures/q1_6d_fig01.pdf} 
- 		\end{centering}
+ 	\begin{minipage}{0.49\textwidth}
+ 		Again if we look at the true model order, Figure \ref{fig: 1-6d}, PCR outperforms OLS by $0.79\%$. We note how further reduction in dimensionality decreases the performance of PCR. In regard to effectiveness of each scheme, if the model order is unknown and cannot be approximated accurately, OLS is a safer choice, however best performance - although marginal - can be achieved if the model order is known and PCR is implemented.
+ 	\end{minipage}% 
+	 \begin{minipage}{0.04\textwidth}
+	 	  \hspace*{0.04\textwidth}
+	 \end{minipage}% 
+ 	\begin{minipage}{0.49\textwidth}
+		\centering
+ 		\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_6d_fig01.pdf} 
  		\captionsetup{justification=centering}
- 		\caption{Mean Sqaure Error over several Realisations}
+ 		\captionof{figure}{Mean Square Error over several Realisations}
  		\label{fig: 1-6d}
- 	\end{wrapfigure}
+ 	\end{minipage}%
  
- 	Again if we look at the true model order, Figure \ref{fig: 1-6d}, PCR outperforms OLS by $0.79\%$. We note how further reduction in dimensionality decreases the performance of PCR. In regard to effectiveness of each scheme, if the model order is unknown and cannot be approximated accurately, OLS is a safer choice, however best performance - although marginal - can be achieved if the model order is known and PCR is implemented.
- 	
- 	
+\pagebreak
+\section{Adaptive Signal Processing} \label{sec: 2-ASP}
+	\subsection{The Least Mean Square (LMS) Algorithm} \label{sec: 2-1-LMS}
+		\subsubsection{Example Correlation Matrix}
+		\subsubsection{Example Learning Curve for an AR(2) Process}
+		\subsubsection{Misadjustment}
+		\subsubsection{Steady State Estimation} 
+		\subsubsection{Leaky LMS Derivation}
+		\subsubsection{Example Leaky LMS for an AR(2) Process}  
+	\subsection{Adaptive Step Sizes} \label{sec: 2-2-adaptive-step}
+		\subsubsection{Gradient Adaptive Step Sizes (GASS) Comparisons for a MA(1) System} 
+		\subsubsection{NLMS Update Equation Equivalence} 
+		\subsubsection{Generalised Normalised Gradient Descent (GNGD) Example for a MA(1) System} 
+	\subsection{Adaptive Noise Cancellation} \label{sec: 2-3-ANC}
+		\subsubsection{Adaptive Line Enhancer (ALE) Delay Investigation}
+		\subsubsection{Adaptive Line Enhancer (ALE) Filter Order Investigation}
+		\subsubsection{Adaptive Noise Cancellation (ANC) Comparison}
+		\subsubsection{Adaptive Noise Cancellation (ANC) on real EEG Data}
+	
+\pagebreak
+\section{Widely Linear Filtering and Adaptive Spectrum Estimation} \label{sec: 3-WLASE}
+	\subsection{Complex LMS and Widely Linear Modelling} \label{sec: 3-1-CLMS-ACLMS}
+		\subsubsection{Widely Linear Moving Average (WLMA) Process using Complex LMS (CLMS) \& Augmented CLMS (ACLMS)}
+		\subsubsection{CLMS and ACLMS Suitability with real (wind) data}
+		\subsubsection{Balanced and UnBalanced Voltages - Investigating Circularity}
+		\subsubsection{Derivation for estimating Frequency from Filter Weights}
+		\subsubsection{Investigating the Accuracy of the Filter Estimates}
+	\subsection{Adaptive AR Model Based Time-Frequency Estimation} \label{sec: 3-2-adaptive-ar-spectrum-estimate}
+		\subsubsection{Frequency Modulated (FM) Signal Investigated with an AR(1) Process}
+		\subsubsection{Frequency Modulated (FM) Signal Investigated with CLMS}
+	\subsection{A Real Time Spectrum Analyser Using Least Mean Square} \label{sec: 3-3-real-time-spectrum-LMS}
+		\subsubsection{The Discrete Fourier Transform (DFT) Formula and the Least Square Solution}
+		\subsubsection{Fourier Transform in terms of Changes of Basis \& Projections}
+		\subsubsection{The DFT-CLMS vs. the AR(1) at Spectrum Analysis}
+		\subsubsection{The DFT-CLMS on real (EEG) Data}
+	
+	
+\pagebreak
+\section{From LMS to Deep Learning} \label{sec: 4-LMS-to-DL}
+	\subsection{The LMS} \label{sec: 4-1-LMS}
+	\subsection{The Dynamic Perceptron with $\texttt{tanh}$ Activation} \label{sec: 4-2-dynamic-perc}
+	\subsection{Adding Amplitude Scaling to the Dynamic Perceptron} \label{sec: 4-3-amplitude-dynamic-perc}
+	\subsection{Biasing with the Dynamic Perceptron} \label{sec: 4-4-biasing-dynamic-perceptron}
+	\subsection{Pre-training the weights} \label{sec: 4-5-weight-training-dynamic-perceptron}
+	\subsection{What is backpropogation?} \label{sec: 4-6-backpropogation}
+	\subsection{Deep Network Epoch Effect} \label{sec: 4-7-DL-epoch}
+	\subsection{Deep Network Noise Effect} \label{sec: 4-7-DL-noise}
+	
+\section{Tensor Decompositions for Big Data Applications} \label{sec: 5-TD-BD}
+	
 \end{document}
 
