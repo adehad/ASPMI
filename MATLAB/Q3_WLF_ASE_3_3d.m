@@ -34,7 +34,7 @@ K = Fs*5;
 
 
 % (noisy EEG) signal definition
-startEl = 45e3;
+startEl = 2e3;
 y = s(startEl:startEl+N-1);
 y = y - mean(y);            % remove signal dc offset, to reduce 0Hz component
 % x axis  
@@ -77,6 +77,8 @@ fH = []; % clear the figure handle variable
 plotH = []; % clear the plot handle variable
 legendString = []; % clear the legend string variable
 
+freqOfInterest = [13,26,50,100];
+
 % plot psd estimation        
 for ii=1:length(clms_model.spectrum)
     fH{length(fH)+1} = figure; hold on
@@ -86,6 +88,9 @@ for ii=1:length(clms_model.spectrum)
         view(2);
         %}
         imagesc(1:N, w, clms_model.spectrum{ii}); axis xy;
+        for jj=1:length(freqOfInterest)
+            plot([1, N],[freqOfInterest(jj), freqOfInterest(jj)], 'r:');
+        end
         title(sprintf("EEG: \\texttt{POz} DFT-AR Spectrogram $\\gamma=%.3f$", gamma(ii)));
         xlabel("Time Index");
         ylabel("Frequency (Hz)");
