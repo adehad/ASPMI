@@ -1,4 +1,14 @@
 %% Q1 Classical and Modern Spectrum Estimation
+% 1.5c
+%{
+Plot the AR spectrum estimate for the RRI signals for the three trials. 
+To find the optimal AR model order, experiment with your model order until
+you observe a peak in the spectrum (approximately) corresponding to
+the theoretical respiration rate. 
+
+List the differences you observe between your estimated AR spectrum and the
+periodogram estimate in Part a).
+%}
 %% Premable
 % Use Ctrl+Enter to run code section by section
 
@@ -15,6 +25,7 @@ SAVE_FIGS = true;
 
 %% LOAD ECG DATA & CONVERT TO RRI
 %{
+% Only need to do once
 load(['resources',filesep,'ECG_Data',filesep,'ECG_Split_110219.mat']);
 % ECG: 3 cells for the 3 RRI recordings
 % time_split: time axes for coresponding
@@ -96,7 +107,7 @@ for ii=1:size(RRI.x,2)
         plotH(1) = plot(fAx_standard, PSD_standard{ii},'DisplayName','standard');
         hold on
         for jj=1:length(modelOrder)
-            plotH(1+jj) = plot( fAx{ii}, pow2db(abs(PSD_AR_estimate{ii,jj}).^2), 'DisplayName', sprintf("$p=%d$", modelOrder(jj)) );
+            plotH(1+jj) = plot( fAx{ii}, pow2db(abs(PSD_AR_estimate{ii,jj}).^2), 'DisplayName', sprintf('$p=%d$', modelOrder(jj)) );
         end
         
         % Harmonic plotter
@@ -105,9 +116,9 @@ for ii=1:size(RRI.x,2)
              plot([fAx{ii}(find(fAx{ii}>=jj*trial_freqs(ii),1)), fAx{ii}(find(fAx{ii}>=jj*trial_freqs(ii),1))], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
         end
         
-        title(sprintf("Periodogram and AR Estimates: Trial %d", ii));
-        xlabel("Frequency (Hz)");
-        ylabel("PSD (dB)");
+        title(sprintf('Periodogram and AR Estimates: Trial %d', ii));
+        xlabel('Frequency (Hz)');
+        ylabel('PSD (dB/Hz)');
         grid on; grid minor;
         xlim([0 2]) % start at 0 to make one-sided , 0-2Hz is relevant range
 %         ylim([-inf 0])

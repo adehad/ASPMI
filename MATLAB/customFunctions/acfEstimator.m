@@ -5,9 +5,9 @@ function [r_biased, r_unbiased, lags, PSD_biased, PSD_unbiased, fs] = acfEstimat
 % Output: 
 %       * r_biased = Biased Estimate
 %       * r_unbiased = Unbiased_estimate
-%       * lag = ,
+%       * lags = Autocorrelation Lag Axis,
 %       * PSD_biased = Biased Periodogram/PSD, PSD_Unbiased = Unbiased
-%       * fs = Frequency
+%       * fs = Normalised Frequency Axis
 
     % Auto-Correlation Estimates
     [r_biased, lags] = xcorr(x, 'biased');

@@ -1,4 +1,19 @@
 %% Q3 Widely Linear Filtering and Adaptive Spectrum Estimation
+% 3.2a
+%{
+Generate the frequency modulated (FM) signal y(n) = ej(2fpi/f_s phi(n) ) +
+eta(n) , where eta(n) is circular complex valued white noise with zero mean and 
+variance sigma^2 = 0.05 and the phase phi(n) = Integral of f(n) over dn 
+is generated as 47
+
+Use the aryule function find the AR(1) coefficient for the complete signal of 
+length 1500, then plot the power spectrum of the signal.
+Note: The function [h,w] = freqz(1,a,N)returns the N-point frequency response 
+vector, h, and the corresponding angular frequency vector, w, for the 
+digital filter with AR coefficients in the vector a. 
+
+Does this method capture the changes in frequency given by Equation (47)?
+%}
 %% Premable
 % Use Ctrl+Enter to run code section by section
 
@@ -92,9 +107,9 @@ legendString = []; % clear the legend string variable
 fH{length(fH)+1} = figure; hold on
 %     yyaxis left
     plot(1:N, freq)
-    title("FM: Frequency, $f(n)$");
-    xlabel("Time Index, $n$");
-    ylabel("Frequency (Hz)");
+    title('FM: Frequency, $f(n)$');
+    xlabel('Time Index, $n$');
+    ylabel('Frequency (Hz)');
     grid on; grid minor;
     yLim = ylim;
     ylim([0,yLim(2)])
@@ -104,17 +119,17 @@ fH{length(fH)+1} = figure; hold on
 %     yyaxis right
     subplot(2,1,1)
         plot( 1:N, rad2deg(wrapToPi(phi)), 'Color', COLORS(2,:) )
-        title("FM: Phase, $\phi(n)$");
-    %     xlabel("Time Index, $n$");
-        ylabel("Phase ($^{\circ}$)");
+        title('FM: Phase, $\phi(n)$');
+    %     xlabel('Time Index, $n$');
+        ylabel('Phase ($^{\circ}$)');
         grid on; grid minor;
         xlim([250, 750])
         yticks([-360:90:360])
         set(gca,'Position',POSITION.subplot211)
     subplot(2,1,2)
         plot( 1:N, rad2deg(wrapToPi(phi)), 'Color', COLORS(2,:) )
-        xlabel("Time Index, $n$");
-        ylabel("Phase ($^{\circ}$)");
+        xlabel('Time Index, $n$');
+        ylabel('Phase ($^{\circ}$)');
         grid on; grid minor;
         xlim([750, 1250])
         yticks([-360:90:360])
@@ -125,9 +140,9 @@ fH{length(fH)+1} = figure; hold on
     for ii=1:length(ar_model{1}.p)
         plot(ar_model{1}.w(ii,:), ar_model{1}.psd(ii,:),'DisplayName', sprintf('$p$=%i',ar_model{1}.p(ii)))
     end
-    title("FM: \texttt{aryule}-AR");
-    xlabel("Frequency (Hz)");
-    ylabel("PSD (db)");
+    title('FM: \texttt{aryule}-AR');
+    xlabel('Frequency (Hz)');
+    ylabel('PSD (dB/Hz)');
     grid on; grid minor;
     legend('show')
     xlim([0, 700])
@@ -138,9 +153,9 @@ fH{length(fH)+1} = figure; hold on
             plot(ar_model{2}.w(jj,:,ii), ar_model{2}.psd(jj,:,ii),'DisplayName', sprintf('%i:%i',ar_model{2}.thresh(jj),ar_model{2}.thresh(jj+1)))
         end
     end
-    title(sprintf("FM: \texttt{aryule}-AR(%i) ",ar_model{2}.p(ii)));
-    xlabel("Frequency (Hz)");
-    ylabel("PSD (db)");
+    title(sprintf('FM: \\texttt{aryule}-AR(%i) ',ar_model{2}.p(ii)));
+    xlabel('Frequency (Hz)');
+    ylabel('PSD (dB/Hz)');
     grid on; grid minor;
     legend('show')
     xlim([0, 700])

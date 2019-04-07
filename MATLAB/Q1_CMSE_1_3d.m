@@ -1,16 +1,11 @@
 %% Q1 Classical and Modern Spectrum Estimation
 % 1.3d
 %{
- Write a MATLAB script which calculates both biased and unbiased ACF estimates
- of a signal and then use these ACF estimates to compute the corresponding
- correlogram in Eq. (15). Validate your code for different signals
-e.g. WGN, noisy sinusoidal signals and ?ltered WGN. 
+Familiarise yourself with the generation of complex exponential signals,
+ and generate signals of different frequencies and length. 
 
-Explain how the spectral estimates based on (16)-(17) differ from one another? 
-In particular, how does the correlogram corresponding to the unbiased ACF
- estimates behave for large lags (i.e. k close to N)? 
-
-Does the unbiased ACF estimate result in negative values for the estimated PSD?
+Verify that by considering more data samples the periodogram starts 
+showing the correct line spectra.
 %}
 %% Premable
 % Use Ctrl+Enter to run code section by section
@@ -86,15 +81,15 @@ fH{1} = figure;
     hold on;
     for ii=1:size(PSD,1)
         plotH(ii) = plot(fs, pow2db(abs(PSD(ii,:))));
-        legendString(ii) = sprintf("$n=%d$", nSamples(ii));
+        legendString(ii) = sprintf('$n=%d$', nSamples(ii));
     end
     yLims = ylim;
     yLims(2) = yLims(2)+6;
     plot([fHz(1), fHz(1)], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
     plot([fHz(2), fHz(2)], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
-    xlabel("Frequency ($\pi$ radians)");
-    ylabel("PSD (dB)");
-    title(strcat("PSD of Summed Complex Exponentials"));
+    xlabel('Frequency ($\pi$ radians)');
+    ylabel('PSD (dB/Hz)');
+    title(strcat('PSD of Summed Complex Exponentials'));
     legend(plotH,legendString,'NumColumns',2);
     xlim([0.2 0.6])
     ylim(yLims)

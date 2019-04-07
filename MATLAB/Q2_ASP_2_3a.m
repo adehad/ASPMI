@@ -1,4 +1,16 @@
 %% Q2 Adaptive Signal Processing
+% 2.3a
+%{
+Given the model for the noise in (34), what is the minimum value for the delay
+ delta that may be used in the adaptive line enhancer in Fig 6 for a filter length 
+of M > 1?
+ 
+Hint: Start by expanding the Mean Square Error E{( s(n) - x^(n) )^2} to determine 
+how the correlation in the noise affects the linear predictor.
+
+Write a MATLAB program for the adaptive line enhancement using the LMS 
+algorithm and justify your choice of minimum delta.
+%}
 %% Premable
 % Use Ctrl+Enter to run code section by section
 
@@ -77,7 +89,7 @@ for ii=1:length(ALE.Delay)
     for jj=1:R
         s(jj,:) = noisy_signal(N,noise_mu,sigma_sq,b,a);
         
-        % converyt ar process time series to differential eqn form
+        % Convert process time series to differential eqn form
         [U,~] = arima2diffEqns( s(jj,:), lags(LMSorder), ALE.Delay(ii) );
         % LMS Error
         [x_pred,~,~] = LMS(U, s(jj,:), mu, 0);
@@ -105,9 +117,9 @@ fH{length(fH)+1} = figure;
 %     hold on;
 %     plot(diff(err.mpse));
 
-    title("MPSE Error");
-    xlabel("Additional Delay, $\Delta$");
-    ylabel("MPSE (dB)");
+    title('MPSE Error');
+    xlabel('Additional Delay, $\Delta$');
+    ylabel('MPSE (dB)');
     grid minor;
 
 

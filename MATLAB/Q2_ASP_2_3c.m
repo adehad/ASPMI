@@ -1,4 +1,11 @@
 %% Q2 Adaptive Signal Processing
+% 2.3c
+%{
+Write a MATLAB program for the adaptive noise cancellation con?guration (see Fig 7).
+ 
+Use the MSPE measure in (32) to compare the relative performance of the 
+ANC and ALE in de-noising the noisy sinusoid in (33).
+%}
 %% Premable
 % Use Ctrl+Enter to run code section by section
 
@@ -10,7 +17,7 @@ questionNum = 2;
 q_initialise;
 
 % Set the SAVE_FIGS to true if you want to save all figures
-% SAVE_FIGS = true;
+SAVE_FIGS = true;
 
 
 %% LMS Parameter
@@ -123,9 +130,9 @@ fH{length(fH)+1} = figure;
     plot(  mean(x_hat{2}(:, :),1) , 'DisplayName', 'ANC');
     plot( x, 'k:' , 'DisplayName', 'True');
 
-    title("ALE vs ANC Mean");
-    xlabel("Time Index");
-    ylabel("Magnitude");
+    title('ALE vs ANC Mean');
+    xlabel('Time Index');
+    ylabel('Magnitude');
     grid minor;
     legend('show')
     
@@ -137,9 +144,9 @@ fH{length(fH)+1} = figure; hold on
 
     plotH(3,:) = plot( x , 'Color',COLORS(3,:) , 'LineStyle',':');
 
-    title("ALE vs ANC Ensemble");
-    xlabel("Time Index");
-    ylabel("Magnitude");
+    title('ALE vs ANC Ensemble');
+    xlabel('Time Index');
+    ylabel('Magnitude');
     grid minor;
     legend(plotH(:,1), {'ALE','ANC','True'})
 
@@ -148,6 +155,6 @@ fH{length(fH)+1} = figure; hold on
 
 if SAVE_FIGS
     for ii=1:length(fH) % For all figure handles
-        saveas(fH{ii},['figures', filesep,'q2_3a_fig',num2str(ii,'%02i')],'pdf')
+        saveas(fH{ii},['figures', filesep,'q2_3c_fig',num2str(ii,'%02i')],'pdf')
     end
 end

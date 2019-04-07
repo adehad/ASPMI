@@ -1,4 +1,19 @@
-%% Q3 Widely Linear Filtering and Adaptive Spectrum Estimation
+%% Q4 From LMS to Deep Learning
+% 4.5
+%{
+Since we are only performing a singe weight update per time-step,
+ it may take a lot of samples to converge to a reasonable prediction.
+ 
+One solution to this issue is to pre-train the weights by over-?tting to a
+ small number of samples. 
+Start with w(0) = 0 and use 100 iterations (also called epochs) to
+ fit the model to the first 20 samples to yield w_init.
+ 
+Then use w_init as an initialisation to predict the entire time-series. 
+
+Plot the original signal and the non-linear one-step ahead prediction,
+ produced with bias and pre-trained weights.
+%}
 %% Premable
 % Use Ctrl+Enter to run code section by section
 
@@ -10,7 +25,7 @@ questionNum = 4;
 q_initialise;
 
 % Set the SAVE_FIGS to true if you want to save all figures
-% SAVE_FIGS = true;
+SAVE_FIGS = true;
 
 
 %% LMS Parameter
@@ -62,9 +77,9 @@ legendString = []; % clear the legend string variable
 fH{length(fH)+1} = figure; hold on
     plot(y, 'DisplayName', 'True');
     plot(y_pred, 'LineStyle', ':', 'DisplayName', 'Prediction');
-    title( sprintf("Dynamic Perceptron Output Variations \n $\\mu=$%.0e, $M=%i$, $\\phi$=\\texttt{%s}, a=%.2f, bias=%.2f",mu,M,func2str(dPerc.activatorFunc),dPerc.ampl,dPerc.bias) );
-    xlabel("Time Index, $n$");
-    ylabel("Magnitude");
+    title( sprintf('Dynamic Perceptron Output Variations \n $\\mu=$%.0e, $M=%i$, $\\phi$=\\texttt{%s}, a=%.2f, bias=%.2f',mu,M,func2str(dPerc.activatorFunc),dPerc.ampl,dPerc.bias) );
+    xlabel('Time Index, $n$');
+    ylabel('Magnitude');
     grid minor;
     legend('show', 'Location','best','NumColumns',2)
     xlim([0, 350])

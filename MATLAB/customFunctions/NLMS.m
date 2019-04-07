@@ -14,6 +14,8 @@ function [y, e, W] = NLMS(X, d, mu, varargin)
 % Usage: 
 %   [y, e, w] = LMS(X, d, mu, setGNGD, rho) train NLMS filter on Xd data.
     
+    gamma = 0;
+
     % Design matrix is 2D
     if ~ismatrix(X)
         error("Design matrix must be 2D, [M N]");
@@ -61,7 +63,7 @@ function [y, e, W] = NLMS(X, d, mu, varargin)
     % LMS filter weights: pre-allocate for speed
     W = zeros(M, N);
     % Regularization Factor: 1 / mu
-%     epsilon = ones(N+1, 1) * eps; % / mu;
+%     epsilon = ones(N+1, 1) * eps; % hyperfast convergence
     epsilon = ones(N+1, 1) / mu;
     
     beta = 1;
@@ -73,15 +75,18 @@ function [y, e, W] = NLMS(X, d, mu, varargin)
         % Prediction error n, e(n)
         e(n) = d(n) - y(n);
         % Weights update rule
-        W(:,n+1) = W(:,n) + ...
-                   beta*e(n)*X(:,n)  ...
-                       /( epsilon(n) + X(:,n)'*X(:,n) ) ;
+%         W(:,n+1) = W(:,n) + ...
+%                    beta /( epsilon(n) + X(:,n)'*X(:,n) ) ...
+%                         *e(n)*X(:,n);
+                   
+        W(:,n+1) = (1 - 1/epsilon(n)*gamma) * W(:,n) + ...
+                        ( beta/( epsilon(n) + X(:,n)' *X(:,n) ) )*e(n)*X(:,n);
         if n > 1
             if setGNGD
             % epsilon update rule
             epsilon(n+1) = epsilon(n) - ...
-                            rho*mu* ( e(n)*e(n-1) * X(:, n)'*X(:, n-1) )  ...
-                                  / ( epsilon(n-1) + X(:, n-1)'*X(:, n-1) )^2;
+                            rho*mu*( ( e(n)*e(n-1) *X(:,n)' *X(:,n-1) )  ...
+                                      /( epsilon(n-1) + X(:,n-1)'*X(:,n-1) )^2 );
             end
         end
     end

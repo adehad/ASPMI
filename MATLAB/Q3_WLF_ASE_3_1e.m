@@ -1,4 +1,11 @@
 %% Q3 Widely Linear Filtering and Adaptive Spectrum Estimation
+% 3.1e
+%{
+Use the CLMS given (35) and ACLMS algorithms given in (36) to estimate 
+the frequency of the alpha - beta voltages you generated in Part b).
+ For unbalanced system voltages, does the CLMS give the correct frequency estimate?
+ If not, why?
+%}
 %% Premable
 % Use Ctrl+Enter to run code section by section
 
@@ -118,25 +125,25 @@ for ii=1:2
     %% error plot
     tempClarke = clarkeVoltage.(balanceTypes{ii});
     fH{length(fH)+1} = figure; hold on
-        plot(pow2db(abs(err.CLMS{ii}).^2), "DisplayName", "CLMS")
-        plot(pow2db(abs(err.ACLMS{ii}).^2), "DisplayName", "ACLMS")
+        plot(pow2db(abs(err.CLMS{ii}).^2), 'DisplayName', 'CLMS')
+        plot(pow2db(abs(err.ACLMS{ii}).^2), 'DisplayName', 'ACLMS')
         title( sprintf('%s Error \n V=[%.2f;%.2f;%.2f], $\\Delta$=[%.2f,%.2f,%.2f]',...
                 balanceLabels{ii},  V.(balanceTypes{ii})(1), V.(balanceTypes{ii})(2), V.(balanceTypes{ii})(3),...
                                     Delta.(balanceTypes{ii})(1), Delta.(balanceTypes{ii})(2), Delta.(balanceTypes{ii})(3)))
-        xlabel("Time Index");
-        ylabel("MSE (dB)");
+        xlabel('Time Index');
+        ylabel('MSE (dB)');
         legend('show','Location','best')
         grid minor
     %% Frequency estimation 
     fH{length(fH)+1} = figure; hold on
-        plot(abs(est_f0.CLMS{ii}), "DisplayName", "CLMS")
-        plot(abs(est_f0.ACLMS{ii}), "DisplayName", "ACLMS")
-        plot([0 N], [f0 f0], "DisplayName", "$50\ Hz$", "LineStyle", ":", "Color", COLORS(6,:));
+        plot(abs(est_f0.CLMS{ii}), 'DisplayName', 'CLMS')
+        plot(abs(est_f0.ACLMS{ii}), 'DisplayName', 'ACLMS')
+        plot([0 N], [f0 f0], 'DisplayName', '$50\ Hz$', 'LineStyle', ':', 'Color', COLORS(6,:));
         title( sprintf('%s Frequency Estimate \n V=[%.2f;%.2f;%.2f], $\\Delta$=[%.2f,%.2f,%.2f]',...
                 balanceLabels{ii},  V.(balanceTypes{ii})(1), V.(balanceTypes{ii})(2), V.(balanceTypes{ii})(3),...
                                     Delta.(balanceTypes{ii})(1), Delta.(balanceTypes{ii})(2), Delta.(balanceTypes{ii})(3)))
-        xlabel("Time Index");
-        ylabel("Frequency (Hz)");
+        xlabel('Time Index');
+        ylabel('Frequency (Hz)');
         ylim([0 150])
         legend('show','Location','southeast')
         grid minor

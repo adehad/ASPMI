@@ -1,4 +1,18 @@
 %% Q2 Adaptive Signal Processing
+% 2.3d
+%{
+Load a single-channel EEG Data5 (either Czor POz) from the file EEG_Data_Assignment2.mat.
+ As seen in the previous assignments, there is a strong 50 Hz component introduced
+ by the mains. Using the ANC con?guration, remove the 50 Hz component by
+ generating a synthetic reference input composed of a sinusoid of 50 Hz corrupted
+by white Gaussian noise. 
+(Hint: Experiment with different step-sizes, mu, and filter lengths, M, to 
+suppress the 50 Hz component without affecting the other frequency components).
+ 
+Plot the spectrum for the corrupted and denoised EEG data using the
+ spectrogram function with appropriate window length and overlap.
+ What do you observe?
+%}
 %% Premable
 % Use Ctrl+Enter to run code section by section
 
@@ -10,7 +24,7 @@ questionNum = 2;
 q_initialise;
 
 % Set the SAVE_FIGS to true if you want to save all figures
-% SAVE_FIGS = true;
+SAVE_FIGS = true;
 
 
 %% LMS Parameter
@@ -142,7 +156,7 @@ for whatM=whatM
             spectrogram(squeeze(x_hat(whatMu,:,whatM)), spect.win, spect.nOverlap, spect.nFFT, Fs, 'xaxis');
             xticks(0:25:125);
             xlim([0 125]);
-            title(sprintf('$\\mu$=%.4f, M(%d)',mu(whatMu),M(whatM)))
+            title(sprintf('ANC Filtered Periodogram \n $\\mu$=%.4f, M(%d)',mu(whatMu),M(whatM)))
             c = colorbar('TickLabelInterpreter', 'latex', 'FontName', 'Palatino Linotype'); % oh why MATLAB ...
             c.Label.String = 'PSD (dB/Hz)';
     end

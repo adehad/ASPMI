@@ -1,16 +1,21 @@
 %% Q1 Classical and Modern Spectrum Estimation
 % 1.3e
 %{
- Write a MATLAB script which calculates both biased and unbiased ACF estimates
- of a signal and then use these ACF estimates to compute the corresponding
- correlogram in Eq. (15). Validate your code for different signals
-e.g. WGN, noisy sinusoidal signals and ?ltered WGN. 
+Use the following code to find the desired line spectra using the MUSIC method.
+[X,R] = corrmtx(x,14,’mod’);
+[S,F] = pmusic(R,2,[ ],1,’corr’);
+plot(F,S,’linewidth’,2); set(gca,’xlim’,[0.25 0.40]);
+grid on; xlabel(’Hz’); ylabel(’Pseudospectrum’);
 
-Explain how the spectral estimates based on (16)-(17) differ from one another? 
-In particular, how does the correlogram corresponding to the unbiased ACF
- estimates behave for large lags (i.e. k close to N)? 
-
-Does the unbiased ACF estimate result in negative values for the estimated PSD?
+Explain the operation of the first three lines in the code using 
+the MATLAB documentation and the lecture notes. [10]
+What is the meaning of the input arguments for the functions corrmtxand pmusic?
+Does the spectrum estimated using the MUSIC algorithm provide more detailed
+ information? 
+State briefly the advantages and disadvantages of the periodogram and 
+the MUSIC algorithms and comment on the bias and variance.
+ 
+How accurate would a general spectrum estimate be when using MUSIC?
 %}
 %% Premable
 % Use Ctrl+Enter to run code section by section
@@ -97,16 +102,18 @@ for jj=1:length(sigSpaceDim)
         plot(Fs, (PSE.(structName)), 'Color', COLORS(6, :), 'LineWidth', 0.5);
         plot(Fs, mean(PSE.(structName)), 'Color', COLORS(1, :));
         xlim([0.25 0.4])
-        xlabel("Frequency ($\pi$ radians)");
-        ylabel("PSD");
-        title(sprintf("%d MUSIC Estimate Realisations and Mean \n $n=%d$, $p=%d$",numRealisations,nSamples,sigSpaceDim(jj)));
-
+        xlabel('Frequency ($\pi$ radians)');
+        ylabel('PSD (dB/Hz)');
+        title(sprintf('%d MUSIC Estimate Realisations and Mean \n $n=%d$, $p=%d$',numRealisations,nSamples,sigSpaceDim(jj)));
+        grid minor 
+        
     fH{length(fH)+1} = figure;
         plot(Fs, std(PSE.(structName)), 'Color', COLORS(2, :));
         xlim([0.25 0.4])
-        xlabel("Frequency ($\pi$ radians)");
-        ylabel("PSD");
-        title(sprintf("%d MUSIC Estimate Realisations Standard Deviation \n $n=%d$, $p=%d$",numRealisations,nSamples,sigSpaceDim(jj)));
+        xlabel('Frequency ($\pi$ radians)');
+        ylabel('PSD (dB/Hz)');
+        title(sprintf('%d MUSIC Estimate Realisations Standard Deviation \n $n=%d$, $p=%d$',numRealisations,nSamples,sigSpaceDim(jj)));
+        grid minor
 end
     
 %% Save Figures

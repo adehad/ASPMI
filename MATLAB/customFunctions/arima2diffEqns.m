@@ -23,7 +23,7 @@ function [X, y] = arima2diffEqns(signal, lags, varargin)
     end
     
     if ~isempty(varargin)
-        if isa(varargin{1},'integer')
+        if isa(uint64(varargin{1}),'integer')
             Delta = varargin{1};
             if Delta < 0
                 error('Additional Output lag (Delta) should be positive')

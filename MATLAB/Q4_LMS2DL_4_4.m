@@ -1,4 +1,21 @@
-%% Q3 Widely Linear Filtering and Adaptive Spectrum Estimation
+%% Q4 From LMS to Deep Learning
+% 4.4
+%{
+ Now, consider the original time-series in Figure 9 which exhibits a non-zero mean.
+ In order to account for the mean automatically, we can add a bias input to
+ our model. 
+In other words, the output of the model can be mathematically described by:
+ phi(wT x + b) 
+where phi( ) is the activation function, 
+w are the weights of the model, x is the input data and b is the bias. 
+
+Hint: the bias can be implemented by considering the ‘augmented’ input
+ to the algorithm as [1, x]^T . 
+
+Plot the original signal (non-zero mean) and the non-linear one-step ahead 
+prediction with bias.
+ Comment on the convergence of this algorithm.
+%}
 %% Premable
 % Use Ctrl+Enter to run code section by section
 
@@ -10,7 +27,7 @@ questionNum = 4;
 q_initialise;
 
 % Set the SAVE_FIGS to true if you want to save all figures
-% SAVE_FIGS = true;
+SAVE_FIGS = true;
 
 
 %% LMS Parameter
@@ -52,9 +69,9 @@ legendString = []; % clear the legend string variable
 fH{length(fH)+1} = figure; hold on
     plot(y, 'DisplayName', 'True');
     plot(y_pred, 'LineStyle', ':', 'DisplayName', 'Prediction');
-    title( sprintf("Dynamic Perceptron Output Variations \n $\\mu=$%.0e, $M=%i$, $\\phi$=\\texttt{%s}, a=%.2f, bias=%.2f",mu,M,func2str(dPerc.activatorFunc),dPerc.ampl,dPerc.bias) );
-    xlabel("Time Index, $n$");
-    ylabel("Magnitude");
+    title( sprintf('Dynamic Perceptron Output Variations \n $\\mu=$%.0e, $M=%i$, $\\phi$=\\texttt{%s}, a=%.2f, bias=%.2f',mu,M,func2str(dPerc.activatorFunc),dPerc.ampl,dPerc.bias) );
+    xlabel('Time Index, $n$');
+    ylabel('Magnitude');
     grid minor;
     legend('show', 'Location','best','NumColumns',2)
     xlim([0, 350])

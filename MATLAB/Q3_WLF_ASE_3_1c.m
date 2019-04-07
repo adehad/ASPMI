@@ -1,4 +1,16 @@
 %% Q3 Widely Linear Filtering and Adaptive Spectrum Estimation
+% 3.1c
+%{
+Generate two sets of complex voltages, one balanced and one unbalanced.
+ To generate an unbalanced system change the magnitude and/or phase of one
+ or more phases. 
+Plot the circularity diagrams of these complex alpha - beta voltages. 
+
+Comment on the shape of the circularity diagram when the system is
+balanced vs. unbalanced.
+
+How would you use the circularity diagram to identify a fault in the system?
+%}
 %% Premable
 % Use Ctrl+Enter to run code section by section
 
@@ -10,7 +22,7 @@ questionNum = 3;
 q_initialise;
 
 % Set the SAVE_FIGS to true if you want to save all figures
-% SAVE_FIGS = true;
+SAVE_FIGS = true;
 
 
 %% LMS Parameter
@@ -90,8 +102,8 @@ for ii=1:2
         title( sprintf('%s, $|\\rho|$=%.3f \n V=[%.2f;%.2f;%.2f], $\\Delta$=[%.2f,%.2f,%.2f]',...
                 balanceLabels{ii}, circularity(tempClarke), V.(balanceTypes{ii})(1), V.(balanceTypes{ii})(2), V.(balanceTypes{ii})(3),...
                                                             Delta.(balanceTypes{ii})(1), Delta.(balanceTypes{ii})(2), Delta.(balanceTypes{ii})(3)))
-        xlabel("Real Part, $\Re$");
-        ylabel("Imaginary Part, $\Im$");
+        xlabel('Real Part, $\Re$');
+        ylabel('Imaginary Part, $\Im$');
 
         grid minor
 end
@@ -100,7 +112,7 @@ end
 
 % phase & amplitude sweeps
 sweepType = {' ',' ','Phase','Magnitude'};
-sweepSymb = {' ',' ',"\Delta","V"};
+sweepSymb = {' ',' ','\Delta','V'};
 for ii=3:4
     fH{length(fH)+1} = figure; hold on
     
@@ -115,8 +127,8 @@ for ii=3:4
         title(sprintf('%s Parameter Sweep',sweepType{ii}))
         xLims = xlim;
 %         xlim([xLims(1), xLims(2)*1.5])
-        xlabel("Real Part, $\Re$");
-        ylabel("Imaginary Part, $\Im$");
+        xlabel('Real Part, $\Re$');
+        ylabel('Imaginary Part, $\Im$');
         legend('show','Location','best','NumColumns',length(plotLabels))
         grid minor
         ylim([-1.8,2])

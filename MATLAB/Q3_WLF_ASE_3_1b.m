@@ -1,4 +1,25 @@
 %% Q3 Widely Linear Filtering and Adaptive Spectrum Estimation
+% 3.1b
+%{
+Load the bivariate wind data of the wind speeds in the East-West direction, veast,
+ and North-South direction, vnorth.
+Form a complex-valued wind signal
+v[n] = veast[n] + jvnorth[n] (38)
+for the three wind regimes (low, medium, high). 
+
+Use the scatter(x,y) function to plot a scatter diagram
+ (the scatter diagram of the real and imaginary parts of a signal is
+ also referred to as a circularity plot) for these three regimes. 
+
+Comment on the circularity of the complex wind signal for low, medium 
+and high wind speeds.
+
+Configure the CLMS and ACLMS ?lters in a prediction setting (see Equation (16))
+to perform a one-step ahead prediction of the complex wind data. 
+
+Experiment with different ?lter lengths and comment on which algorithm (CLMS or
+ACLMS) performs better for the different wind regimes.
+%}
 %% Premable
 % Use Ctrl+Enter to run code section by section
 
@@ -10,7 +31,7 @@ questionNum = 3;
 q_initialise;
 
 % Set the SAVE_FIGS to true if you want to save all figures
-% SAVE_FIGS = true;
+SAVE_FIGS = true;
 
 
 %% LMS Parameter

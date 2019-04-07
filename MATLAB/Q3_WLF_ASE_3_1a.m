@@ -1,4 +1,22 @@
 %% Q3 Widely Linear Filtering and Adaptive Spectrum Estimation
+% 3.1a
+%{
+Generate a first-order widely-linear-moving-average process, WLMA(1),
+ driven by circular white Gaussian noise, x(n) [10]
+y(n) = x(n) + b1x(n - 1) + b2x*(n - 1)      x = N (0, 1) (37)
+where b1 = 1.5 + 1j and b2 = 2.5 - 0.5j. 
+
+Write a MATLAB function for the ACLMS and implement both the
+CLMS and ACLMS in the system identification setting to identify the WLMA model 
+in (37). 
+
+Plot the learning curve, 10log|e(n)|^2, for the ACLMS and CLMS.
+ 
+Comment on the steady state error of the ACLMS and CLMS.
+
+Hint: To obtain a smoother learning curve, plot the ensemble average of the 
+learning curve from 100 independent simulations.
+%}
 %% Premable
 % Use Ctrl+Enter to run code section by section
 
@@ -10,7 +28,7 @@ questionNum = 3;
 q_initialise;
 
 % Set the SAVE_FIGS to true if you want to save all figures
-% SAVE_FIGS = true;
+SAVE_FIGS = true;
 
 
 %% LMS Parameter

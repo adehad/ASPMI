@@ -1,4 +1,13 @@
 %% Q2 Adaptive Signal Processing
+% 2.1b
+%{
+Implement an LMS adaptive predictor using N = 1000 samples of x(n) as in a)
+ and plot the squared prediction error e2(n) dB i.e. 10 log(e2(n))
+ along time using step sizes µ = 0.05 and µ = 0.01.
+ 
+Repeat this experiment for 100 different realizations of x(n)
+ and plot the learning curve by averaging the plots of 10 log(e2(n)).
+%}
 %% Premable
 % Use Ctrl+Enter to run code section by section
 
@@ -10,7 +19,7 @@ questionNum = 2;
 q_initialise;
 
 % Set the SAVE_FIGS to true if you want to save all figures
-% SAVE_FIGS = true;
+SAVE_FIGS = true;
 
 
 %% LMS Parameter
@@ -31,8 +40,8 @@ b = 0;
 p = length(a);
 
 % AR process simulation
-ar = arima("Constant", b, "AR", a, "Variance", sigma_sq);
-x = simulate(ar, N, "NumPaths", R);
+ar = arima('Constant', b, 'AR', a, 'Variance', sigma_sq);
+x = simulate(ar, N, 'NumPaths', R);
 
 % step-sizes
 mu = [0.01 0.05];
@@ -43,7 +52,7 @@ err = zeros(R, N, length(mu));
 %% LMS Error
 for ii=1:length(mu)
     for jj=1:R
-        % converyt ar process time series to differential eqn form
+        % convert AR process time series to differential eqn form
         [X, y] = arima2diffEqns(x(:, jj), [1:2]);
         % LMS Error
         [~, err(jj, :, ii), ~] = LMS(X, x(:, jj)', mu(ii), 0);
@@ -61,41 +70,38 @@ legendString = []; % clear the legend string variable
 
 
 % Plot Realisation 12
-fH{length(fH)+1} = figure;
-    plot(pow2db( err(12,:,1) ), 'DisplayName', sprintf("$\\mu=%.2f$", mu(1)) );
-    hold on
-    plot(pow2db( err(12,:,2) ), 'DisplayName', sprintf("$\\mu=%.2f$", mu(2))  );
+fH{length(fH)+1} = figure; hold on
+    plot(pow2db( err(12,:,1) ), 'DisplayName', sprintf('$\\mu=%.2f$', mu(1)) );
+    plot(pow2db( err(12,:,2) ), 'DisplayName', sprintf('$\\mu=%.2f$', mu(2))  );
     hold off
     
-    title("Squared Prediction Error, Realisation 12");
-    xlabel("Time Increment");
-    ylabel("Squared Error (dB)");
+    title('Squared Prediction Error, Realisation 12');
+    xlabel('Time Increment');
+    ylabel('Squared Error (dB)');
     grid minor;
     legend('show')
 
 % Mean of log Square Error Trace
-fH{length(fH)+1} = figure;
-    plot(pow2db( mean(err(:,:,1)) ), 'DisplayName', sprintf("$\\mu=%.2f$", mu(1)) );
-    hold on
-    plot(mean( pow2db(err(:,:,2)) ), 'DisplayName', sprintf("$\\mu=%.2f$", mu(2)) );
+fH{length(fH)+1} = figure; hold on
+    plot(pow2db( mean(err(:,:,1)) ), 'DisplayName', sprintf('$\\mu=%.2f$', mu(1)) );
+    plot(mean( pow2db(err(:,:,2)) ), 'DisplayName', sprintf('$\\mu=%.2f$', mu(2)) );
     hold off
     
-    title("Mean of Log of Squared Prediction Error");
-    xlabel("Time Increment");
-    ylabel("Mean Squared Error (dB)");
+    title('Mean of Log of Squared Prediction Error');
+    xlabel('Time Increment');
+    ylabel('Mean Squared Error (dB)');
     grid minor;    
     legend('show')
 
 % Log of Mean Trace
-fH{length(fH)+1} = figure;
-    plot(pow2db( mean(err(:,:,1)) ), 'DisplayName', sprintf("$\\mu=%.2f$", mu(1)) );
-    hold on
-    plot(pow2db( mean(err(:,:,2)) ), 'DisplayName', sprintf("$\\mu=%.2f$", mu(2)) );
+fH{length(fH)+1} = figure; hold on
+    plot(pow2db( mean(err(:,:,1)) ), 'DisplayName', sprintf('$\\mu=%.2f$', mu(1)) );
+    plot(pow2db( mean(err(:,:,2)) ), 'DisplayName', sprintf('$\\mu=%.2f$', mu(2)) );
     hold off
     
-    title("Log of Mean Squared Prediction Error");
-    xlabel("Time Increment");
-    ylabel("Mean Squared Error (dB)");
+    title('Log of Mean Squared Prediction Error');
+    xlabel('Time Increment');
+    ylabel('Mean Squared Error (dB)');
     grid minor;    
     legend('show')
     

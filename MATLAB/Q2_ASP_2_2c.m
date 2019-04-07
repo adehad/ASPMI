@@ -1,4 +1,12 @@
 %% Q2 Adaptive Signal Processing
+% 2.2c
+%{
+Implement the GNGD algorithm for the system identification problem in part (a),
+ plot the weight estimates and compare it with Benveniste’s algorithm.
+ 
+Compare the computational complexity (number of multiplications and
+additions every time instant n) of the Benveniste’s GASS algorithm to the GNGD.
+%}
 %% Premable
 % Use Ctrl+Enter to run code section by section
 
@@ -10,7 +18,7 @@ questionNum = 2;
 q_initialise;
 
 % Set the SAVE_FIGS to true if you want to save all figures
-% SAVE_FIGS = true;
+SAVE_FIGS = true;
 
 
 %% LMS Parameter
@@ -43,7 +51,7 @@ b = 1;          % numerator
 p = length(a);  % model order
 
 % step-sizes
-mu = [0.01 0.05 0.1];
+mu = [0.01 0.05 0.1 1];
 
 % error
 err.diff = {}; % zeros(R, N, length(mu));
@@ -54,7 +62,7 @@ weights = {};
 
 for jj=1:length(gassType)+1 % +1 for NLMS case
     for ii=1:length(mu)
-        err.diff{ii,jj} = zeros(R, N, p);
+        err.diff{ii,jj} = zeros(R, N);
         weights{ii,jj} = zeros(R, N, p);
         err.weight{ii,jj} = zeros(length(a),N);
     end
@@ -87,12 +95,12 @@ for jj=1:R
     
     for ii=1:length(mu)
         % LMS Error
-        [~, err.diff{ii,end}(jj, :, ii), tempWeights] = NLMS(X, x, mu(ii), ' ',rho);
+        [~, err.diff{ii,end}(jj, :), tempWeights] = NLMS(X, x, mu(ii),'gngd',rho);
         weights{ii,end}(jj, :, :) = tempWeights';
         
         for kk=1:length(gassType) 
            % VSS
-            [~, err.diff{ii,kk}(jj, :, ii), tempWeights]  = LMS_VSS(X, x,  mu(ii), gamma, rho, string(gassType{kk}), alpha);
+            [~, err.diff{ii,kk}(jj, :), tempWeights]  = LMS_VSS(X, x, mu(ii), gamma, rho, string(gassType{kk}), alpha);
             weights{ii,kk}(jj, :, :) = tempWeights';
 
             % MSE: steady-state
@@ -105,7 +113,7 @@ end
 for jj=1:length(a)
     for ii=1:length(mu)
         for kk=1:length(gassType)+1 % +1 for LMS
-            err.weight{ii,kk}(jj,:) = squeeze(mean(weights{ii,kk}(:, :, jj))) - a(jj);
+            err.weight{ii,kk}(jj,:) = a(jj) - squeeze(mean(weights{ii,kk}(:, :, jj)));
         end
     end
 end
@@ -127,7 +135,7 @@ plotH = []; % clear the plot handle variable
 legendString = []; % clear the legend string variable
 
 gassTypeLabels =  {'Benveniste'};
-gassTypeLabels{length(gassTypeLabels) + 1} = 'NLMS';
+gassTypeLabels{length(gassTypeLabels) + 1} = 'GNGD NLMS';
 gassTypeLabels = replace(gassTypeLabels,'_',' \& ');
 
 whatMu = 1;
@@ -153,17 +161,17 @@ fH{length(fH)+1} = figure;
     hold off
     
     yyaxis left
-    title(sprintf("Weight Stabilisation with Time \n %s : $\\mu=%.2f$",gassTypeLabels{whatGass}, mu(whatMu) ));
-    xlabel("Time");
-    ylabel("Weight Value", 'Color', 'k');
+    title(sprintf('Weight Stabilisation with Time \n %s : $\\mu=%.2f$',gassTypeLabels{whatGass}, mu(whatMu) ));
+    xlabel('Time');
+    ylabel('Weight Value', 'Color', 'k');
     grid minor;
     yLims = ylim;
     ylim([0, yLims(2)*1.2])
     yyaxis right
     ylim([0, yLims(2)*1.2])
     legend('show','NumColumns',2,'Location','South')
-    %%
-    % Plot Weight stabilisation over time
+    
+% Plot Weight Error over time
 fH{length(fH)+1} = figure;
     % mu = 0.05
     yyaxis left
@@ -183,40 +191,50 @@ fH{length(fH)+1} = figure;
     ylim([-inf, yLims(2)+0.1])
     
     yyaxis left
-    title(sprintf("Weight Error with Time \n %s : $\\mu=%.2f$",gassTypeLabels{whatGass}, mu(whatMu) ));
-    xlabel("Time");
-    ylabel("Weight Error", 'Color', 'k');
+    title(sprintf('Weight Error with Time \n %s : $\\mu=%.2f$',gassTypeLabels{whatGass}, mu(whatMu) ));
+    xlabel('Time');
+    ylabel('Weight Error', 'Color', 'k');
     grid minor;
 %     yyaxis right
     
-    
     legend('show','NumColumns',2,'Location','South')
-    %%
-% % Plot Weight stabilisation over time
-% fH{length(fH)+1} = figure;
-%     % mu = 0.01
-%     yyaxis left
-%     hold on
-%     plot( squeeze(mean(selWeightsB(:, :, 1))), 'DisplayName', '$\hat{a_{1}}$', 'Color', COLORS(1,:) );
-%     xLims{1} = xlim;
-%     plot( xlim, [a(1), a(1)], 'DisplayName', '${a_{1}}$', 'Color', COLORS(1,:), 'LineStyle', ':' );
-%     hold off
-%     
-%     yyaxis right
-%     hold on
-%     plot( squeeze(mean(selWeightsB(:, :, 2))), 'DisplayName', '$\hat{a_{2}}$', 'Color', COLORS(2,:) );
-%     plot( xlim, [a(2), a(2)], 'DisplayName', '${a_{2}}$', 'Color', COLORS(2,:), 'LineStyle', ':' );
-%     hold off
-%     
-%     yyaxis left
-%     title(sprintf("Weight Stabilisation with Time $\\mu=%.2f$",mu(2)));
-%     xlabel("Time");
-%     ylabel("Weight Value", 'Color', 'k');
-%     grid minor;
-%     yyaxis right
-%     yLims = ylim;
-%     ylim([-inf, yLims(2)*1.2])
-%     legend('show','NumColumns',2,'Location','South')
+
+% Plot Weight Error Curve over time - For all
+lineStyleList = {'-',':','--'};
+
+fH{length(fH)+1} = figure; hold on
+    plot( err.weight{3,1}(2,:) , ...    % error of weight 2 - i.e. a(2)
+                'DisplayName', sprintf('%s $\\mu_0=%.2f$',gassTypeLabels{1}, mu(3)) );
+    plot( err.weight{3,2}(2,:) , ...    % error of weight 2 - i.e. a(2)
+                'DisplayName', sprintf('%s $\\mu=%.2f$',gassTypeLabels{2}, mu(3))  );
+    plot( err.weight{4,2}(2,:) , ...    % error of weight 2 - i.e. a(2)
+                'DisplayName', sprintf('%s $\\mu=%.2f$',gassTypeLabels{2}, mu(4)) );
+            
+    title('Weight Error with Time');
+    xlabel('Time');
+    ylabel('Weight Value', 'Color', 'k');
+    grid minor;
+    yLims = ylim;
+    ylim([-inf, yLims(2)])
+    xlim([0 600])
+    legend('show','Orientation', 'vertical','Location','best')
+
+    
+fH{length(fH)+1} = figure; hold on
+    plot( squeeze(pow2db( mean(err.diff{3,1}.^2, 1) )) , ...    % mean square error
+                'DisplayName', sprintf('%s $\\mu_0=%.2f$',gassTypeLabels{1}, mu(3))  );
+    plot( squeeze(pow2db( mean(err.diff{3,2}.^2, 1) )) , ...    % mean square error
+                'DisplayName', sprintf('%s $\\mu=%.2f$',gassTypeLabels{2}, mu(3))  );
+    plot( squeeze(pow2db( mean(err.diff{4,2}.^2, 1) )) , ...    % mean square error
+                'DisplayName', sprintf('%s $\\mu=%.2f$',gassTypeLabels{2}, mu(4)) );
+    title(' Mean Square Error with Time');
+    xlabel('Time');
+    ylabel('Error Value', 'Color', 'k');
+    grid minor;
+    yLims = ylim;
+    ylim([-inf, yLims(2)*1.2])
+    xlim([0 800])
+    legend('show','Orientation', 'vertical','Location','best', 'FontSize', 10)
 
 %% Save Figures
 

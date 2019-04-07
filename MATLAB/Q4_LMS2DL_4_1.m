@@ -1,4 +1,19 @@
-%% Q3 Widely Linear Filtering and Adaptive Spectrum Estimation
+%% Q4 From LMS to Deep Learning
+% 4.1
+%{
+Load the time-series in Figure 9 from the ‘time-series.mat’.
+ Remove the mean from the time-series and use the LMS algorithm 
+(with a learning rate of mu = 1e-5) from Section 3 to predict y[n] from
+y[n - 1], y[n - 2], y[n - 3] and y[n - 4] 
+(i.e. assume the data is generated using an AR(4) process). 
+
+Plot the zero-mean version of the signal, y, against its one-step ahead prediction. 
+Describe the behaviour of the output signal,
+and calculate the mean-square error (MSE) 
+and prediction gain, Rp = 10 log10(sigma_y ^2 / sigma_e ^2)
+sigma_y is the variance of the LMS output
+sigma_e is the variance of the prediction error
+%}
 %% Premable
 % Use Ctrl+Enter to run code section by section
 
@@ -10,7 +25,7 @@ questionNum = 4;
 q_initialise;
 
 % Set the SAVE_FIGS to true if you want to save all figures
-% SAVE_FIGS = true;
+SAVE_FIGS = true;
 
 
 %% LMS Parameter
@@ -49,9 +64,9 @@ legendString = []; % clear the legend string variable
 fH{length(fH)+1} = figure; hold on
     plot(y, 'DisplayName', 'True');
     plot(y_pred, 'LineStyle', ':', 'DisplayName', 'Prediction');
-    title(sprintf("LMS Output Variations \n $\\mu=%e$, $M=%i$ ",mu,M));
-    xlabel("Time Index, $n$");
-    ylabel("Magnitude");
+    title(sprintf('LMS Output Variations \n $\\mu=$%e, $M=%i$ ',mu,M));
+    xlabel('Time Index, $n$');
+    ylabel('Magnitude');
     grid minor;
     legend('show', 'Location','best','NumColumns',2)
     xlim([0, 350])

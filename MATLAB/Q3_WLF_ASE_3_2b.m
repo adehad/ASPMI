@@ -1,4 +1,15 @@
 %% Q3 Widely Linear Filtering and Adaptive Spectrum Estimation
+% 3.2b
+%{
+Implement the CLMS algorithm to estimate the AR coefficient of the signal y(n),
+ see (43). At each time instant, compute the frequency spectrum of the signal
+ using the freqz function with the coefficient estimates from the CLMS. 
+
+Plot the time-frequency spectrum. (Hint: Use the code below.)
+
+Comment on the CLMS based spectrum estimate implemented in this part, 
+compared to the stationary AR spectrum in Part a).
+%}
 %% Premable
 % Use Ctrl+Enter to run code section by section
 
@@ -98,9 +109,9 @@ for ii=1:length(clms_model.spectrum)
     fH{length(fH)+1} = figure; hold on
         surf(1:N, clms_model.w{ii}, clms_model.spectrum{ii}, 'LineStyle','none','FaceColor','interp')
         view(2);
-        title(sprintf("FM: CLMS-AR(%i) Spectrogram $\\mu=%.3f$", M, mu(ii)));
-        xlabel("Time Index");
-        ylabel("Frequency (Hz)");
+        title(sprintf('FM: CLMS-AR(%i) Spectrogram $\\mu=%.3f$', M, mu(ii)));
+        xlabel('Time Index');
+        ylabel('Frequency (Hz)');
         grid on; grid minor;
         c = colorbar('eastoutside', 'TickLabelInterpreter', 'latex', 'FontName', 'Palatino Linotype'); % oh why MATLAB ...
         c.Label.String = 'PSD (dB/Hz)';
@@ -110,9 +121,9 @@ end
 % Percentage of the total number of estimates that were outliers
 fH{length(fH)+1} = figure; hold on
         plot(mu, 100*clms_model.outlier./numel(clms_model.spectrum{ii}))
-        title(sprintf("FM: CLMS-AR(%i) Outliers ", M));
-        xlabel("$\mu$");
-        ylabel("\% of Total Elements");
+        title(sprintf('FM: CLMS-AR(%i) Outliers ', M));
+        xlabel('$\mu$');
+        ylabel('\% of Total Elements');
         grid minor;
         yLim = ylim;
         ylim([yLim(1), 1.1*yLim(2)])

@@ -1,16 +1,16 @@
 %% Q1 Classical and Modern Spectrum Estimation
 % 1.4b
 %{
- Write a MATLAB script which calculates both biased and unbiased ACF estimates
- of a signal and then use these ACF estimates to compute the corresponding
- correlogram in Eq. (15). Validate your code for different signals
-e.g. WGN, noisy sinusoidal signals and ?ltered WGN. 
-
-Explain how the spectral estimates based on (16)-(17) differ from one another? 
-In particular, how does the correlogram corresponding to the unbiased ACF
- estimates behave for large lags (i.e. k close to N)? 
-
-Does the unbiased ACF estimate result in negative values for the estimated PSD?
+Generate 1000 samples of data in MATLAB, according to the following equation 
+x(n) = 2.76x(n - 1) ? 3.81x(n - 2) + 2.65x(n - 3) - 0.92x(n - 4) + w(n)
+where w = N(0, 1)
+ and discard the ?rst 500 samples (x=x(500:end)) to remove the transient output 
+of the filter.
+Estimate the power spectrum density of the signal using model orders p = 2, ..., 14
+ and comment on the effects of increasing the order of the (assumed) underlying 
+model by comparing the estimation to the true Power Spectral Density.
+ 
+Only plot the results of the model orders which produced the best results.
 %}
 %% Premable
 % Use Ctrl+Enter to run code section by section
@@ -79,55 +79,55 @@ plotH = []; % clear the plot handle variable
 
 for ii = 1:length(modelOrder)
     fH{length(fH)+1} = figure;   
-        plot(w/pi, pow2db(abs(idealFreqResponse).^2), "DisplayName", "ideal");
+        plot(w/pi, pow2db(abs(idealFreqResponse).^2), 'DisplayName', 'ideal');
         hold on
-        plot(w/pi, pow2db(abs(peaks(:, ii)).^2), "DisplayName", "model");
-        title(sprintf("{AR(%d)} Spectral Estimation \n ${N = %d}$", modelOrder(ii), N));
-        xlabel("Normalised Frequency");
-        ylabel("PSD (dB)");
+        plot(w/pi, pow2db(abs(peaks(:, ii)).^2), 'DisplayName', 'model');
+        title(sprintf('{AR(%d)} Spectral Estimation \n ${N = %d}$', modelOrder(ii), N));
+        xlabel('Normalised Frequency');
+        ylabel('PSD (dB/Hz)');
         grid on; grid minor;
         axis([0.15, 0.35, 0, 50]);
-        legend("show");
+        legend('show');
         hold off
     %         drawnow; pause; % comment out for interactive-ish mode
 end
 %%
 fH{length(fH)+1} = figure;  
-    plot(w/pi, pow2db(abs(idealFreqResponse).^2), "DisplayName", "ideal",'LineStyle',':');
+    plot(w/pi, pow2db(abs(idealFreqResponse).^2), 'DisplayName', 'ideal','LineStyle',':');
     hold on
     for ii = [1,2,3,5,8,11]
-        plot(w/pi, pow2db(abs(peaks(:, ii)).^2), "DisplayName", sprintf("$p=%d$",modelOrder(ii)));
+        plot(w/pi, pow2db(abs(peaks(:, ii)).^2), 'DisplayName', sprintf('$p=%d$',modelOrder(ii)));
     end
     hold off
-    title(sprintf("{AR} Spectral Estimation \n ${N = %d}$", N));
-    xlabel("Normalised Frequency");
-    ylabel("PSD (dB)");
+    title(sprintf('{AR} Spectral Estimation \n ${N = %d}$', N));
+    xlabel('Normalised Frequency');
+    ylabel('PSD (dB/Hz)');
     grid on; grid minor;
 %     axis([0.15, 0.35, 0, 55]);
     axis([0.175, 0.45, 25, 52]);
-%     legend("show",'NumColumns', 4,'Location','south','Orientation', 'horizontal' );
-    legend("show",'NumColumns', 2 );
+%     legend('show','NumColumns', 4,'Location','south','Orientation', 'horizontal' );
+    legend('show','NumColumns', 2 );
     hold off
     %%
 fH{length(fH)+1} = figure;  
     yyaxis left
     plot(modelOrder, pow2db(sigma_w));
-    ylabel("Noise Power, $\sigma_{w}^{2}$ (dB)",'Color','k');
+    ylabel('Noise Power, $\sigma_{w}^{2}$ (dB)','Color','k');
     yyaxis right
     plot(modelOrder(3:end), pow2db(sigma_w(3:end)));
-    title(sprintf("{AR} Process Noise Power against Model Order \n ${N = %d}$", N));
-    xlabel("Model Order, $p$");
+    title(sprintf('{AR} Process Noise Power against Model Order \n ${N = %d}$', N));
+    xlabel('Model Order, $p$');
     grid on; grid minor;
     xticks(modelOrder)
     
 fH{length(fH)+1} = figure; 
     yyaxis left
     plot(modelOrder, error);
-    ylabel("Mean Square Error",'Color','k');
+    ylabel('Mean Square Error','Color','k');
     yyaxis right
     plot(modelOrder(3:end), error(3:end));
-    title(sprintf("{AR} Process MSE against Model Order \n ${N = %d}$", N));
-    xlabel("Model Order, $p$");
+    title(sprintf('{AR} Process MSE against Model Order \n ${N = %d}$', N));
+    xlabel('Model Order, $p$');
     grid on; grid minor;
     xticks(modelOrder)
     

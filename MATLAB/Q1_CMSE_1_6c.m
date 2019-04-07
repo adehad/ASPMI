@@ -1,4 +1,16 @@
 %% Q1 Classical and Modern Spectrum Estimation
+% 1.6c
+%{
+Calculate the OLS and PCR solutions for the parameter matrix B, 
+which relates Xnoise and Y. 
+Next, compare the estimation error between Y and YˆOLS = XnoiseBˆOLS and
+                                                 YˆPCR = X˜noiseBˆPCR. 
+
+Explain what happens when you estimate the data from the test-set using the
+ regression coefficients computed from the training set, and quantify the
+performance by comparing Ytest and Yˆtest-OLS = XtestBˆOLS with
+                                   Yˆtest-PCR = X˜testBˆPCR.
+%}
 %% Premable
 % Use Ctrl+Enter to run code section by section
 
@@ -34,7 +46,7 @@ rankComp = 3:8; % rank components to preserve
 
 % OLS
 % weigts
-OLS.B = Xnoise' * Xnoise \ Xnoise' * Y; % \ performs the inverse
+OLS.B = Xnoise' * Xnoise \ Xnoise' * Y; % \ performs the inverse if a matrix
 % targets
 OLS.Y = Xnoise * OLS.B;
 OLS.Y_test = Xtest * OLS.B;
@@ -57,15 +69,15 @@ for ii=1:length(rankComp)
                  *V.XTest(  :            , 1:rankComp(ii)   )';
     
              
-    % weights - B_PCR = V*S*(U')*Y
+    % weights - B_PCR = V*S^-1*(U')*Y
     PCR.B =   V.XNoise(  :            , 1:rankComp(ii)) ...
-             /S.XNoise( 1:rankComp(ii), 1:rankComp(ii)) ... % \ performs the inverse
+             /S.XNoise( 1:rankComp(ii), 1:rankComp(ii)) ... % / performs the inverse if a matrix
              *U.XNoise(  :            , 1:rankComp(ii))' ...
              *Y;
          
     % targets
-    PCR.Y = Xnoise_hat * PCR.B;
-    PCR.Y_test = Xtest_hat * PCR.B;
+    PCR.Y      = Xnoise_hat * PCR.B;
+    PCR.Y_test = Xtest_hat  * PCR.B;
     % errors
     ERRS.PCR_train(ii) = msErr(Y, PCR.Y);
     ERRS.PCR_test(ii)  = msErr(Ytest, PCR.Y_test);
@@ -76,26 +88,24 @@ fH = []; % clear the figure handle variable
 plotH = []; % clear the plot handle variable
 legendString = []; % clear the legend string variable
 
-fH{length(fH)+1} = figure;
-    plot([rankComp(1) rankComp(end)], [ERRS.OLS_train ERRS.OLS_train],'DisplayName',"OLS");
-    hold on
-    plot(rankComp, ERRS.PCR_train,'DisplayName',"PCR");
+fH{length(fH)+1} = figure; hold on
+    plot([rankComp(1) rankComp(end)], [ERRS.OLS_train ERRS.OLS_train],'DisplayName','OLS');
+    plot(rankComp, ERRS.PCR_train,'DisplayName','PCR');
     hold off
-    title("OLS vs PCR Error (Training)");
-    xlabel("Dimensionality Reduction Rank ");
-    ylabel("Mean Squared Error");
+    title('OLS vs PCR Error (Training)');
+    xlabel('Dimensionality Reduction Rank ');
+    ylabel('Mean Squared Error');
     xticks(rankComp)
     grid minor;
     legend('show')
     
-fH{length(fH)+1} = figure;
-    plot([rankComp(1) rankComp(end)], [ERRS.OLS_test ERRS.OLS_test],'DisplayName',"OLS");
-    hold on
-    plot(rankComp, ERRS.PCR_test,'DisplayName',"PCR");
+fH{length(fH)+1} = figure; hold on
+    plot([rankComp(1) rankComp(end)], [ERRS.OLS_test ERRS.OLS_test],'DisplayName','OLS');
+    plot(rankComp, ERRS.PCR_test,'DisplayName','PCR');
     hold off
-    title("OLS vs PCR Error (Testing)");
-    xlabel("Dimensionality Reduction Rank ");
-    ylabel("Mean Squared Error");
+    title('OLS vs PCR Error (Testing)');
+    xlabel('Dimensionality Reduction Rank ');
+    ylabel('Mean Squared Error');
     xticks(rankComp)
     grid minor;
     legend('show')

@@ -7,7 +7,7 @@
 mean and trend from the data are removed (use the MATLAB commands mean and detrend).
     Explain how the perception of the periodicities in the data changes when the
 data is transformed by:
- ?rst applying the logarithm to each data sample and
+ first applying the logarithm to each data sample and
  then subtracting the sample mean from this logarithmic data.
 %}
 %% Premable
@@ -113,8 +113,8 @@ fH{1} = figure;
     plot(years, relZNums_log_recenter);
 %     drawnow; pause;
     title('SunSpot Dataset');
-    xlabel("Years");
-    ylabel("Zurich Sunspot Number");
+    xlabel('Years');
+    ylabel('Zurich Sunspot Number');
     legend(legendString([1,2,4]), 'NumColumns', 3)
     yLims = ylim; yLims(2) = yLims(2) + 70;
     ylim(yLims)
@@ -130,9 +130,9 @@ fH{2} = figure;
 %     drawnow; pause;
     plot(fAx, P_sunspot_log_recenter(oneSide));
 %     drawnow; pause;
-    title(sprintf("{%s} Window Periodogram ", winLabel));
-    xlabel("Normalised Frequency ($\frac{\pi\ rad}{sample}$)");
-    ylabel("Power Density (dB)");
+    title(sprintf('{%s} Window Periodogram ', winLabel));
+    xlabel('Normalised Frequency ($\frac{\pi\ rad}{sample}$)');
+    ylabel('Power Density (dB/Hz)');
     legend(legendString([1,2,4]), 'NumColumns', 3)
     ylim([-inf 50])
     grid minor

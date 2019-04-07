@@ -1,16 +1,15 @@
 %% Q1 Classical and Modern Spectrum Estimation
-% 1.3a
+% 1.3b
 %{
- Write a MATLAB script which calculates both biased and unbiased ACF estimates
- of a signal and then use these ACF estimates to compute the corresponding
- correlogram in Eq. (15). Validate your code for different signals
-e.g. WGN, noisy sinusoidal signals and ?ltered WGN. 
-
-Explain how the spectral estimates based on (16)-(17) differ from one another? 
-In particular, how does the correlogram corresponding to the unbiased ACF
- estimates behave for large lags (i.e. k close to N)? 
-
-Does the unbiased ACF estimate result in negative values for the estimated PSD?
+Use your code from the previous section (only the biased ACF estimator) 
+to generate the PSD estimate of several realisations of a random process
+ and plot them as in Fig. 1.
+ 
+Generate different signals composed of sinusoids corrupted by noise and
+ elaborate on how disperse are the different realisation of the spectral estimate.
+ 
+Hint: use the
+fftand fftshiftcommands in MATLAB.
 %}
 %% Premable
 % Use Ctrl+Enter to run code section by section
@@ -50,23 +49,24 @@ testSignal = [ A(1)*sin(2*pi*n*fHz(1)) + ...
                                         zeros(1, K-length(n))]; % Zero Pad
 
 %% Generate PSD
-rngSeed = 13; % initialise random seed
+rSeed = 13; % initialise random seed
+rng(rSeed)
+
 numRealisations = 40; % Number of Realisations
 rngList = randi(2^16,numRealisations,1); % define random number list for consistent plots
 noisePower = 3; % Noise Power
 PSD_biased = zeros(numRealisations, K*2-1); % Pre-allocate for speed
+
 for ii = 1:numRealisations
-    
-    % Generate a new noise term (each loop_
+    % Generate a new noise term (each loop)
     noiseTerm = wgn( length(testSignal),1, noisePower, [], rngList(ii) );
     
     % Create the noisy signal
     testSignalTemp = testSignal + noiseTerm'; % transpose noise so same dimensions
     
-    % Use Custom Func to find PSD
-    [~,~,~, PSD_biased(ii,:), ~, fs] = ...
-                            acfEstimator(testSignalTemp);    
-
+    % Find PSD
+    [~,~,~, PSD_biased(ii,:), ~, fs] = acfEstimator(testSignalTemp); 
+                               
 end
 
 %% Plot
@@ -74,8 +74,7 @@ close all % close current figures
 fH = []; % clear the figure handle variable
 
 % Plot Realisations and Mean
-fH{1} = figure;
-    hold on;
+fH{1} = figure; hold on;
     plot(fs*effectiveFs, real(PSD_biased)', 'Color', COLORS(6, :), 'LineWidth', 0.5);
     plot(fs*effectiveFs, mean(real(PSD_biased),1)', 'Color', COLORS(1, :));
     
@@ -86,16 +85,16 @@ fH{1} = figure;
     plot([fs(find(fs>=fHz(4),1)), fs(find(fs>=fHz(4),1))], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
 
 
-    xlabel("Frequency ($\pi$ radians)");
-    ylabel("PSD, $P(\omega)$");
-    title(strcat(num2str(numRealisations), " PSD Realisations \& Mean"));
+    xlabel('Frequency ($\pi$ radians)');
+    ylabel('PSD, $P(\omega) (dB/Hz)$');
+    title(strcat(num2str(numRealisations), ' PSD Realisations \& Mean'));
 %     legend('show');
     xlim([0 2])
+    grid minor;
     
     
 % Plot Standard Deviations    
-fH{2} = figure;
-    hold on;
+fH{2} = figure; hold on;
     plot(fs*effectiveFs, std(real(PSD_biased),1)', 'Color', COLORS(2, :));
     
     yLims = ylim;
@@ -104,11 +103,12 @@ fH{2} = figure;
     plot([fs(find(fs>=fHz(3),1)), fs(find(fs>=fHz(3),1))], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
     plot([fs(find(fs>=fHz(4),1)), fs(find(fs>=fHz(4),1))], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
 
-    xlabel("Frequency ($\pi$ radians)");
-    ylabel("PSD, $P(\omega)$");
-    title(strcat(num2str(numRealisations), " PSD Realisations Standard Deviation"));
+    xlabel('Frequency ($\pi$ radians)');
+    ylabel('PSD, $P(\omega) (dB/Hz)$');
+    title(strcat(num2str(numRealisations), ' PSD Realisations Standard Deviation'));
 %     legend('show');
     xlim([0 2])
+    grid minor
 %% Save Figures
 
 if SAVE_FIGS

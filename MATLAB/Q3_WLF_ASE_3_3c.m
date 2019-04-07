@@ -1,4 +1,10 @@
 %% Q3 Widely Linear Filtering and Adaptive Spectrum Estimation
+% 3.3c
+%{
+Show that the least squares (LS) solution for the problem in (48) is given 
+by w =  (F^H F^-1) (F^Hy) and comment on its relationship to the
+ discrete Fourier transform (DFT) formula.
+%}
 %% Premable
 % Use Ctrl+Enter to run code section by section
 
@@ -53,6 +59,8 @@ K = 2048;
 mu = 1; % step-size
 gamma = [0 0.01 0.05 0.1 0.5]; % leakage factor
 
+M = 1;
+
 
 %% CLMS 
 % NOTE: {.'} operator used to transpose, without complex conjugating
@@ -69,7 +77,7 @@ for ii=1:length(gamma)
     % power spectrum estimation
     H = abs(H).^2;
 
-    % remove outliers
+    % Remove outliers
     medianH = 50 * median(median(H));
     outlier = H > medianH;
     H(outlier) = medianH;
@@ -92,9 +100,9 @@ for ii=1:length(clms_model.spectrum)
     fH{length(fH)+1} = figure; hold on
         surf(1:N, w, clms_model.spectrum{ii}, 'LineStyle','none','FaceColor','interp')
         view(2);
-        title(sprintf("FM: DFT-AR(%i) Spectrogram $\\gamma=%.3f$", M, gamma(ii)));
-        xlabel("Time Index");
-        ylabel("Frequency (Hz)");
+        title(sprintf('FM: DFT-CLMS Spectrogram $\\gamma=%.3f$', gamma(ii)));
+        xlabel('Time Index');
+        ylabel('Frequency (Hz)');
         grid on; grid minor;
         c = colorbar('eastoutside', 'TickLabelInterpreter', 'latex', 'FontName', 'Palatino Linotype'); % oh why MATLAB ...
         c.Label.String = 'PSD (dB/Hz)';

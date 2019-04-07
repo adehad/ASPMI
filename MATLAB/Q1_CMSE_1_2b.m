@@ -6,7 +6,7 @@ as well as the averaged periodogram with different window lengths:
  (10 s, 5 s, 1 s) to the EEG data.
  Can you identify the the peaks in the spectrum corresponding to SSVEP? 
 There should be a peak at:
- - the same frequency as the frequency of the ?ashing stimulus (integer X in
+ - the same frequency as the frequency of the flashing stimulus (integer X in
 the range [11, . . . , 20]), known as the fundamental frequency response peak,
  - and at some integer multiples of this value, known as the harmonics of the response.
  It is important to note that the subject was tired during the recording
@@ -57,8 +57,6 @@ K = EEG.fs/deltaF; % 6000 - Number of DFT points for 5 DFT points per Hz
 
 win_BKH = blackmanharris(N); % Blackman Harris Window
 winLabel = ["BK-Harris"];
-
-% win_
 
 %% Periodogram / PSD Calculations
 legendString = [];
@@ -111,7 +109,7 @@ fH{1} = figure;
     
     title("Full Size Rectangular Window EEG Periodogram");
     xlabel("Frequency (Hz)");
-    ylabel("PSD (dB)");
+    ylabel("PSD (dB/Hz)");
     grid minor;
     xlim([0 60])
     
@@ -132,18 +130,14 @@ fH{2} = figure;
     plot([fAx.win10s(fAx.win10s==50), fAx.win10s(fAx.win10s==50)], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
     plot([fAx.win10s(fAx.win10s==52), fAx.win10s(fAx.win10s==52)], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
 
-
-    
     % Confidence Levels
 %     plot(fAx.win10s,pow2db(P_EEG_Conf.win10s),'Color',COLORS(1,:),'LineWidth',0.5,'LineStyle','-.')
 %     plot(fAx.win5s,pow2db(P_EEG_Conf.win5s),'Color',COLORS(2,:),'LineWidth',0.5,'LineStyle','-.')
 %     plot(fAx.win1s,pow2db(P_EEG_Conf.win1s),'Color',COLORS(3,:),'LineWidth',0.5,'LineStyle','-.')
 
-
-        
     title("Varied Window Size Bartlett Average Periodogram");
     xlabel("Frequency (Hz)");
-    ylabel("PSD (dB)");
+    ylabel("PSD (dB/Hz)");
     grid minor;
     xlim([0 60])
     legend( plotH, legendString([2:end]), 'NumColumns', 3, 'Location', 'South' )

@@ -1,4 +1,14 @@
 %% Q1 Classical and Modern Spectrum Estimation
+% 1.6b
+%{
+Using only the r most significant principal components 
+(as determined by the identified rank), create a low-rank approximation 
+of Xnoise, denoted by X˜noise. 
+
+Compare the difference (error) between the variables (columns) of the
+noiseless input matrix, X, and those in the noise corrupted matrix Xnoise 
+and denoised matrix X˜noise.
+%}
 %% Premable
 % Use Ctrl+Enter to run code section by section
 
@@ -47,9 +57,9 @@ legendString = []; % clear the legend string variable
 
 fH{length(fH)+1} = figure;
     plot(rankComp, estimateErr);
-    title("Low Rank Approximation Error");
-    xlabel("Dimensionality Reduction Rank ");
-    ylabel("Mean Squared Error");
+    title('Low Rank Approximation Error');
+    xlabel('Dimensionality Reduction Rank ');
+    ylabel('Mean Squared Error');
     xticks(rankComp)
     grid minor;
     

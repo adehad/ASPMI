@@ -1,4 +1,17 @@
-%% Q3 Widely Linear Filtering and Adaptive Spectrum Estimation
+%% Q4 From LMS to Deep Learning
+% 4.2
+%{
+Typically, the generating process for the data is unknown and non-linear.
+ Therefore, we can add a non-linearity (commonly referred to as
+ an activation function) to the output of the LMS in order for the model to
+ become more expressive, as in Figure 10 which shows a dynamical perceptron. 
+
+Perform prediction of the zero-mean signal, y[n] - E{y[n]}, using the 
+dynamical perceptron and the tanh function as a non-linearity. 
+Plot the zero-mean signal against the output of the dynamical perceptron. 
+
+Elaborate on whether this activation function is appropriate?
+%}
 %% Premable
 % Use Ctrl+Enter to run code section by section
 
@@ -10,7 +23,7 @@ questionNum = 4;
 q_initialise;
 
 % Set the SAVE_FIGS to true if you want to save all figures
-% SAVE_FIGS = true;
+SAVE_FIGS = true;
 
 
 %% LMS Parameter
@@ -53,9 +66,9 @@ legendString = []; % clear the legend string variable
 fH{length(fH)+1} = figure; hold on
     plot(y, 'DisplayName', 'True');
     plot(y_pred, 'LineStyle', ':', 'DisplayName', 'Prediction');
-    title( sprintf("Dynamic Perceptron Output Variations \n $\\mu=$%.0e, $M=%i$, $\\phi$=\\texttt{%s}, a=%.2f, bias=%.2f",mu,M,func2str(dPerc.activatorFunc),dPerc.ampl,dPerc.bias) );
-    xlabel("Time Index, $n$");
-    ylabel("Magnitude");
+    title( sprintf('Dynamic Perceptron Output Variations \n $\\mu=$%.0e, $M=%i$, $\\phi$=\\texttt{%s}, a=%.2f, bias=%.2f',mu,M,func2str(dPerc.activatorFunc),dPerc.ampl,dPerc.bias) );
+    xlabel('Time Index, $n$');
+    ylabel('Magnitude');
     grid minor;
     legend('show', 'Location','best','NumColumns',2)
     xlim([0, 350])

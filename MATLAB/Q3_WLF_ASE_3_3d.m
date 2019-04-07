@@ -1,4 +1,12 @@
 %% Q3 Widely Linear Filtering and Adaptive Spectrum Estimation
+% 3.3d
+%{
+Implement the DFT-CLMS for the EEG signal POz used in Part 1.2.
+ To reduce computational burden, choose any segment POzof length 1200, 
+e.g. POz(a:a+1200-1). 
+
+Explain your observation about the time-frequency spectrum of the EEG signal.
+%}
 %% Premable
 % Use Ctrl+Enter to run code section by section
 
@@ -10,7 +18,7 @@ questionNum = 3;
 q_initialise;
 
 % Set the SAVE_FIGS to true if you want to save all figures
-% SAVE_FIGS = true;
+SAVE_FIGS = true;
 
 
 %% LMS Parameter
@@ -82,7 +90,7 @@ freqOfInterest = [13,26,50,100];
 % plot psd estimation        
 for ii=1:length(clms_model.spectrum)
     fH{length(fH)+1} = figure; hold on
-        % plotting this as a 3D surf is unecessary, going to an image
+        % plotting this as a 3D surf is unecessary, going to an image instead
         %{
         surf(1:N, w, clms_model.spectrum{ii}, 'LineStyle','none','FaceColor','interp')
         view(2);

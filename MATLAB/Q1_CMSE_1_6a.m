@@ -1,4 +1,14 @@
 %% Q1 Classical and Modern Spectrum Estimation
+% 1.6a
+%{
+Plot the singular values of X and Xnoise (hint: use the stem command), 
+and identify the rank of the input data X. 
+
+Plot the square error between each singular value of X and Xnoise. 
+
+Explain the effect of noise on the singular values, and state at what point 
+would it become hard to identify the rank of the matrix Xnoise.
+%}
 %% Premable
 % Use Ctrl+Enter to run code section by section
 
@@ -39,17 +49,17 @@ legendString = []; % clear the legend string variable
 
 fH{length(fH)+1} = figure;
     bar([SVD.X,SVD.XNoise]);
-    title("Singular Values of $X$ and $X_{noise}$");
-    xlabel("Index");
-    ylabel("SVD Magnitude");
+    title('Singular Values of $X$ and $X_{noise}$');
+    xlabel('Index');
+    ylabel('SVD Magnitude');
     grid minor;
-    legend(["pure","noisy"],'NumColumns',2)
+    legend({'pure','noisy'},'NumColumns',2)
     
 fH{length(fH)+1} = figure;
     bar([sqError]);
-    title("Square Error of $X$ and $X_{noise}$ Singular Values");
-    xlabel("Index");
-    ylabel("Square Error Magnitude");
+    title('Square Error of $X$ and $X_{noise}$ Singular Values');
+    xlabel('Index');
+    ylabel('Square Error Magnitude');
     grid minor;
 
 %% Save Figures
