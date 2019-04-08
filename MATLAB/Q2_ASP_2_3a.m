@@ -38,7 +38,7 @@ R = 100;
 % Signal
 % Sine Wave
 ampl = 1;
-omega = 0.01;
+omega = 0.01/2;
 % noise + colouring filter
 sigma_sq = 1;
 noise_mu = 0;

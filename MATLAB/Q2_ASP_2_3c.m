@@ -77,7 +77,7 @@ end
 % MSE: steady-state
 err.mse = zeros(R, length(ALE.Delay));
 % MisAdjustment: steady state
-err.mpse = zeros(1, length(ALE.Delay));
+err.mspe = zeros(1, length(ALE.Delay));
 
 %% LMS Error
 t_steady = 300; % steady state time index
@@ -114,8 +114,8 @@ end
 % MSE: steady-state
 err.mse = squeeze( mean( err.diff(:, t_steady:end, :).^2, 2) ); % mean over steady state
 
-% MPSE
-err.mpse = mean(err.mse,1);
+% MSPE
+err.mspe = mean(err.mse,1);
 
 %% Plots
 close all % close current figures
@@ -128,9 +128,9 @@ fH{length(fH)+1} = figure;
     plot(  mean(x_hat{1}(:, :),1)  , 'DisplayName', 'ALE');
     hold on;
     plot(  mean(x_hat{2}(:, :),1) , 'DisplayName', 'ANC');
-    plot( x, 'k:' , 'DisplayName', 'True');
+    plot( x, ':' , 'DisplayName', 'True');
 
-    title('ALE vs ANC Mean');
+    title(sprintf('ALE vs ANC Mean \n MSPE=%.3f vs %.3f, $M$=%i, $\\Delta_{ALE}$=%i',err.mspe(1), err.mspe(2), LMSorder,ALE.Delay));
     xlabel('Time Index');
     ylabel('Magnitude');
     grid minor;
@@ -144,11 +144,12 @@ fH{length(fH)+1} = figure; hold on
 
     plotH(3,:) = plot( x , 'Color',COLORS(3,:) , 'LineStyle',':');
 
-    title('ALE vs ANC Ensemble');
+    title(sprintf('ALE vs ANC Ensemble \n MSPE=%.3f vs %.3f, $M$=%i, $\\Delta_{ALE}$=%i',err.mspe(1), err.mspe(2), LMSorder,ALE.Delay));
     xlabel('Time Index');
     ylabel('Magnitude');
     grid minor;
     legend(plotH(:,1), {'ALE','ANC','True'})
+
 
 
 %% Save Figures
