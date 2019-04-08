@@ -5,9 +5,9 @@ function [y, e, W] = dPerceptron(X, d, mu, varargin)
 %       - d: Target vector, [1 N]
 %       - mu: Step size, numeric
 %       varargin:                                  variable input arguments
-%       - varargin{1}   = gamma: leakage coefficient, scalar (default: 0)
+%       - varargin{1}   = gamma: leakage coefficient, numeric     (default: 0)
 %       - varargin{>1}  = options: bias, amplitude, pre-trained weights struct    (default: 0,1,[])
-%       - varargin{any} = activator: activator, scalar       (default: @tanh)
+%       - varargin{any} = activator: activator func, func handle  (default: @tanh)
 % Output: 
 %       * y: Filter output,     [1 N]
 %       * e: Prediction error,  d-y
