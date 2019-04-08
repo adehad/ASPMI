@@ -222,7 +222,7 @@ fH{length(fH)+1} = figure; hold on
 
     title('Weight Error with Time');
     xlabel('Time');
-    ylabel('Weight Value', 'Color', 'k');
+    ylabel('Weight Magnitude', 'Color', 'k');
     grid minor;
     yLims = ylim;
     ylim([-inf, yLims(2)])
@@ -247,9 +247,9 @@ fH{length(fH)+1} = figure; hold on
         end
     end
 
-    title(' Mean Square Error with Time');
+    title('Mean Square Error against Time');
     xlabel('Time');
-    ylabel('Error Value', 'Color', 'k');
+    ylabel('MSE (dB)', 'Color', 'k');
     grid minor;
     yLims = ylim;
     ylim([-inf, yLims(2)*1.2])
