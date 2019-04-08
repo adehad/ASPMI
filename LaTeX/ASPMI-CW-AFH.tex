@@ -68,7 +68,7 @@
 \newpage
 \setcounter{tocdepth}{2} % only show 2 levels in the table of contents
 \tableofcontents
-
+%		% 				trim={<left> <lower> <right> <upper>}
 \newpage
 \section{Classical and Modern Spectrum Estimation} \label{sec: 1-CMSE}
 	\subsection{Properties of Power Spectral Density (PSD)} \label{sec: 1-1-prop-PSD}
@@ -215,30 +215,30 @@
 		\centering
 		\begin{subfigure}{0.49\textwidth}
 			\centering
-			\includegraphics[trim={2.2cm 11cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_3a_fig01.pdf} 
+			\includegraphics[trim={2.2cm 11cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_3a_fig04.pdf} 
 		\end{subfigure}
 		%		~ % forces onto the same row
 		\begin{subfigure}{0.49\textwidth}
 			\centering
-			\includegraphics[trim={2.2cm 11cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_3a_fig02.pdf} 
+			\includegraphics[trim={2.2cm 11cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_3a_fig05.pdf} 
 		\end{subfigure}
 				\begin{subfigure}{0.49\textwidth}
 			\centering
-			\includegraphics[trim={2.2cm 11cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_3a_fig03.pdf} 
+			\includegraphics[trim={2.2cm 11cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_3a_fig06.pdf} 
 		\end{subfigure}
 		%		~ % forces onto the same row
 		\begin{subfigure}{0.49\textwidth}
 			\centering
-			\includegraphics[trim={2.2cm 11cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_3a_fig04.pdf} 
+			\includegraphics[trim={2.2cm 11cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_3a_fig01.pdf} 
 		\end{subfigure}
 		\begin{subfigure}{0.49\textwidth}
 			\centering
-			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_3a_fig05.pdf} 
+			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_3a_fig02.pdf} 
 		\end{subfigure}
 		%		~ % forces onto the same row
 		\begin{subfigure}{0.49\textwidth}
 			\centering
-			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_3a_fig06.pdf} 
+			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_3a_fig03.pdf} 
 		\end{subfigure}
 		\captionsetup{justification=centering}
 		\caption{Set of Auto-Correlation Functions (ACFs) and their Correlograms}
@@ -251,9 +251,15 @@
 	\subsubsection{Biased ACF Estimator PSDs}
 
 	The process simulated was the following:
+	
 	\begin{equation}
-	x(n) = 2 sin(2 \pi 0.4 n) + 1.75 sin(2 \pi 0.6 n) + 0.85 sin(2 \pi 0.85 n) + 1.2 sin(2 \pi 0.95 n) + \eta(n) \quad \eta \sim \mathcal{N}(0, 1)
+		\begin{aligned}
+		x(n) = & 2 sin(2 \pi 0.4 n) + 1.75 sin(2 \pi 0.6 n) \\
+		&  + 0.85 sin(2 \pi 0.85 n) + 1.2 sin(2 \pi 0.95 n) + \eta(n) \quad \eta \sim \mathcal{N}(0, 1)
+		\end{aligned}
 	\end{equation}
+	
+	
 
 	\begin{figure}[H]
 		\centering
@@ -387,7 +393,7 @@
 			\centering
 			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_4b_fig16.pdf} 
 			\captionsetup{justification=centering}
-			\caption{Mean Squared Error}
+			\caption{Mean Squared Error with two y-scales}
 		\end{subfigure}
 		\captionsetup{justification=centering}
 		\caption{}
@@ -411,7 +417,7 @@
 			\centering
 			\includegraphics[trim={2.2cm 11.2cm 3cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_4c_fig16.pdf} 
 			\captionsetup{justification=centering}
-			\caption{Mean Squared Error}
+			\caption{Mean Squared Error with two y-scales}
 		\end{subfigure}
 		\captionsetup{justification=centering}
 		\caption{}
@@ -457,7 +463,8 @@
 			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_5a_fig06.pdf} 
 		\end{subfigure}
 		\captionsetup{justification=centering}
-		\caption{Standard and Bartlett Average Periodograms. \\ $W_L$ is the Window Length used. First 4 harmonics denoted by vertical black lines. Zero Padded Signal Length: $4096$.}
+		\caption{Standard and Bartlett Average Periodograms. \\ 
+				$W_L$ is the Window Length used. First 4 harmonics denoted by vertical black lines. Zero Padded Signal Length: $4096$.}
 		\label{fig: 1-5a}
 	\end{figure}
 
@@ -551,136 +558,720 @@
 %	\pagebreak
 	
 	
-	\subsection{Robust Regression} \label{sec: 1-6-robust-regression}
- 
- 	\subsubsection{Single Value Decomposition (SVD)}
-	\begin{figure}[H]
-		\centering
-		\begin{subfigure}{0.49\textwidth}
+	\subsection{Robust Regression} \label{sec: 1-6-robust-regression} 
+	 	\subsubsection{Single Value Decomposition (SVD)}
+			\begin{figure}[H]
+				\centering
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_6a_fig01.pdf} 
+					\captionsetup{justification=centering}
+					\caption{SVD}
+				\end{subfigure}
+				%		~ % forces onto the same row
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_6a_fig02.pdf} 
+					\captionsetup{justification=centering}
+					\caption{Square Error}
+				\end{subfigure}
+				\captionsetup{justification=centering}
+				\caption{}
+				\label{fig: 1-6a}
+			\end{figure}
+		
+		
+		
+			The rank of the input data would be indicated when the SVD Error increases or the non-zero SVD values end (for pure data) - hence the data is of rank 3. \\
+			Noise makes the SVD magnitude non-zero where we expect it to be zero for the pure input. Hence, in the real world where we would not have the pure dataset we would need to purely look at Figure \ref{fig: 1-6a} (a), if the SVD magnitude of the noise was comparable to that of the signal we would have difficulty establishing a criteria to distinguish signal and noise subspaces from the SVD method. \\
+	 
+	% 	\pagebreak
+	 	
+	 	\subsubsection{Low Rank Approximation Error}
+		 	\begin{minipage}[b]{0.49\textwidth}
+			By looking at the mean square error between the pure signal and the low-rank approximation of the noise, Figure \ref{fig: 1-6b}, we note that the minimum error is when the low-rank approximation matches that of the pure data.
+			\end{minipage}% 
+			\begin{minipage}{0.04\textwidth}
+				\hspace*{0.04\textwidth}
+			\end{minipage}% 
+			\begin{minipage}{0.49\textwidth}
+				\centering
+				\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_6b_fig01.pdf} 
+				\captionsetup{justification=centering}
+				\captionof{figure}{Effect of Changing Rank on the Approximation Error}
+				\label{fig: 1-6b}
+			\end{minipage}%
+	
+	 
+	 	\subsubsection{Ordinary Least Squares (OLS) \& Principle Component Regression (PCR)  Estimate Errors}
+	 	
+		 	\begin{figure}[H]
+		 		\centering
+		 		\begin{subfigure}{0.49\textwidth}
+		 			\centering
+		 			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_6c_fig01.pdf} 
+		 			\captionsetup{justification=centering}
+		 			\caption{Training Dataset Error}
+		 		\end{subfigure}
+		 		%		~ % forces onto the same row
+		 		\begin{subfigure}{0.49\textwidth}
+		 			\centering
+		 			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_6c_fig02.pdf} 
+		 			\captionsetup{justification=centering}
+		 			\caption{Testing Dataset Error}
+		 		\end{subfigure}
+		 		\captionsetup{justification=centering}
+		 		\caption{Comparison of Errors in the Training and Testing Datasets}
+		 		\label{fig: 1-6c}
+		 	\end{figure}
+		 
+		 	In both datasets we see that at the true model order the differences are tiny, in the training dataset we see that PCR underperforms by $0.85\%$, while in the testing dataset PCR outperforms by $1.05\%$. We can also note that decreasing the PCR model order further than the true model order, improves performance in the Training dataset but reduces performance in the Testing dataset.
+		
+		
+	 	\subsubsection{Ordinary Least Squares (OLS) \& Principle Component Regression (PCR)  Estimate Errors - Part 2}
+	 	\begin{minipage}{0.49\textwidth}
+	 		Again if we look at the true model order, Figure \ref{fig: 1-6d}, PCR outperforms OLS by $0.79\%$. We note how further reduction in dimensionality decreases the performance of PCR. In regard to effectiveness of each scheme, if the model order is unknown and cannot be approximated accurately, OLS is a safer choice, however best performance - although marginal - can be achieved if the model order is known and PCR is implemented.
+	 	\end{minipage}% 
+		 \begin{minipage}{0.04\textwidth}
+		 	  \hspace*{0.04\textwidth}
+		 \end{minipage}% 
+	 	\begin{minipage}{0.49\textwidth}
 			\centering
-			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_6a_fig01.pdf} 
-			\captionsetup{justification=centering}
-			\caption{SVD}
-		\end{subfigure}
-		%		~ % forces onto the same row
-		\begin{subfigure}{0.49\textwidth}
-			\centering
-			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_6a_fig02.pdf} 
-			\captionsetup{justification=centering}
-			\caption{Square Error}
-		\end{subfigure}
-		\captionsetup{justification=centering}
-		\caption{}
-		\label{fig: 1-6a}
-	\end{figure}
-
-
-
-	The rank of the input data would be indicated when the SVD Error increases or the non-zero SVD values end (for pure data) - hence the data is of rank 3. \\
-	Noise makes the SVD magnitude non-zero where we expect it to be zero for the pure input. Hence, in the real world where we would not have the pure dataset we would need to purely look at Figure \ref{fig: 1-6a} (a), if the SVD magnitude of the noise was comparable to that of the signal we would have difficulty establishing a criteria to distinguish signal and noise subspaces from the SVD method. \\
- 
-% 	\pagebreak
- 	
- 	\subsubsection{Low Rank Approximation Error}
- 	\begin{minipage}[b]{0.49\textwidth}
-	By looking at the mean square error between the pure signal and the low-rank approximation of the noise, Figure \ref{fig: 1-6b}, we note that the minimum error is when the low-rank approximation matches that of the pure data.
-	\end{minipage}% 
-	\begin{minipage}{0.04\textwidth}
-		\hspace*{0.04\textwidth}
-	\end{minipage}% 
-	\begin{minipage}{0.49\textwidth}
-		\centering
-		\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_6b_fig01.pdf} 
-		\captionsetup{justification=centering}
-		\captionof{figure}{Effect of Changing Rank on the Approximation Error}
-		\label{fig: 1-6b}
-	\end{minipage}%
-
- 
- 	\subsubsection{Ordinary Least Squares (OLS) \& Principle Component Regression (PCR)  Estimate Errors}
- 	
- 	\begin{figure}[H]
- 		\centering
- 		\begin{subfigure}{0.49\textwidth}
- 			\centering
- 			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_6c_fig01.pdf} 
- 			\captionsetup{justification=centering}
- 			\caption{Training Dataset Error}
- 		\end{subfigure}
- 		%		~ % forces onto the same row
- 		\begin{subfigure}{0.49\textwidth}
- 			\centering
- 			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_6c_fig02.pdf} 
- 			\captionsetup{justification=centering}
- 			\caption{Testing Dataset Error}
- 		\end{subfigure}
- 		\captionsetup{justification=centering}
- 		\caption{}
- 		\label{fig: 1-6c}
- 	\end{figure}
- 
- 	In both datasets we see that at the true model order the differences are tiny, in the training dataset we see that PCR underperforms by $0.85\%$, while in the testing dataset PCR outperforms by $1.05\%$. We can also note that decreasing the PCR model order further than the true model order, improves performance in the Training dataset but reduces performance in the Testing dataset.
-
-
- 	\subsubsection{Ordinary Least Squares (OLS) \& Principle Component Regression (PCR)  Estimate Errors - Part 2}
- 	\begin{minipage}{0.49\textwidth}
- 		Again if we look at the true model order, Figure \ref{fig: 1-6d}, PCR outperforms OLS by $0.79\%$. We note how further reduction in dimensionality decreases the performance of PCR. In regard to effectiveness of each scheme, if the model order is unknown and cannot be approximated accurately, OLS is a safer choice, however best performance - although marginal - can be achieved if the model order is known and PCR is implemented.
- 	\end{minipage}% 
-	 \begin{minipage}{0.04\textwidth}
-	 	  \hspace*{0.04\textwidth}
-	 \end{minipage}% 
- 	\begin{minipage}{0.49\textwidth}
-		\centering
- 		\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_6d_fig01.pdf} 
- 		\captionsetup{justification=centering}
- 		\captionof{figure}{Mean Square Error over several Realisations}
- 		\label{fig: 1-6d}
- 	\end{minipage}%
+	 		\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_6d_fig01.pdf} 
+	 		\captionsetup{justification=centering}
+	 		\captionof{figure}{Mean Square Error over several Realisations}
+	 		\label{fig: 1-6d}
+	 	\end{minipage}%
  
 \pagebreak
 \section{Adaptive Signal Processing} \label{sec: 2-ASP}
 	\subsection{The Least Mean Square (LMS) Algorithm} \label{sec: 2-1-LMS}
 		\subsubsection{Example Correlation Matrix}
 		\subsubsection{Example Learning Curve for an AR(2) Process}
+			\begin{figure}[H]
+				\centering
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q2_1b_fig01.pdf} 
+					\captionsetup{justification=centering}
+					\caption{Square Prediction Error, Single Realisation}
+				\end{subfigure}
+				%		~ % forces onto the same row
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q2_1b_fig03.pdf} 
+					\captionsetup{justification=centering}
+					\caption{Log of Mean of the Squared Prediction Error}
+				\end{subfigure}
+				\captionsetup{justification=centering}
+				\caption{$\mu$'s effect on the Squared Prediction Error and the Influence of the Log operator}
+				\label{fig: 2-1b}
+			\end{figure}
 		\subsubsection{Misadjustment}
+			\begin{minipage}[b]{0.49\textwidth}
+				\begin{table}[H]
+					\centering
+					\begin{tabular}{|c|c||c|}
+						\hline
+						\textbf{$\mu$} & \textbf{$\mathcal{M}_{LMS}$} & \textbf{$\mathcal{M}_{theoretical}$} \\
+						\hline
+						\hline
+						0.01 & $15$ & $0$ \\
+						\hline
+						0.005 & $2$ & $0$ \\
+						\hline
+					\end{tabular}
+					\captionsetup{justification=centering}
+					\caption{Theoretical and Estimated Misadjustments}
+					\label{tab: 2-1c}
+				\end{table}
+			\end{minipage}% 
+			\begin{minipage}{0.04\textwidth}
+				\hspace*{0.04\textwidth}
+			\end{minipage}% 
+			\begin{minipage}{0.49\textwidth}
+				\centering
+				\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q2_1f_fig01.pdf} 
+				\captionsetup{justification=centering}
+				\captionof{figure}{Estimated Misadjustment, varying with realisation}
+				\label{fig: 2-1c}
+			\end{minipage}%
+
 		\subsubsection{Steady State Estimation} 
+			\begin{figure}[H]
+				\centering
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q2_1cd_fig02.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				%		~ % forces onto the same row
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q2_1cd_fig03.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				\captionsetup{justification=centering}
+				\caption{$\mu$'s effect on weight stabilisation}
+				\label{fig: 2-1d}
+			\end{figure}
 		\subsubsection{Leaky LMS Derivation}
 		\subsubsection{Example Leaky LMS for an AR(2) Process}  
+		
+			\begin{figure}[H]
+				\centering
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q2_1f_fig01.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				%		~ % forces onto the same row
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q2_1f_fig02.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+			
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q2_1f_fig04.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				%		~ % forces onto the same row
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q2_1f_fig05.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+			
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q2_1f_fig07.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				%		~ % forces onto the same row
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q2_1f_fig08.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				\captionsetup{justification=centering}
+				\caption{$\gamma$'s leakage, forgetful, effect on weight stabilisation}
+				\label{fig: 2-1f}
+			\end{figure}
 	\subsection{Adaptive Step Sizes} \label{sec: 2-2-adaptive-step}
 		\subsubsection{Gradient Adaptive Step Sizes (GASS) Comparisons for a MA(1) System} 
+			\begin{figure}[H]
+				\centering
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q2_2a_fig03.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				%		~ % forces onto the same row
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q2_2a_fig04.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				\captionsetup{justification=centering}
+				\caption{Weight Error and Prediction Error for various GASS algorithms}
+				\label{fig: 2-2a}
+			\end{figure}
 		\subsubsection{NLMS Update Equation Equivalence} 
 		\subsubsection{Generalised Normalised Gradient Descent (GNGD) Example for a MA(1) System} 
+			\begin{figure}[H]
+				\centering
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q2_2c_fig03.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				%		~ % forces onto the same row
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q2_2c_fig04.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				\captionsetup{justification=centering}
+				\caption{Weight Error and Prediction Error comparing the GNGD NLMS to the Benveniste GASS Algorithm}
+				\label{fig: 2-2c}
+			\end{figure}
 	\subsection{Adaptive Noise Cancellation} \label{sec: 2-3-ANC}
-		\subsubsection{Adaptive Line Enhancer (ALE) Delay Investigation}
-		\subsubsection{Adaptive Line Enhancer (ALE) Filter Order Investigation}
+		\begin{minipage}[b]{0.49\textwidth}
+			\subsubsection{Adaptive Line Enhancer (ALE) Delay Investigation}
+			
+			\subsubsection{Adaptive Line Enhancer (ALE) Filter Order Investigation}
+			
+		\end{minipage}% 
+		\begin{minipage}{0.04\textwidth}
+			\hspace*{0.04\textwidth}
+		\end{minipage}% 
+		\begin{minipage}{0.49\textwidth}
+			\centering
+			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q2_3b_fig02.pdf} 
+			\captionsetup{justification=centering}
+			\captionof{figure}{ALE Delay \& Order Sweep}
+			\label{fig: 2-3a}
+			\vspace*{10px}
+			\centering
+			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q2_3b_fig03.pdf} 
+			\captionsetup{justification=centering}
+			\captionof{figure}{ALE Order Sweep}
+			\label{fig: 2-3b}
+		\end{minipage}%
+		
 		\subsubsection{Adaptive Noise Cancellation (ANC) Comparison}
+			\begin{figure}[H]
+				\centering
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q2_3c_fig01.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				%		~ % forces onto the same row
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q2_3c_fig02.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				\captionsetup{justification=centering}
+				\caption{ALE and ANC compared, MSPE was calculated from time index 600+}
+				\label{fig: 2-3c}
+			\end{figure}
 		\subsubsection{Adaptive Noise Cancellation (ANC) on real EEG Data}
+			\begin{figure}[H]
+				\centering
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 2.70cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q2_3d_fig01.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				%		~ % forces onto the same row
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.8cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q2_3d_fig06.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				
+				\captionsetup{justification=centering}
+				\caption{ Original Spectrogram \& investigating hyperparameters. \\
+						  50Hz was defined with a $\pm$2Hz window. }
+				\label{fig: 2-3d-orig+paramSweep}
+			\end{figure}
+		
+			As we can see above in Figure \ref{fig: 2-3d-orig+paramSweep}, the RMSE highlights the
+			tradeoffs we can expect for varying model order, $M$, and learning rate, $\mu$. Using 
+			this knowledge we can select $M=10,\mu=0.01$. 
+			
+			\begin{figure}[H]
+				\centering
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q2_3d_fig02.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				%		~ % forces onto the same row
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 2.70cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q2_3d_fig03.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q2_3d_fig04.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				%		~ % forces onto the same row
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 2.70cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q2_3d_fig05.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				\captionsetup{justification=centering}
+				\caption{$\mu$'s effect on noise cancellation}
+				\label{fig: 2-3d}
+			\end{figure}
+		
+			Above in Figure \ref{fig: 2-3d}, we can see that using the selected parameters neatly seals off the 50Hz noise. When we investigate the influence of the greater learning rate, we see great attenuation around the 50Hz band spreading by about 25Hz. Additionally, we can see an
+			amplification in the harmonic of the 50Hz noise, at 100Hz. \\
+			
+			It is important to highlight the significance of the external noise fed into the ANC algorithm, testing showed that increasing the noisiness of the provided signal drastically reduced ANC performance, outputs were unstable and rapidly approached infinity, becoming more prominent for larger $\mu$.
 	
 \pagebreak
 \section{Widely Linear Filtering and Adaptive Spectrum Estimation} \label{sec: 3-WLASE}
 	\subsection{Complex LMS and Widely Linear Modelling} \label{sec: 3-1-CLMS-ACLMS}
 		\subsubsection{Widely Linear Moving Average (WLMA) Process using Complex LMS (CLMS) \& Augmented CLMS (ACLMS)}
+			\begin{figure}[H]
+				\centering
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_1a_fig01.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				%		~ % forces onto the same row
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_1a_fig02.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				
+				\captionsetup{justification=centering}
+				\caption{Data Circularity's and the suitability of CLMS \& ACLMS}
+				\label{fig: 3-1a}
+			\end{figure}
+	
 		\subsubsection{CLMS and ACLMS Suitability with real (wind) data}
+			\begin{minipage}[b]{0.49\textwidth}
+				Le explanation
+			\end{minipage}% 
+			\begin{minipage}{0.04\textwidth}
+				\hspace*{0.04\textwidth}
+			\end{minipage}% 
+			\begin{minipage}{0.49\textwidth}
+				\centering
+				\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_1b_fig04.pdf} 
+				
+				\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_1b_fig05.pdf} 
+				
+				\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_1b_fig06.pdf} 
+				
+				\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_1b_fig07.pdf} 
+				
+				\captionsetup{justification=centering}
+				\captionof{figure}{Wind Regime Circularity and CLMS \& ACLMS estimates \\
+					Low, Medium and High Regimes used $\mu=0.1,0.01,0.001$ respectively}
+				\label{fig: 3-1b}
+			\end{minipage}%
+	
 		\subsubsection{Balanced and UnBalanced Voltages - Investigating Circularity}
+			\begin{figure}[H]
+				\centering
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_1c_fig01.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				%		~ % forces onto the same row
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_1c_fig02.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+			
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_1c_fig03.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				%		~ % forces onto the same row
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_1c_fig04.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+					
+				\captionsetup{justification=centering}
+				\caption{Voltage Data Circularity's and the influence of Phase and Magnitude Imbalance}
+				\label{fig: 3-1c}
+			\end{figure}
 		\subsubsection{Derivation for estimating Frequency from Filter Weights}
 		\subsubsection{Investigating the Accuracy of the Filter Estimates}
+			\begin{figure}[H]
+				\centering
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_1e_fig01.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				%		~ % forces onto the same row
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_1e_fig02.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_1e_fig03.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				%		~ % forces onto the same row
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_1e_fig04.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				
+				\captionsetup{justification=centering}
+				\caption{CLMS \& ACLMS Estimates of Balanced \& Unbalanced Voltage Data}
+				\label{fig: 3-1e}
+			\end{figure}
 	\subsection{Adaptive AR Model Based Time-Frequency Estimation} \label{sec: 3-2-adaptive-ar-spectrum-estimate}
 		\subsubsection{Frequency Modulated (FM) Signal Investigated with an AR(1) Process}
+			\begin{figure}[H]
+				\centering
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_2a_fig01.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				%		~ % forces onto the same row
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_2a_fig02.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				
+				\captionsetup{justification=centering}
+				\caption{Input Frequency \& Phase Spectrums}
+				\label{fig: 3-2a}
+			\end{figure}
+		
+		
+			\begin{figure}[H]
+				\centering
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_2a_fig03.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				%		~ % forces onto the same row
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_2a_fig04.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				
+				\captionsetup{justification=centering}
+				\caption{AR modelling of Input Data}
+				\label{fig: 3-2a-AR-models}
+			\end{figure}
 		\subsubsection{Frequency Modulated (FM) Signal Investigated with CLMS}
+			\begin{figure}[H]
+				\centering
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_2b_fig02.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				%		~ % forces onto the same row
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_2b_fig04.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				
+				\captionsetup{justification=centering}
+				\caption{CLMS Spectrograms}
+				\label{fig: 3-2b}
+			\end{figure}
+		
+			\begin{minipage}[b]{0.49\textwidth}
+				Le explanation
+			\end{minipage}% 
+			\begin{minipage}{0.04\textwidth}
+				\hspace*{0.04\textwidth}
+			\end{minipage}% 
+			\begin{minipage}{0.49\textwidth}
+				\centering
+				\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_2b_fig06.pdf} 
+
+				\captionsetup{justification=centering}
+				\captionof{figure}{Outliers for Increasing $\mu$}
+				\label{fig: 3-2c-outliers}
+			\end{minipage}%
 	\subsection{A Real Time Spectrum Analyser Using Least Mean Square} \label{sec: 3-3-real-time-spectrum-LMS}
 		\subsubsection{The Discrete Fourier Transform (DFT) Formula and the Least Square Solution}
 		\subsubsection{Fourier Transform in terms of Changes of Basis \& Projections}
 		\subsubsection{The DFT-CLMS vs. the AR(1) at Spectrum Analysis}
+		
+			\begin{minipage}[b]{0.49\textwidth}
+				Le explanation
+			\end{minipage}% 
+			\begin{minipage}{0.04\textwidth}
+				\hspace*{0.04\textwidth}
+			\end{minipage}% 
+			\begin{minipage}{0.49\textwidth}
+				\centering
+				\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_3c_fig01.pdf} 
+				
+				\captionsetup{justification=centering}
+				\captionof{figure}{Effect of No $\gamma$}
+				\label{fig: 3-3c-no-gamma}
+			\end{minipage}%
+		
+			\begin{figure}[H]
+				\centering
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_3c_fig02.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				%		~ % forces onto the same row
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_3c_fig03.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+			
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_3c_fig04.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				%		~ % forces onto the same row
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_3c_fig05.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				
+				\captionsetup{justification=centering}
+				\caption{DFT-CLMS Spectrograms}
+				\label{fig: 3-3c}
+			\end{figure}
+			
+			
 		\subsubsection{The DFT-CLMS on real (EEG) Data}
+			
+			\begin{figure}[H]
+				\centering
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 2.90cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_3d_fig01.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				%		~ % forces onto the same row
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 2.90cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_3d_fig02.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 2.90cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_3d_fig03.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				%		~ % forces onto the same row
+				\begin{subfigure}{0.49\textwidth}
+					\centering
+					\includegraphics[trim={2.2cm 11.2cm 2.90cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_3d_fig04.pdf} 
+					\captionsetup{justification=centering}
+				\end{subfigure}
+				
+				\captionsetup{justification=centering}
+				\caption{DFT-CLMS Spectrograms}
+				\label{fig: 3-3d}
+			\end{figure}
+			
 	
 	
 \pagebreak
 \section{From LMS to Deep Learning} \label{sec: 4-LMS-to-DL}
+
+		\begin{table}[H]
+			\centering
+			\begin{tabular}{|c|c||c|}
+				\hline
+				&&\\[-1em]
+				\textbf{Section} & \textbf{MSE} & \textbf{$R_p = 20\log_{10}({\frac{\sigma_y}{\sigma_e}})$} \\
+				&&\\[-1em]
+				\hline
+				\hline
+				\ref{sec: 4-1-LMS}	&	40.10267886		&	7.36965020 \\
+				\hline
+				\ref{sec: 4-2-dynamic-perc}	&	196.74102540	&	0.46236870 \\
+				\hline
+				\ref{sec: 4-3-amplitude-dynamic-perc}	&	8.43746488		&	14.13949750 \\
+				\hline
+				\ref{sec: 4-4-biasing-dynamic-perceptron}	&	11.79598862		&	12.69087475 \\
+				\hline
+				\ref{sec: 4-5-weight-training-dynamic-perceptron}	&	10.36045544		&	13.27539539 \\
+				\hline
+			\end{tabular}
+			\captionsetup{justification=centering}
+			\caption{Mean Square Errors \& Prediction Gains for Sections 1-5}
+			\label{tab: 4-mse-Rp}
+		\end{table}
+	
 	\subsection{The LMS} \label{sec: 4-1-LMS}
+		\begin{minipage}[b]{0.49\textwidth}
+			Le explanation
+		\end{minipage}% 
+		\begin{minipage}{0.04\textwidth}
+			\hspace*{0.04\textwidth}
+		\end{minipage}% 
+		\begin{minipage}{0.49\textwidth}
+			\centering
+			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q4_1_fig01.pdf} 
+			
+			\captionsetup{justification=centering}
+			\captionof{figure}{Plain LMS}
+			\label{fig: 4-1}
+		\end{minipage}%
 	\subsection{The Dynamic Perceptron with $\texttt{tanh}$ Activation} \label{sec: 4-2-dynamic-perc}
+		\begin{minipage}[b]{0.49\textwidth}
+			Le explanation
+		\end{minipage}% 
+		\begin{minipage}{0.04\textwidth}
+			\hspace*{0.04\textwidth}
+		\end{minipage}% 
+		\begin{minipage}{0.49\textwidth}
+			\centering
+			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q4_2_fig01.pdf} 
+			
+			\captionsetup{justification=centering}
+			\captionof{figure}{Dynamic Perceptron, LMS with \texttt{tanh} Activation}
+			\label{fig: 4-2}
+		\end{minipage}%
 	\subsection{Adding Amplitude Scaling to the Dynamic Perceptron} \label{sec: 4-3-amplitude-dynamic-perc}
+		\begin{minipage}[b]{0.49\textwidth}
+			Le explanation
+		\end{minipage}% 
+		\begin{minipage}{0.04\textwidth}
+			\hspace*{0.04\textwidth}
+		\end{minipage}% 
+		\begin{minipage}{0.49\textwidth}
+			\centering
+			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q4_3_fig01.pdf} 
+			
+			\captionsetup{justification=centering}
+			\captionof{figure}{Dynamic Perceptron with Constant Amplitude Scaling}
+			\label{fig: 4-3}
+		\end{minipage}%
 	\subsection{Biasing with the Dynamic Perceptron} \label{sec: 4-4-biasing-dynamic-perceptron}
+		\begin{minipage}[b]{0.49\textwidth}
+			Le explanation
+		\end{minipage}% 
+		\begin{minipage}{0.04\textwidth}
+			\hspace*{0.04\textwidth}
+		\end{minipage}% 
+		\begin{minipage}{0.49\textwidth}
+			\centering
+			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q4_4_fig01.pdf} 
+			
+			\captionsetup{justification=centering}
+			\captionof{figure}{Dynamic Perceptron with Auto-biasing}
+			\label{fig: 4-4}
+		\end{minipage}%
 	\subsection{Pre-training the weights} \label{sec: 4-5-weight-training-dynamic-perceptron}
+		\begin{minipage}[b]{0.49\textwidth}
+			Le explanation
+		\end{minipage}% 
+		\begin{minipage}{0.04\textwidth}
+			\hspace*{0.04\textwidth}
+		\end{minipage}% 
+		\begin{minipage}{0.49\textwidth}
+			\centering
+			\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q4_5_fig01.pdf} 
+			
+			\captionsetup{justification=centering}
+			\captionof{figure}{Dynamic Perceptron with Pre-trained Weights}
+			\label{fig: 4-5}
+		\end{minipage}%
 	\subsection{What is backpropogation?} \label{sec: 4-6-backpropogation}
 	\subsection{Deep Network Epoch Effect} \label{sec: 4-7-DL-epoch}
 	\subsection{Deep Network Noise Effect} \label{sec: 4-7-DL-noise}
