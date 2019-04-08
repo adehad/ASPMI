@@ -1,15 +1,19 @@
 function [X, y] = arima2diffEqns(signal, lags, varargin)
-% arima2diffEqns	Convert time series to differential equation matrix.
+% arima2diffEqns	Convert time series to difference equation matrix.
 % Input: 
-%       - s: input signal,  [1 N] or [N 1]
-%       - lags: time delays, 1D vector - length(lags) = M (Order of Filter)
+%       - s: input signal,   [1 N] or [N 1]
+%       - lags: time delays, [1 M] or [M 1] length(lags) = M (Order of Filter)
+%               A lag of 0 is the current time-sample, for predictors you
+%               want to start with a lag of 1, this could also be done by
+%               specifying a Delta of 1
 %       varargin:                                  variable input arguments
-%       - varargin{1} = Delta: additional output delay 
+%       - varargin{1} = Delta: additional lag delay 
 % Output: 
-%       * X: Design matrix, [M N-1]
-%       * y: Target vector, [1 N-1]
-%   [X, y] = arima2diffEqns(s, lags, Delta) splits s differential equations,
-%            with lags specified by lags, and Delta.
+%       * X: Design matrix, rows is the signal delayed by lags [M N]
+%       * y: Target vector with maximum delay,                 [1 N]
+%   [X, y] = arima2diffEqns(s, lags, Delta) splits s into difference equations,
+%            with lags specified by lags, and Delta. Note: the order of lags
+%            in the lag vector matches the lag order of the output matrix
 
     Delta = 0;
     
@@ -26,10 +30,10 @@ function [X, y] = arima2diffEqns(signal, lags, varargin)
         if isa(uint64(varargin{1}),'integer')
             Delta = varargin{1};
             if Delta < 0
-                error('Additional Output lag (Delta) should be positive')
+                error('Additional lag (Delta) should be positive')
             end
         else
-            error('Additional Output lag (Delta) should be an integer')
+            error('Additional lag (Delta) should be an integer')
         end
     end
     
