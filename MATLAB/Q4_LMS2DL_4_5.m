@@ -44,6 +44,8 @@ y = y_raw;
 mu = 1e-5;
 M = 4; % LMS order
 lags = @(order) 0:order-1; % starts at 0 lag, hence -1
+Delta = 1; % delta for prediction 
+
 gamma = 0;
 dPerc.activatorFunc = @tanh;
 dPerc.bias = 1;
@@ -52,18 +54,18 @@ dPerc.ampl = max(y);
 %% LMS
 nSamples = 20;
 
-[U,~] = arima2diffEqns( y(1:nSamples), lags(M) ); 
+[U,~] = arima2diffEqns( y(1:nSamples), lags(M)+Delta ); 
 dPerc.W = zeros(size(U,1)+1, 1); % +1 as bias adds an extra dimension
 % pre-train weights - overfit to first nSamples 
 for ii=1:100
     [~,~,tempWeights] = dPerceptron(U, y(1:nSamples)', mu, gamma, dPerc.activatorFunc, dPerc);
     dPerc.W = tempWeights(:,end);
 end
-[U,~] = arima2diffEqns( y, lags(M) );  
+[U,~] = arima2diffEqns( y, lags(M)+Delta );  
 dPerc.W = ones(size(U,1)+1,size(U,2)).*tempWeights(:,end);
 [y_pred,err,~] = dPerceptron(U, y', mu, gamma, dPerc.activatorFunc, dPerc);
     
-msErr = meansqr(y-y_pred);
+msErr = meansqr(y-y_pred');
 r_p = mag2db(std(y)/std(err));
 
 fprintf('MSE: %.8f \t R_p: %.8f \n',msErr,r_p);

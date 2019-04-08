@@ -41,16 +41,18 @@ y = y_raw - mean(y_raw);
 mu = 1e-5;
 M = 4; % LMS order
 lags = @(order) 0:order-1; % starts at 0 lag, hence -1
+Delta = 1; % delta for prediction 
+
 gamma = 0;
 dPerc.activatorFunc = @tanh;
 dPerc.bias = 0;
 dPerc.ampl = max(y);
 
 %% LMS
-[U,~] = arima2diffEqns( y, lags(M) );  
+[U,~] = arima2diffEqns( y, lags(M)+Delta );  
 [y_pred,err,~] = dPerceptron(U, y', mu, gamma, dPerc.activatorFunc, dPerc);
 
-msErr = meansqr(y-y_pred);
+msErr = meansqr(y-y_pred');
 r_p = mag2db(std(y)/std(err));
 
 fprintf('MSE: %.8f \t R_p: %.8f \n',msErr,r_p);
