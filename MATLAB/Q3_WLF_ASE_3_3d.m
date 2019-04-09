@@ -99,7 +99,7 @@ for ii=1:length(clms_model.spectrum)
         for jj=1:length(freqOfInterest)
             plot([1, N],[freqOfInterest(jj), freqOfInterest(jj)], 'r:');
         end
-        title(sprintf("EEG: \\texttt{POz} DFT-AR Spectrogram $\\gamma=%.3f$", gamma(ii)));
+        title(sprintf("EEG: \\texttt{POz} DFT-CLMS Spectrogram $\\gamma=%.3f$", gamma(ii)));
         xlabel("Time Index");
         ylabel("Frequency (Hz)");
         grid on; grid minor;
