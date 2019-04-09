@@ -50,7 +50,7 @@ Delta = 1; % delta for prediction
 
 gamma = 0;
 dPerc.activatorFunc = @tanh;
-dPerc.bias = 10;
+dPerc.bias = 1;
 dPerc.ampl = max(y);
 
 %% LMS
