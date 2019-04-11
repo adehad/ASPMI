@@ -50,17 +50,24 @@ Delta = 1; % delta for prediction
 
 gamma = 0;
 dPerc.activatorFunc = @tanh;
-dPerc.bias = 1;
+dPerc.bias = 10;
 dPerc.ampl = max(y);
 
 %% LMS
 [U,~] = arima2diffEqns( y, lags(M)+Delta );  
 [y_pred,err,~] = dPerceptron(U, y', mu, gamma, dPerc.activatorFunc, dPerc);
 
-msErr = meansqr(y-y_pred');
-r_p = mag2db(std(y)/std(err));
 
-fprintf('MSE: %.8f \t R_p: %.8f \n',msErr,r_p);
+msErr(1) = meansqr(y-y_pred');
+r_p(1) = mag2db(std(y_pred)/std(err));
+
+fprintf('MSE: %.8f \t R_p: %.8f \n',msErr(1),r_p(1));
+
+t_steady = 500;
+msErr(2) = meansqr( y(t_steady:end)-y_pred(t_steady:end)' );
+r_p(2) = mag2db( std( y_pred(t_steady:end) )/std( err(t_steady:end) ) );
+
+fprintf('MSE: %.8f \t R_p: %.8f \n',msErr(2),r_p(2));
 %% Plots
 close all % close current figures
 fH = []; % clear the figure handle variable
