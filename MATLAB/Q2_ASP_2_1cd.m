@@ -15,7 +15,7 @@ Note that you may do this by averaging the steady-state values of the coefficien
 (obtained along the the final iterations of the LMS) over 100 independent trials
  of the experiment. 
 
-Compare these estimated values with the true coef?cients, and explain your findings.
+Compare these estimated values with the true coefficients, and explain your findings.
 %}
 %% Premable
 % Use Ctrl+Enter to run code section by section
@@ -107,13 +107,18 @@ fH = []; % clear the figure handle variable
 plotH = []; % clear the plot handle variable
 legendString = []; % clear the legend string variable
 
+realMisAdj(1) = 0.0093;
+realMisAdj(2) = 0.0463;
+
 % Plot misAdjustment variation with time
 fH{length(fH)+1} = figure; hold on
-    plot( err.misAdj(:,1), 'DisplayName', sprintf('$\\mu=%.2f$', mu(1)) );
-    plot( err.misAdj(:,2), 'DisplayName', sprintf('$\\mu=%.2f$', mu(2))  );
+    plot( err.misAdj(:,1), 'DisplayName', sprintf('$\\mu=%.2f$', mu(1)), 'Color', COLORS(1,:) );
+    plot( [0, R], [realMisAdj(1), realMisAdj(1)], 'DisplayName', sprintf('$\\mathcal{M}_{\\mu=%.2f}$', mu(1)), 'Color', COLORS(1,:), 'LineStyle', ':' );
+    plot( err.misAdj(:,2), 'DisplayName', sprintf('$\\mu=%.2f$', mu(2)), 'Color', COLORS(2,:) );
+    plot( [0, R], [realMisAdj(2), realMisAdj(2)], 'DisplayName', sprintf('$\\mathcal{M}_{\\mu=%.2f}$', mu(2)), 'Color', COLORS(2,:), 'LineStyle', ':' );
     hold off
     
-    title('MisAdjustment Error \n $\\gamma=0$');
+    title('MisAdjustment Variation, $\gamma=0$');
     xlabel('Realisation');
     ylabel('MisAdjustment');
     grid minor;
@@ -124,14 +129,14 @@ fH{length(fH)+1} = figure;
     % mu = 0.05
     yyaxis left
     hold on
-    plot( squeeze(mean(weights{1}(:, :, 1))), 'DisplayName', '$\hat{a_{1}}$', 'Color', COLORS(1,:) );
+    plot( squeeze(mean(weights{1}(:, :, 1))), 'DisplayName', '$\hat{a}_{1}$', 'Color', COLORS(1,:) );
     xLims{1} = xlim;
     plot( xlim, [a(1), a(1)], 'DisplayName', '${a_{1}}$', 'Color', COLORS(1,:), 'LineStyle', ':' );
     hold off
     
     yyaxis right
     hold on
-    plot( squeeze(mean(weights{1}(:, :, 2))), 'DisplayName', '$\hat{a_{2}}$', 'Color', COLORS(2,:) );
+    plot( squeeze(mean(weights{1}(:, :, 2))), 'DisplayName', '$\hat{a}_{2}$', 'Color', COLORS(2,:) );
     plot( xlim, [a(2), a(2)], 'DisplayName', '${a_{2}}$', 'Color', COLORS(2,:), 'LineStyle', ':' );
     hold off
     
@@ -150,14 +155,14 @@ fH{length(fH)+1} = figure;
     % mu = 0.01
     yyaxis left
     hold on
-    plot( squeeze(mean(weights{2}(:, :, 1))), 'DisplayName', '$\hat{a_{1}}$', 'Color', COLORS(1,:) );
+    plot( squeeze(mean(weights{2}(:, :, 1))), 'DisplayName', '$\hat{a}_{1}$', 'Color', COLORS(1,:) );
     xLims{1} = xlim;
     plot( xlim, [a(1), a(1)], 'DisplayName', '${a_{1}}$', 'Color', COLORS(1,:), 'LineStyle', ':' );
     hold off
     
     yyaxis right
     hold on
-    plot( squeeze(mean(weights{2}(:, :, 2))), 'DisplayName', '$\hat{a_{2}}$', 'Color', COLORS(2,:) );
+    plot( squeeze(mean(weights{2}(:, :, 2))), 'DisplayName', '$\hat{a}_{2}$', 'Color', COLORS(2,:) );
     plot( xlim, [a(2), a(2)], 'DisplayName', '${a_{2}}$', 'Color', COLORS(2,:), 'LineStyle', ':' );
     hold off
     

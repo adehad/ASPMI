@@ -114,7 +114,7 @@ for whatGamma=1:length(gamma)
         plot( err.misAdj{whatGamma}(:,2), 'DisplayName', sprintf('$\\mu=%.2f$',mu(2) ) );
         hold off
 
-        title(sprintf('MisAdjustment Error \n $\\gamma=%.2f$', gamma(whatGamma) ));
+        title(sprintf('MisAdjustment Variation \n $\\gamma=%.2f$', gamma(whatGamma) ));
         xlabel('Realisation');
         ylabel('MisAdjustment');
         grid minor;
@@ -125,14 +125,14 @@ for whatGamma=1:length(gamma)
         % mu = 0.05
         yyaxis left
         hold on
-        plot( squeeze(mean(selWeightsA(:, :, 1))), 'DisplayName', '$\hat{a_{1}}$', 'Color', COLORS(1,:) );
+        plot( squeeze(mean(selWeightsA(:, :, 1))), 'DisplayName', '$\hat{a}_{1}$', 'Color', COLORS(1,:) );
         xLims{1} = xlim;
         plot( xlim, [a(1), a(1)], 'DisplayName', '${a_{1}}$', 'Color', COLORS(1,:), 'LineStyle', ':' );
         hold off
 
         yyaxis right
         hold on
-        plot( squeeze(mean(selWeightsA(:, :, 2))), 'DisplayName', '$\hat{a_{2}}$', 'Color', COLORS(2,:) );
+        plot( squeeze(mean(selWeightsA(:, :, 2))), 'DisplayName', '$\hat{a}_{2}$', 'Color', COLORS(2,:) );
         plot( xlim, [a(2), a(2)], 'DisplayName', '${a_{2}}$', 'Color', COLORS(2,:), 'LineStyle', ':' );
         hold off
 
@@ -151,14 +151,14 @@ for whatGamma=1:length(gamma)
         % mu = 0.01
         yyaxis left
         hold on
-        plot( squeeze(mean(selWeightsB(:, :, 1))), 'DisplayName', '$\hat{a_{1}}$', 'Color', COLORS(1,:) );
+        plot( squeeze(mean(selWeightsB(:, :, 1))), 'DisplayName', '$\hat{a}_{1}$', 'Color', COLORS(1,:) );
         xLims{1} = xlim;
         plot( xlim, [a(1), a(1)], 'DisplayName', '${a_{1}}$', 'Color', COLORS(1,:), 'LineStyle', ':' );
         hold off
 
         yyaxis right
         hold on
-        plot( squeeze(mean(selWeightsB(:, :, 2))), 'DisplayName', '$\hat{a_{2}}$', 'Color', COLORS(2,:) );
+        plot( squeeze(mean(selWeightsB(:, :, 2))), 'DisplayName', '$\hat{a}_{2}$', 'Color', COLORS(2,:) );
         plot( xlim, [a(2), a(2)], 'DisplayName', '${a_{2}}$', 'Color', COLORS(2,:), 'LineStyle', ':' );
         hold off
 
