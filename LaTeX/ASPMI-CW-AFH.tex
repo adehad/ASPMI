@@ -51,7 +51,7 @@
 \newcommand{\reportsupervisor}{Prof. Danilo P. Mandic}
 \newcommand{\reporttype}{EE4-13 Adaptive Signal Processing and Machine Intelligence (2018-2019)}
 \newcommand{\wordcount}{0}
-\date{April 2019}
+\date{12th April 2019}
 
 \renewcommand\thesection{\arabic{section}} % Define alphabetical numeration vs. arabic numbering
 \renewcommand\thesubsection{\thesection.\arabic{subsection}}
@@ -140,7 +140,7 @@
 	
 	\begin{figure}[H]
 		\centering
-		\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_1b_fig01.pdf} 
+		\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=0.5\textwidth]{../MATLAB/figures/q1_1b_fig01.pdf} 
 		\captionsetup{justification=centering}
 		\caption{An example of the Limiting Case of the Periodogram Definition}
 		\label{fig: 1-1b}
@@ -270,7 +270,7 @@
 	\end{figure}
 	
 	Figure \ref{fig: 1-3a}. For the autocorrelation functions: we can see that the biased estimator tends to 0 for increasing lag magnitude, whereas the unbiased estimator remains somewhat constant, although at the extremes it begins to increase to approximately double the constant value.\\
-	For the correlograms: we observe that the biased estimator does not contain negative values.
+	For the correlograms: we observe that the biased estimator does not contain negative values and that the unbiased estimator is approximately similar for smaller lags.
 	
 	\subsubsection{Biased ACF Estimator PSDs}
 
@@ -328,7 +328,7 @@
 		\label{fig: 1-3c}
 	\end{figure}
 
-	Figure \ref{fig: 1-3c}. It is advantageous that the standard deviation decreases around our frequencies of interest instead of increases. 
+	Figure \ref{fig: 1-3c}. It is advantageous that the standard deviation decreases around our frequencies as be seen at the 4th frequency, where on Figure \ref{fig: 1-3b}, the peak was ambiguous, here as a trough it is much better defined.
 
 	\subsubsection{Influence of Data Samples on the PSD}
 	
@@ -447,7 +447,7 @@
 		\label{fig: 1-4c}
 	\end{figure}
 
-	The same trend is seen in Figure \ref{fig: 1-4c}, as we saw with $N=500$, although the estimate now matches the underlying model much better, reflected in the drastically lower MSE. \\
+	The same trend is seen in Figure \ref{fig: 1-4c}, as we saw with $N=500$, although the estimate now matches the underlying model much better, reflected in the drastically lower Mean Square Error (MSE). \\
 	
 	It is noted that for a more valid comparison of model order's influence on the estimate's error the Akaike Information Criterion (AIC) or the Bayesian Information Criterion (BIC) are more suitable quantifiers of model order suitability than MSE. But the accuracy trend reflected in the MSE is still valid for our comparisons.
 	
@@ -512,7 +512,7 @@
 
 	\subsubsection{Analysis of the RRI PSD Estimates}
 	
-	Figure \ref{fig: 1-5a} shows us distinct peaks for each trial that somewhat agrees with the breathing expected. We note that harmonics are difficult to distinguish, despite the large zero padding of the signal. Table \ref{tab: 1-5a} highlights how the observed peaks align with the expected peaks.
+	Figure \ref{fig: 1-5a} shows us distinct peaks for each trial that somewhat agrees with the breathing expected. The performance of the $W_L=50$ is also sufficiently accurate for Trials 1 and 2, however less so for Trial 3. We note that harmonics are difficult to distinguish, despite the large zero padding of the signal. Table \ref{tab: 1-5a} highlights how the observed peaks align with the expected peaks.
 	\pagebreak
 	
 	\subsubsection{AR PSD Estimate for the RRI Dataset}
@@ -558,20 +558,20 @@
 			%		\vspace{-10pt}
 			
 			\begin{minipage}{0.46\textwidth}
-				The AR spectral estimate in Figure \ref{fig: 1-5c} correctly identified the peak from models of order $p\gtrapprox10$. We note that the estimate resembles a smooth envelope over our PSD and correctly identifies clear peaks in the standard PSD at $p=10$. We also can see for higher order models that there are move fluctuations as the model starts to overfit for the input data's natural noisiness. \\
+				The AR spectral estimate in Figure \ref{fig: 1-5c} correctly identified the peak from models of order $p\gtrapprox10$. We note that the estimate resembles a smooth envelope over our PSD and correctly identifies clear peaks in the standard PSD at $p=10$. We also can see for higher order models that there are move fluctuations as the model starts to overfit for the input data's natural noisiness. Compared to our periodogram estimate we are better able to find harmonics in Trial 2 with the AR model, but unfortunately they are not accurate.
 			\end{minipage}% 
 			\begin{minipage}{0.04\textwidth}
 				\hspace*{0.04\textwidth}
 			\end{minipage}% 
 			\begin{minipage}{0.49\textwidth}
 				\begin{subfigure}{\textwidth}
-					\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_5c_fig02.pdf} 
+					\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_5c_fig03.pdf} 
 					\caption{}
 				\end{subfigure}%
 %				\centering
 %				\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q1_5c_fig03.pdf} 
 				\captionsetup{justification=centering}
-				\captionof{figure}{AR Estimate Periodograms. \\ $p$ is the model order.}
+				\captionof{figure}{AR Estimate Periodograms. \\ $p$ is the model order. Black lines are frequency of interest and its harmonics}
 				\label{fig: 1-5c}
 			\end{minipage}%
 		\end{figure}
@@ -611,7 +611,7 @@
 	 	
 	 	\subsubsection{Low Rank Approximation Error}
 		 	\begin{minipage}[b]{0.49\textwidth}
-			By looking at the mean square error between the pure signal and the low-rank approximation of the noise, Figure \ref{fig: 1-6b}, we note that the minimum error is when the low-rank approximation matches that of the pure data.
+			By looking at the mean square error between the pure signal and the low-rank approximation of the noise, Figure \ref{fig: 1-6b}, we note that the minimum error is when the low-rank approximation matches that of the pure data. This clear difference would allow automated algorithms to search for the minimum MSE error and correct obtain the appropriate model order.
 			\end{minipage}% 
 			\begin{minipage}{0.04\textwidth}
 				\hspace*{0.04\textwidth}
@@ -678,7 +678,7 @@
 			where $\eta(n) \sim \mathcal{N}(0, \sigma_{\eta}^{2})$. The Least Mean Square (LMS) algorithm is used to approximate the autoregressive parameters $a_{1}, a_{2}$ from data, with input $\mathbf{x}(n) = [x(n-1), x(n-2)]^{T}$ and output
 			$y(n) = x(n)$ .
 			
-			We will first check for stationarity, we know that for an AR(2) process to be stationary the roots of its characteristic polynomial must lie outside the unit circle, which can be checked if the following are satisfied:
+			We will first check for stationarity, we know that for an AR(2) process to be stationary the roots of its characteristic polynomial must lie outside the unit circle, which can be confirmed if the following are satisfied:
 			\vspace*{-\baselineskip}
 			\begin{align}
 			a_1+a_2 & < 1 \\
@@ -717,7 +717,7 @@
 			\label{eq: 2-1a-acf_ar_2}
 			\end{align}
 			\noindent
-			Using the true process parameters $a_{1} = 0.1$, $a_{2} = 0.8$ and $\sigma_{\eta}^{2} = 0.25$, together with the even propert of the ACF, $r_{xx}(-k) = r_{xx}(k), \forall k \in \setInteger$, we obtain three simultaneous equations with three unknowns:
+			Using the true process parameters $a_{1} = 0.1$, $a_{2} = 0.8$ and $\sigma_{\eta}^{2} = 0.25$, together with the even property of the ACF, $r_{xx}(-k) = r_{xx}(k), \forall k \in \setNatural$, we obtain three simultaneous equations with three unknowns:
 			\vspace*{-\baselineskip}
 			\begin{align}
 			r_{xx}(0)   &= a_{1} r_{xx}(1) + a_{2} r_{xx}(2) + \sigma_{\eta}^{2} \\
@@ -778,15 +778,15 @@
 		
 		\subsubsection{Misadjustment}
 			
-			The theoretical Misadjustment, $\mathcal{M}_{LMS}$, of the LMS algorithm is obtained by the approximation formula:
-			\vspace*{-0.6\baselineskip}
+			The theoretical Misadjustment, $\mathcal{M}_{LMS}$, of the LMS algorithm can be approximated with:
+			\vspace*{-0.4\baselineskip}
 			\begin{equation}
 			\mathcal{M}_{LMS} \approx \frac{\mu}{2} Tr\big\{ \mathbf{R}_{xx} \big\} = \frac{\mu}{2} \left(\frac{100}{54}\right) = \frac{\mu}{2} 1.8519
 			\end{equation}
 			\indent
 			where $\mathbf{R}_{xx}$ from (\ref{eq: 2-1a-cov_ar_2_result}) is used. \newline
 			\noindent
-			Figure \ref{fig: 2-1b} shows that the squared prediction error converges for both $\mu$ after $t > 200$. Looking at $t > 400$ to guarantee that a steady-state has been reached, a Mean Squared Error (MSE) can be estimated. The empirical misadjustment, $\mathcal{M}_{emp}$, is then obtained using the formula:
+			Figure \ref{fig: 2-1b} shows that the squared prediction error converges for both $\mu$ after $t > 200$. Looking at $t > 400$ to guarantee that a steady-state has been reached, then a Mean Squared Error (MSE) can be estimated. The empirical misadjustment, $\mathcal{M}_{emp}$, is found with:
 %			\vspace*{-0.2\baselineskip}
 			\begin{equation}
 			\mathcal{M}_{emp} = \frac{\mathtt{EMSE}}{\sigma_{\eta}^{2}} = \frac{\mathtt{MSE}}{\sigma_{\eta}^{2}} -1
@@ -820,7 +820,7 @@
 				\centering
 				\includegraphics[trim={2.2cm 11.2cm 3.15cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q2_1cd_fig01.pdf} 
 				\captionsetup{justification=centering}
-				\captionof{figure}{Estimated Misadjustment, varying with realisation. $\mathcal{M}_{LMS}$ is additionally plotted for reference. }
+				\captionof{figure}{Estimated Misadjustment, varying with realisation. Theoretical $\mathcal{M}_{LMS}$ is additionally plotted for reference. }
 				\label{fig: 2-1c}			
 			\end{minipage}%
 
@@ -843,7 +843,7 @@
 				\caption{$\mu$'s effect on weight stabilisation}
 				\label{fig: 2-1d}
 			\end{figure}
-		The simulation shown in Figure \ref{fig: 2-1d}, shows that convergence to a steady state is faster with larger $\mu$ values, 200 ($\mu=0.05$) vs 900 ($\mu=0.01$), however, we observe that the converged value is less accurate and more noisy, as can be clearly seen for $\hat{a}_1$.
+		The simulation shown in Figure \ref{fig: 2-1d}, shows that convergence to a steady state is faster with larger $\mu$ values, 200 ($\mu=0.05$) vs 900 ($\mu=0.01$), however, we clearly observe the tradeoff where the converged value is less accurate and more noisy, as can be clearly seen for $\hat{a}_1$.
 		\subsubsection{Leaky LMS Derivation}
 			The cost function $\mathcal{J}_{2}$:
 			\vspace*{-0.6\baselineskip}
@@ -921,10 +921,12 @@
 			\end{figure}
 		
 		The leaky LMS implements the term $\gamma$, which we can interpret as a forgetfulness term, where the LMS filter forgets the previous weight's significance. This means that the filter reaches a steady state faster, which can be observed in Figure \ref{fig: 2-1f}, where we see convergence is 400 steps instead of 900 when using $\gamma=0.5$. \\
-		Importantly, the accuracy is greatly compromised, the magnitude of the error is directly proportional to the $\gamma$ used.
+		Importantly, the accuracy is greatly compromised, the magnitude of the error is directly proportional to the $\gamma$ used. \\
+		The usefulness of the leaky LMS is more apparent when the $\mu$ value is unstable in the original LMS implementation, now the leaky LMS is capable of convergence whereas the original LMS will not converge to a reasonable value.
 		 
 	\subsection{Adaptive Step Sizes} \label{sec: 2-2-adaptive-step}
 		\subsubsection{Gradient Adaptive Step Sizes (GASS) Comparisons for a MA(1) System} 
+			\vspace*{-\baselineskip}
 			\begin{figure}[H]
 				\centering
 				\begin{subfigure}{0.49\textwidth}
@@ -942,8 +944,9 @@
 				\caption{Weight Error and Prediction Error for various GASS algorithms}
 				\label{fig: 2-2a}
 			\end{figure}
-		Varying our $\mu$ term would allow us to learn faster, by taking larger steps of change in our weights, for example when the error is large. What we observe in the gradients in the (log emphasised) mean square error plot, Figure \ref{fig: 2-2a}, is the effective learning rate for these algorithms. Additionally we can see the influence of changing the algorithm's starting learning rate, and its effect on convergence. It is clear that the Beneviste algorithm has the faster convergence, but when looking at the effect of increasing $\mu$ we observe the improvement of learning rate (increase of gradient magnitude) in descending order is: LMS, Matthews \& Xie then Ang \& Farhang.\\
-		In the highly dynamic applications where such filters would be needed, we can imagine that the learning rate can influence the output properties when compared to the desired output. For example, if the learning rate was less than or equal to the applications fluctuation rate we would observe a low pass filter effect, as the predicted output would not necessarily reach the actual output in the time between fluctuations.
+			In brief, the step size is modulated in: Matthews \& Xie utilises by the gradient of the error, Ang \& Farhang by a static low pass to reduce noise effects and in Benveniste by an adaptive low pass.
+			Varying our $\mu$ term would allow us to learn faster, by taking larger steps of change in our weights, for example when the error is large. What we observe in the gradients in the (log emphasised) mean square error plot, Figure \ref{fig: 2-2a}, is the effective learning rate for these algorithms. Additionally we can see the influence of changing the algorithm's starting learning rate, and its effect on convergence. It is clear that the Beneviste algorithm has the faster convergence, but when looking at the effect of increasing $\mu$ we observe the improvement of learning rate (increase of gradient magnitude) in descending order is: LMS, Matthews \& Xie then Ang \& Farhang.\\
+			In the highly dynamic applications where such filters would be needed, we can imagine that the learning rate can influence the output properties when compared to the desired output. For example, if the learning rate was less than or equal to the applications fluctuation rate we would observe a low pass filter effect, as the predicted output would not necessarily reach the actual output in the time between fluctuations.
 		
 		\subsubsection{NLMS Update Equation Equivalence}
 			Starting from the update equation based on the \textit{a posteriori error} $e_{p}(n) = d(n) - \mathbf{x}(n)^{T} \vw(n + 1)$:
@@ -951,7 +954,7 @@
 			\vw(n + 1) = \vw(n) + \mu e_{p}(n) \mathbf{x}(n)
 			\end{equation}
 			
-			Multiply both sides with $-\mathbf{x}(n)^{T}$ and add $d(n)$ to construct $e_{p}(n)$ on the LHS:
+			Multiply both sides with $-\mathbf{x}(n)^{T}$ and add $d(n)$ to create $e_{p}(n)$ :
 			\begin{equation}
 			d(n) - \mathbf{x}(n)^{T} \vw(n + 1) = d(n) - \mathbf{x}(n)^{T} \vw(n) - \mathbf{x}(n)^{T} \mu e_{p}(n) \mathbf{x}(n)
 			\end{equation}
@@ -965,7 +968,7 @@
 			\label{eq: 2-2b-aa_errors}
 			\end{align}
 			
-			Substituting (\ref{eq: 2-2b-aa_errors}) in update equation (\ref{eq: 2-2b-nlms_a_error}):
+			Substituting (\ref{eq: 2-2b-aa_errors}) into the weight update equation:
 			\begin{align}
 			\vw(n + 1)  &= \vw(n) + \mu \frac{1}{1 + \mu \| \mathbf{x}(n) \|^{2}} e(n) \mathbf{x}(n) \\
 			  &= \vw(n) + \frac{1}{\frac{1}{\mu} + \| \mathbf{x}(n) \|^{2}} e(n) \mathbf{x}(n) \label{eq: 2-2b-nlms}
@@ -993,7 +996,8 @@
 				\label{fig: 2-2c}
 			\end{figure}
 		
-			As we explored earlier the LMS algorithm's convergence time is closely tied to the value of $\mu$, showing the greatest change for the $\times10$ increase of $\mu$. Figure \ref{fig: 2-2c}, shows that we can surpass the rate of convergence of the Benveniste algorithm when using the NLMS algorithm. The NLMS algorithm allows us to choose large values of $\mu$, that would traditionally cause the output of the LMS to be unstable, due to its GNGD normalisation approach.
+			As we explored earlier the LMS algorithm's convergence time is closely tied to the value of $\mu$, showing the greatest change for the $\times10$ increase of $\mu$. Figure \ref{fig: 2-2c}, shows that we can surpass the rate of convergence of the Benveniste algorithm when using the NLMS algorithm. The NLMS algorithm allows us to choose large values of $\mu$, that would traditionally cause the output of the LMS to be unstable, due to its GNGD normalisation approach. \\
+			Computationally these algorithms are driven by their outer product calculations, the Benveniste algorithm performs 2 per step, whereas the GNGD NLMS algorithm performs 1 per step making it of lower computational complexity.
 			
 	\subsection{Adaptive Noise Cancellation} \label{sec: 2-3-ANC}
 		With the: pure sine wave $x(n)$, noisy signal $s(n)$,  noise term $\eta(n)$ and ALE filter output $\hat{x}(n; \Delta)$, parametrised by the delay parameter $\Delta$.
@@ -1032,7 +1036,7 @@
 		\label{eq: 2-3a-iid:helper}
 		\end{equation}
 		
-		(\ref{con:delta}) is zero and minimised for $\Delta > 2$ and maximised for $\Delta = 0$, a direct consequence of (\ref{eq: 2-3a-iid:helper}).
+		(\ref{eq: 2-3a-choose-delta}) is zero and minimised for $\Delta > 2$ and maximised for $\Delta = 0$, a direct consequence of (\ref{eq: 2-3a-iid:helper}).
 		This is somewhat intuitive as the coloured noise signal $\eta(n)$ is a second order MA process. \newline
 		\noindent
 		MPSE is plotted against $\Delta$, Figure \ref{fig: 2-3a}, verifying the improved performance for $\Delta > 2$.
@@ -1040,7 +1044,7 @@
 		\subsubsection{Adaptive Line Enhancer (ALE) Delay Investigation}
 		\begin{minipage}[b]{0.49\textwidth}
 %			\subsubsection{Adaptive Line Enhancer (ALE) Delay Investigation}
-				Figure \ref{fig: 2-3a} shows the influence of ALE Delay on a range of model orders. We can see the minimum MPSE for Delay of 5 for Model Order 5. As we increase the delay we see a linear increase in log emphasised MPSE, letting us know that the samples that are more than 5 time points away are increasingly uncorrelated to the current prediction, as expected for this second order moving average process.
+				Figure \ref{fig: 2-3a} shows the influence of ALE Delay on a range of model orders. We can see the minimum MPSE for Delay of 5 for Model Order 5. As we increase the delay we see a linear increase in log emphasised MPSE, letting us know that the samples that are more than 5 time points away are getting decreasingly uncorrelated to the current prediction, as expected for this second order moving average process.
 %			\subsubsection{Adaptive Line Enhancer (ALE) Filter Order Investigation}
 %				Figure \ref{fig: 2-3b} shows the influence of ALE Model Order for a given delay. This hyper parameter sweep is informative in understanding how many samples are needed to appropriately model the noise system, in this case we see that orders of 3 and 5 give us minimum MPSE. As we start to overfit with increasing model orders we get increasingly worse predictions.
 		\end{minipage}% 
@@ -1155,13 +1159,14 @@
 		
 			In Figure \ref{fig: 2-3d}, we can see that using the selected parameters neatly seals off the 50Hz noise. When we investigate the influence of the greater learning rate, we see great attenuation around the 50Hz band spreading by 25Hz to the surrounding frequencies. Additionally, we can see an amplification in the harmonic of the 50Hz noise, at 100Hz. \\
 			
-			It is important to highlight the significance of the external noise fed into the ANC algorithm, testing showed that increasing the noisiness of the provided input noise signal drastically reduced ANC performance, outputs were unstable and rapidly approached infinity, becoming more prominent for larger $\mu$. In the example in Figure \ref{fig: 2-3d} a 50Hz signal was generated with noise power $\sigma_n^{ 2}=0.1$.\\
+			It is important to highlight the significance of the external noise fed into the ANC algorithm, testing showed that increasing the noisiness of the provided input noise signal drastically reduced ANC performance, outputs were unstable and rapidly approached infinity, becoming more prominent for larger $\mu$. In the example in Figure \ref{fig: 2-3d} a 50Hz signal was generated with noise power $\sigma_\eta^{ 2}=0.1$.\\
 			 In technology where this algorithm would be useful, such as noise cancelling headphones, we would ensure that the noise external microphones pick up have a known linear relationship to what is heard inside the headphones. If this relationship is not approximately linear we can imagine that the noise cancellation effect would be less pronounced, unless other preprocessing is used before being fed into the ANC algorithm.
 	
 \pagebreak
 \section{Widely Linear Filtering and Adaptive Spectrum Estimation} \label{sec: 3-WLASE}
 	\subsection{Complex LMS and Widely Linear Modelling} \label{sec: 3-1-CLMS-ACLMS}
 		\subsubsection{Widely Linear Moving Average (WLMA) Process using Complex LMS (CLMS) \& Augmented CLMS (ACLMS)}
+			\vspace*{-\baselineskip}
 			\begin{figure}[H]
 				\centering
 				\begin{subfigure}{0.49\textwidth}
@@ -1184,6 +1189,7 @@
 			Figure \ref{fig: 3-1a}, shows the difference in circularity of white gaussian noise and the first order widely linear moving average process. Additionally, we can see the CLMS learning curve struggle to model the non-circular WLMA(1) process, converging to an MSPE $>0$dB.
 			
 		\subsubsection{CLMS and ACLMS Suitability with real (wind) data}
+		\vspace*{-\baselineskip}
 			\begin{figure}[H]
 				\centering
 				\begin{subfigure}{0.49\textwidth}
@@ -1210,32 +1216,33 @@
 				\label{fig: 3-1b}
 			\end{figure}
 		
-		Figure \ref{fig: 3-1b}, shows the circularity of the various wind regimes and how the CLMS and ACLMS fare at modelling the data. We can observe for high circularity, low $|\rho|$, that the CLMS MSPE minimises at a larger model order compared to ACLMS. However, once circularity decreases, high $|\rho|$, the two algorithms approximately agree on model order. ACLMS tends to outperform CLMS, but we can observe for  $|\rho| \approx 0.5$ with the Medium Regime the CLMS converges to a solution that provides the same MSPE minimum. We can finally note that ACLMS consistently obtains a minimum MPSE at Model Order 4, suggesting the order of the underlying data.
+		Figure \ref{fig: 3-1b}, shows the circularity of the various wind regimes and how the CLMS and ACLMS fare at modelling the data. This dataset highlights the rotation invariant property, where the further the regime centroid is from the origin the higher the circularity. We can observe for high circularity, low $|\rho|$, that the CLMS MSPE minimises at a larger model order compared to ACLMS. However, once circularity decreases, high $|\rho|$, the two algorithms approximately agree on model order. ACLMS tends to outperform CLMS, but we can observe for  $|\rho| \approx 0.5$ with the Medium Regime the CLMS converges to a solution that provides the same MSPE minimum. We can finally note that ACLMS consistently obtains a minimum MPSE at Model Order 4, suggesting the order of the underlying data, and how the ACLMS overfitting causes it to perform worse than the CLMS for high moder orders.
 	
 		\subsubsection{Balanced and UnBalanced Voltages - Investigating Circularity}
+		\vspace*{-\baselineskip}
 			\begin{figure}[H]
 				\centering
-				\begin{subfigure}{0.49\textwidth}
+				\begin{subfigure}{0.45\textwidth}
 					\centering
-					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_1c_fig01.pdf} 
+					\includegraphics[trim={2.2cm 6.8cm 3.00cm  6.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_1c_fig01.pdf} 
 					\captionsetup{justification=centering}
 				\end{subfigure}
 				%		~ % forces onto the same row
-				\begin{subfigure}{0.49\textwidth}
+				\begin{subfigure}{0.45\textwidth}
 					\centering
-					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_1c_fig02.pdf} 
+					\includegraphics[trim={2.2cm 6.8cm 3.00cm  6.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_1c_fig02.pdf} 
 					\captionsetup{justification=centering}
 				\end{subfigure}
 			
-				\begin{subfigure}{0.49\textwidth}
+				\begin{subfigure}{0.45\textwidth}
 					\centering
-					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_1c_fig03.pdf} 
+					\includegraphics[trim={2.2cm 6.8cm 3.00cm  6.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_1c_fig03.pdf} 
 					\captionsetup{justification=centering}
 				\end{subfigure}
 				%		~ % forces onto the same row
-				\begin{subfigure}{0.49\textwidth}
+				\begin{subfigure}{0.45\textwidth}
 					\centering
-					\includegraphics[trim={2.2cm 11.2cm 3.00cm  11.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_1c_fig04.pdf} 
+					\includegraphics[trim={2.2cm 6.8cm 3.00cm  6.2cm}, clip, width=\textwidth]{../MATLAB/figures/q3_1c_fig04.pdf} 
 					\captionsetup{justification=centering}
 				\end{subfigure}
 					
@@ -1244,9 +1251,9 @@
 				\label{fig: 3-1c}
 			\end{figure}
 		
-			Figure \ref{fig: 3-1c}, demonstrates that balanced voltages are purely circular whereas unbalanced voltages are ellipses, allowing us to clearly identify if there is fault. \\
-			Performing a phase sweep we observe that phase bias reduces the radius of the ellipse's minor axis. \\
-			In the voltage magnitude sweep we observe how the is an increase of the ellipse's major axis radius and decrease of the minor axis radius which are proportional to the size of the magnitude bias. We can also clearly see a slight rotation about the origin as the ellipse aligns with its major axis. 
+			Figure \ref{fig: 3-1c}, demonstrates that balanced voltages are purely circular whereas unbalanced voltages are ellipses, allowing us to clearly identify if there is fault, but may be difficult to discern which bias is in play. In both cases the magnitude of the bias is proportional to the circularity, $|\rho|$.  \\
+			Performing a phase sweep we observe that phase bias reduces the radius of the ellipse's minor axis and a slight change to the major axis. \\
+			In the voltage magnitude sweep we observe an increase of the ellipse's major axis radius and decrease of the minor axis radius. We can see a slight rotation about the origin as the ellipse aligns with its major axis.
 			
 		\subsubsection{Derivation for estimating Frequency from Filter Weights}
 			\noindent
@@ -1521,7 +1528,7 @@
 		\subsubsection{The DFT-CLMS vs. the AR(1) at Spectrum Analysis}
 		
 			\begin{minipage}[b]{0.49\textwidth}
-				Figure \ref{fig: 3-3c-no-gamma}, is the spectrogram of the required DFT-CLMS. We can see a trail effect, where a frequency component is carried in time. Hence the reason this spectrogram does not match the earlier spectrogram is because the algorithm has not forgotten the previous frequency components. By implementing a leakage, forgetfulness, factor $\gamma$, we find that the CLMS can better model the underlying data.
+				Figure \ref{fig: 3-3c-no-gamma}, is the spectrogram of the required DFT-CLMS. We can see a trail effect, where a frequency component is carried in time. Hence the reason this spectrogram does not match the earlier spectrogram is because the algorithm has not forgotten the previous frequency components of our non-linear frequency system. By implementing a leakage, forgetfulness, factor $\gamma$, we find that the CLMS can better model the underlying data.
 			\end{minipage}% 
 			\begin{minipage}{0.04\textwidth}
 				\hspace*{0.04\textwidth}
@@ -1632,10 +1639,11 @@
 				\label{tab: 4-mse-Rp}
 			\end{table}
 		\end{minipage}% 
-		\begin{minipage}{0.04\textwidth}
-			\hspace*{0.04\textwidth}
+		\begin{minipage}{0.08\textwidth}
+			\hspace*{0.08\textwidth}
 		\end{minipage}% 
 		\begin{minipage}[t]{0.45\textwidth}
+			\centering
 			\begin{table}[H]
 				\centering
 				\begin{tabular}{|c|c|c|}
@@ -1657,7 +1665,7 @@
 					\hline
 				\end{tabular}
 				\captionsetup{justification=centering}
-				\caption{Mean Square Errors \& Prediction Gains for Sections 1-5. Taken from Index 500 onwards, to remove transient effects}
+				\caption{Mean Square Errors \& Prediction Gains for Sections 1-5. Taken from Index 500+, to remove transient effects}
 				\label{tab: 4-mse-Rp-500+}
 			\end{table}
 		\end{minipage}%
@@ -1681,7 +1689,7 @@
 		When looking at the change from entire to weight stabilised data we can see: the LMS algorithm has the longest weight stabilisation time, $\approx$250 steps, reflected in it having the largest differences in MSE error and $R_p$.
 	\subsection{The Dynamic Perceptron with $\texttt{tanh}$ Activation} \label{sec: 4-2-dynamic-perc}
 		\begin{minipage}[b]{0.49\textwidth}
-			In this non-linear LMS convergence, the \texttt{tanh} function ensures that the output is constrained to $\pm1$, this is clearly seen in Figure \ref{fig: 4-2}, with the very small amplitude. What we also observe when we look closer is the function reaches a stable prediction of sign changes of the input signal in 20 steps. The negative $R_p$ is also a consequence of the constrained \texttt{tanh} range. As the prediction matches the fluctuation trend of the data well we can argue that this activation is suitable for this dataset.
+			In this non-linear LMS convergence, the \texttt{tanh} function ensures that the output is constrained to $\pm1$, this is clearly seen in Figure \ref{fig: 4-2}, with the very small amplitude. What we also observe when we look closer is the function reaches a stable prediction of sign changes of the input signal in 20 steps. The negative $R_p$ is also a consequence of the constrained \texttt{tanh} range. As the prediction matches the fluctuation trend of the data well  and the non-linearity of the activation function may help model the non-linearity of the data, we can argue that this activation is suitable for this dataset. 
 		\end{minipage}% 
 		\begin{minipage}{0.04\textwidth}
 			\hspace*{0.04\textwidth}
@@ -1697,7 +1705,7 @@
 	
 	\subsection{Adding Amplitude Scaling to the Dynamic Perceptron} \label{sec: 4-3-amplitude-dynamic-perc}
 		\begin{minipage}[b]{0.49\textwidth}
-			By now scaling the magnitude of the output of the \texttt{tanh} activation we observe that the prediction now matches the true signal with much better accuracy than even that stabilised LMS. As the output range of \texttt{tanh} is $\pm1$, the amplitude scaling must be at least the maximum value observed in the true signal. By increasing this value we would no longer need to utilise the full $\pm1$ range of \texttt{tanh}, this can be seen as beneficial as the closer we reach these limits the more non-linear the scaling becomes.
+			By now scaling the magnitude of the output of the \texttt{tanh} activation we observe that the prediction now matches the true signal with much better accuracy than even that stabilised LMS. As the output range of \texttt{tanh} is $\pm1$, the amplitude scaling must be at least the maximum value observed in the true signal: $a\in[\texttt{y},\inf]$ By increasing this value we would no longer need to utilise the full $\pm1$ range of \texttt{tanh}, this can be seen as beneficial as the closer we reach these limits the more non-linear the scaling becomes.
 		\end{minipage}% 
 		\begin{minipage}{0.04\textwidth}
 			\hspace*{0.04\textwidth}
@@ -1714,7 +1722,7 @@
 		
 	\subsection{Biasing with the Dynamic Perceptron} \label{sec: 4-4-biasing-dynamic-perceptron}
 		\begin{minipage}[b]{0.49\textwidth}
-			Bias here can be interepreted as the sensitivity to changes in the (error) signal power, the bias value can thereby be increased to increase the sensitivity to variation in power. Using a bias of 10 instead of the proposed 1 improved MSE significantly, especially during the weight stabilised region. When looking at the convergence we see that the prediction keeps increasing in magnitude until it reaches the true signal before it begins the zero-mean prediction observed before.
+			Bias here can be interpreted as the sensitivity to changes in the (error) signal power, the bias value can thereby be increased to increase the sensitivity to variation in power. Using a bias of 10 instead of the proposed 1 improved MSE significantly, especially during the weight stabilised region. When looking at the convergence we see that the prediction keeps increasing in magnitude until it reaches the true signal before it begins the zero-mean prediction observed before.
 		\end{minipage}% 
 		\begin{minipage}{0.04\textwidth}
 			\hspace*{0.04\textwidth}
@@ -1744,18 +1752,17 @@
 		\end{minipage}%
 	\subsection{What is backpropogation?} \label{sec: 4-6-backpropogation}
 		Backpropogation is an algorithm used to refine the weights used in a neural network. Its fundamental mathematic background lies within gradient descent.\\
-		The first concept we must define is a `cost' function, ${C}()$. In the simplest case the cost function is: given a vector of weights (and biases) - $\vw$ - and a training data set, let us take the mean of the square error between the desired output and the predicted output. This cost function has an assumed minimum, which represents when both outputs are closely matched. We explicitly state the input is the set of weights and/or biases and the output is the mean square error for the training dataset. ${C}(\vw)=\texttt{MSE}$\\
-		Gradient descent is the algorithm that looks to follow the negative gradient of a function, thereby finding the function \textbf{local minimum}. In this application we are looking for changes to the weights in the neural network, that cause a negative change to the cost. \\
-		The backpropogation algorithm gives us the negative gradient of the cost function to follow, $-\nabla{C}$, which tells us how we should change each weight, $\vw$ to efficiently find the local minimum. The intuition behind the values of the negative gradient of the cost function is how much this weight contributes to decreasing the cost function, the positive value indicates if increasing the weight decreases the cost function.
+		The first concept we must define is a `cost' function, ${C}()$. In the simplest case the cost function input is: a vector of weights (and biases) that correspond to each perceptron connection - $\vw$ - and a training data set, the cost function then defines mean of the square error between the desired output and the predicted output across the training samples. This cost function has an assumed minimum at $0$, which represents when both outputs are closely matched. We explicitly state the input is the set of perceptron connection weights and/or biases and the output is the mean square error for the training dataset: ${C}(\vw)=\texttt{MSE}$\\
+		Gradient descent is the algorithm that looks to follow the negative gradient of a function, thereby finding the function \textbf{local minimum}. In this application, this means we are looking for changes to the weights in the neural network, that cause a negative change to the cost. \\
+		The backpropogation algorithm gives us the negative gradient of the cost function to follow, $-\nabla{C}$, which tells us how we should change the weight or bias of each connected perceptron, $\vw$ to efficiently find the local minimum. Each element's magnitude represents how much the weight/bias contributes to decreasing the cost function; the sign indicates how the weight/bias should change, for example a large positive value indicates that increasing this weight/bias greatly decreases the cost function.
 		
 	\subsection{Deep Network Epoch Effect} \label{sec: 4-7-DL-epoch}
-		Comparing the deep network with the single dynamical perceptron, the deep network is better at capturing the high frequency details in the signal, whereas the dynamical perceptron has a low pass effect of the signal, seeming to capture the signal mean. We can additionally observe that the deep network requires a larger number of epoch numbers before convergence.
-		
+		\vspace*{-0.8\baselineskip}
 		\begin{figure}[H]
 			\centering
 			\begin{subfigure}{\textwidth}
 				\centering
-				\includegraphics[width=\textwidth]{../Python/figures/Q4_LMS2DL_4_7+8_04.pdf} 
+				\includegraphics[width=\textwidth]{../Python/figures/Q4_LMS2DL_4_7+8_05.pdf} 
 				\captionsetup{justification=centering}
 			\end{subfigure}
 			%		~ % forces onto the same row
@@ -1767,16 +1774,42 @@
 
 			\captionsetup{justification=centering}
 			\caption{Learning Curves: 20,000 epochs, learning rate 0.01 and noise power 0.05}
-			\label{fig: 4-7}
+			\label{fig: 4-7-LC-e20k-mu0.01-n0.05}
 		\end{figure}
-
-		For all algorithms: increasing the number of epochs tends to decrease the Test Loss. This makes sense and is equivalent to overfitting to the train data, which we see negatively impacts Test Loss for much larger epoch numbers, the algorithms most affects by this overfitting in order are: Nthe on-Linear LMS, Deep Network and finally the Linear LMS.
+		
+		Comparing the deep network with the single dynamical perceptron, Figure \ref{fig: 4-7-LC-e20k-mu0.01-n0.05}, the deep network is better at capturing the high frequency details in the signal, whereas the dynamical perceptron has a low pass effect of the signal, seeming to capture the signal mean. This likely contributes to the lower converged error observed in the deep network.
+		We can additionally observe that the deep network requires a larger number of epoch steps before convergence, on both train and test data.
+		
+		The number of epochs was also varied, and included in the attached Jupyter Notebook although outside the question scope, with the following observations:\\
+		
+		For all algorithms: increasing the number of epochs tends to decrease the Test Loss. This makes sense and is equivalent to overfitting to the train data, which we see negatively impacts Test Loss for much larger epoch numbers, the algorithms most affects by this overfitting in order are: the Non-Linear LMS, Deep Network and finally the Linear LMS. When the number of epochs is too small the weights were not able to converge and provided suboptimal fitting to even the training signal magnitude.
 		% TODO: The figures? Show point they kick back up
-		Linear LMS: Increasing the number of epochs also decreases the time to convergence until it reaches some minimum convergence time.
+		Linear LMS: Increasing the number of epochs also decreases the time to convergence until it reaches some minimum convergence time, representing the fixed learning rate.
 		Deep network: we observe that there is a phase shift implying the algorithm is predicting the signal.
 
 	\subsection{Deep Network Noise Effect} \label{sec: 4-7-DL-noise}
-		For all algorithms: increasing noise power increases Test Loss and increases the number of epochs required for convergence. Increasing the noise power also increases the likelihood that the Test Loss will not convegre at all.
+		\vspace*{-0.8\baselineskip}
+		\begin{figure}[H]
+			\centering
+			\begin{subfigure}{\textwidth}
+				\centering
+				\includegraphics[width=\textwidth]{../Python/figures/Q4_LMS2DL_4_7+8_06.pdf} 
+				\captionsetup{justification=centering}
+			\end{subfigure}
+			%		~ % forces onto the same row
+			\begin{subfigure}{\textwidth}
+				\centering
+				\includegraphics[width=\textwidth]{../Python/figures/Q4_LMS2DL_4_7+8_21.pdf} 
+				\captionsetup{justification=centering}
+			\end{subfigure}
+			
+			\captionsetup{justification=centering}
+			\caption{Learning Curves: 20,000 epochs, learning rate 0.01 and noise power 0.1}
+			\label{fig: 4-7-LC-e20k-mu0.01-n0.1}
+		\end{figure}
+		For all algorithms: increasing noise power increases Test Loss and increases the number of epochs required for convergence. Increasing the noise power also increases the likelihood that the Test Loss will not converge at all, as shown in Figure \ref{fig: 4-7-LC-e20k-mu0.01-n0.1}. This suggests that there is some characteristic of the data that is poorly modelled, reflected by how the dynamical perceptron has a sharper error gradient than the deep network. We can also observe that the deep network trace is less predictive than we saw with lower noise power in Figure \ref{fig: 4-7-LC-e20k-mu0.01-n0.05}. \\
+		Testing beyond the scope of the question, in the attached Jupyter Notebook, found that greater epochs were able to better model the test data in \textit{low noise power regimes}, as noise power increased greater epochs simply overfitted to the test data and provided non-converging test errors.
+		
 	
 \section{Tensor Decompositions for Big Data Applications} \label{sec: 5-TD-BD}
 	NOTE: The interpretation of instructions has been made according to the images provided, hence a mode-1 as referred to in the images, although technically a mode-0 using Python's 0 indexing, was kept at mode-1.
