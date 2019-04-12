@@ -79,14 +79,14 @@ fH{1} = figure; hold on;
     plot(fs*effectiveFs, mean(real(PSD_biased),1)', 'Color', COLORS(1, :));
     
     yLims = ylim;
-    plot([fs(find(fs>=fHz(1),1)), fs(find(fs>=fHz(1),1))], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
-    plot([fs(find(fs>=fHz(2),1)), fs(find(fs>=fHz(2),1))], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
-    plot([fs(find(fs>=fHz(3),1)), fs(find(fs>=fHz(3),1))], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
-    plot([fs(find(fs>=fHz(4),1)), fs(find(fs>=fHz(4),1))], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+    plot([fs(find(fs>=fHz(1),1)-1), fs(find(fs>=fHz(1),1)-1)], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+    plot([fs(find(fs>=fHz(2),1)-1), fs(find(fs>=fHz(2),1)-1)], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+    plot([fs(find(fs>=fHz(3),1)-1), fs(find(fs>=fHz(3),1)-1)], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+    plot([fs(find(fs>=fHz(4),1)-1), fs(find(fs>=fHz(4),1)-1)], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
 
 
     xlabel('Frequency ($\pi$ radians)');
-    ylabel('PSD, $P(\omega) (dB/Hz)$');
+    ylabel('PSD, $P(\omega)$');
     title(strcat(num2str(numRealisations), ' PSD Realisations \& Mean'));
 %     legend('show');
     xlim([0 2])
@@ -98,13 +98,13 @@ fH{2} = figure; hold on;
     plot(fs*effectiveFs, std(real(PSD_biased),1)', 'Color', COLORS(2, :));
     
     yLims = ylim;
-    plot([fs(find(fs>=fHz(1),1)), fs(find(fs>=fHz(1),1))], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
-    plot([fs(find(fs>=fHz(2),1)), fs(find(fs>=fHz(2),1))], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
-    plot([fs(find(fs>=fHz(3),1)), fs(find(fs>=fHz(3),1))], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
-    plot([fs(find(fs>=fHz(4),1)), fs(find(fs>=fHz(4),1))], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+    plot([fs(find(fs>=fHz(1),1)-1), fs(find(fs>=fHz(1),1)-1)], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+    plot([fs(find(fs>=fHz(2),1)-1), fs(find(fs>=fHz(2),1)-1)], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+    plot([fs(find(fs>=fHz(3),1)-1), fs(find(fs>=fHz(3),1)-1)], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
+    plot([fs(find(fs>=fHz(4),1)-1), fs(find(fs>=fHz(4),1)-1)], [yLims(1), yLims(2)], 'LineWidth', 0.5, 'Color', [0 0 0 0.5], 'LineStyle','-.');
 
     xlabel('Frequency ($\pi$ radians)');
-    ylabel('PSD, $P(\omega) (dB/Hz)$');
+    ylabel('PSD, $P(\omega)$');
     title(strcat(num2str(numRealisations), ' PSD Realisations Standard Deviation'));
 %     legend('show');
     xlim([0 2])

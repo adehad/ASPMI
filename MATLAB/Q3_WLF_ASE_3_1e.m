@@ -129,7 +129,7 @@ for ii=1:2
         plot(pow2db(abs(err.ACLMS{ii}).^2), 'DisplayName', 'ACLMS')
         title( sprintf('%s Error \n V=[%.2f;%.2f;%.2f], $\\Delta$=[%.2f,%.2f,%.2f]',...
                 balanceLabels{ii},  V.(balanceTypes{ii})(1), V.(balanceTypes{ii})(2), V.(balanceTypes{ii})(3),...
-                                    Delta.(balanceTypes{ii})(1), Delta.(balanceTypes{ii})(2), Delta.(balanceTypes{ii})(3)))
+                                    phi(1) + Delta.(balanceTypes{ii})(1), phi(2) + Delta.(balanceTypes{ii})(2), phi(3) + Delta.(balanceTypes{ii})(3)))
         xlabel('Time Index');
         ylabel('MSE (dB)');
         legend('show','Location','best')
@@ -141,7 +141,7 @@ for ii=1:2
         plot([0 N], [f0 f0], 'DisplayName', '$50\ Hz$', 'LineStyle', ':', 'Color', COLORS(6,:));
         title( sprintf('%s Frequency Estimate \n V=[%.2f;%.2f;%.2f], $\\Delta$=[%.2f,%.2f,%.2f]',...
                 balanceLabels{ii},  V.(balanceTypes{ii})(1), V.(balanceTypes{ii})(2), V.(balanceTypes{ii})(3),...
-                                    Delta.(balanceTypes{ii})(1), Delta.(balanceTypes{ii})(2), Delta.(balanceTypes{ii})(3)))
+                                    phi(1) + Delta.(balanceTypes{ii})(1), phi(2) + Delta.(balanceTypes{ii})(2), phi(3) + Delta.(balanceTypes{ii})(3)))
         xlabel('Time Index');
         ylabel('Frequency (Hz)');
         ylim([0 150])
