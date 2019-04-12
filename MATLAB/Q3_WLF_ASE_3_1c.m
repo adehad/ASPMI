@@ -91,17 +91,21 @@ fH = []; % clear the figure handle variable
 plotH = []; % clear the plot handle variable
 legendString = []; % clear the legend string variable
 
+userPos = get(groot, 'DefaultFigurePosition');
+newPos = userPos;
+newPos(4) = newPos(3); % set height = width
+
 balanceTypes = fieldnames(clarkeVoltage);
 balanceLabels = {"Balanced","Unbalanced"};
 
 % sample circularity investigation
 for ii=1:2
     tempClarke = clarkeVoltage.(balanceTypes{ii});
-    fH{length(fH)+1} = figure; hold on
+    fH{length(fH)+1} = figure('Position',newPos); hold on
         scatter(real(tempClarke), imag(tempClarke), 30, COLORS(ii,:), 'filled')
         title( sprintf('%s, $|\\rho|$=%.3f \n V=[%.2f;%.2f;%.2f], $\\Delta$=[%.2f,%.2f,%.2f]',...
                 balanceLabels{ii}, circularity(tempClarke), V.(balanceTypes{ii})(1), V.(balanceTypes{ii})(2), V.(balanceTypes{ii})(3),...
-                                                            Delta.(balanceTypes{ii})(1), Delta.(balanceTypes{ii})(2), Delta.(balanceTypes{ii})(3)))
+                                                            phi(1) + Delta.(balanceTypes{ii})(1), phi(2) + Delta.(balanceTypes{ii})(2), phi(3) + Delta.(balanceTypes{ii})(3)))
         xlabel('Real Part, $\Re$');
         ylabel('Imaginary Part, $\Im$');
 
@@ -112,9 +116,9 @@ end
 
 % phase & amplitude sweeps
 sweepType = {' ',' ','Phase','Magnitude'};
-sweepSymb = {' ',' ','\Delta','V'};
+sweepSymb = {' ',' ','d\Delta','dV'};
 for ii=3:4
-    fH{length(fH)+1} = figure; hold on
+    fH{length(fH)+1} = figure('Position',newPos); hold on
     
         for jj=1:size(clarkeVoltage.(balanceTypes{ii}),1)
             tempClarke = clarkeVoltage.(balanceTypes{ii})(jj,:);
@@ -124,14 +128,16 @@ for ii=3:4
                     20, COLORS(jj,:), 'filled', ...
                     'DisplayName', sprintf('$%s$: %.2f',sweepSymb{ii},plotLabels(jj)))
         end
-        title(sprintf('%s Parameter Sweep',sweepType{ii}))
+        if ii==3; tLabel = ['V=[1.00,1.00,1.00],  $\Delta$=[',num2str(phi(1),'%.2f'),',',num2str(phi(2),'%.2f'),'$-d\Delta$,',num2str(phi(3),'%.2f'),'$+d\Delta$]']; end
+        if ii==4; tLabel = ['V=[1.00,1.00$-dV$,1.00$+dV$], $\Delta$=[',num2str(phi(1),'%.2f'),',',num2str(phi(2),'%.2f'),',',num2str(phi(3),'%.2f'),']']; end
+        title(sprintf('%s Parameter Sweep \n %s', sweepType{ii}, tLabel))
         xLims = xlim;
 %         xlim([xLims(1), xLims(2)*1.5])
         xlabel('Real Part, $\Re$');
         ylabel('Imaginary Part, $\Im$');
         legend('show','Location','best','NumColumns',length(plotLabels))
         grid minor
-        ylim([-1.8,2])
+        ylim([-1.8,1.8])
         xlim([-1.75,1.75])
 
 end 
