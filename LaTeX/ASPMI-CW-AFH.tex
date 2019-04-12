@@ -1,6 +1,6 @@
 %Pre-amble to import suitable modules for a report
-%\documentclass[draft]{article}
 \documentclass[12pt]{article}
+%\documentclass[draft, 12pt]{article}
 \usepackage[utf8]{inputenc}
 %\usepackage[]{geometry}
 \usepackage[a4paper, left=15mm, right=15mm, top=20mm, bottom=20mm]{geometry}
@@ -29,6 +29,7 @@
 \usepackage{wrapfig} % allows figures to have text flow around it
 \usepackage{subcaption}
 \usepackage{amsmath,amssymb,amsfonts,mathrsfs}  % le math
+	\numberwithin{equation}{section}
 \usepackage{bm} % bold math symbols
 \allowdisplaybreaks
 %\usepackage{lscape}
@@ -68,13 +69,26 @@
 \def\vz{{\bm{z}}}
 \def\vw{{\bm{w}}}
 \def\vu{{\bm{u}}}
+\def\vv{{\bm{v}}}
+
+\def\mF{{\bm{F}}}
 % Sets
 \def\setInteger{{\mathbb{Z}}}
 \def\setReal{{\mathbb{R}}}
 \def\setComplex{{\mathbb{C}}}
 \def\setNatural{{\mathbb{N}}}
 
+
+
+
+
 \begin{document}
+	
+%\setlength{\abovedisplayskip}{3pt}% % Default: 12pt plus 3pt minus 9pt
+%\setlength{\belowdisplayskip}{3pt}% % Default: 0pt plus 3pt
+%\setlength{\abovedisplayshortskip}{3pt}% % Default: 12pt plus 3pt minus 9pt
+%\setlength{\belowdisplayshortskip}{3pt}% % Default: 7pt plus 3pt minus 4pt
+
 \input{titlepage2}
 %\maketitle
 
@@ -103,16 +117,14 @@
 		\sum_{m=0}^{N-1} \sum_{k=0}^{N-1} g(m-k)
 		\label{proof: 1-1a-periodogram}
 	\end{align}
-	
+	\\
 	We can convert the double summation into a single summation using Equation \ref{proof: 1-1a-periodogram:helper}, and recalling the earlier substitution:
-	
 	\begin{equation}
 		\sum_{m=-N}^{N} \sum_{k=-N}^{N} g(m-k) = \sum_{\tau=-2N}^{2N}(2N + 1 - |\tau|)g(\tau)
 		\label{proof: 1-1a-periodogram:helper}
 	\end{equation}
-	\newline
 	(\ref{proof: 1-1a-periodogram}) can then be written as:
-	\vspace{-\baselineskip}
+	\vspace*{-0.8\baselineskip}
 	\begin{align}
 		P(\omega)    & =         \lim_{N\to\infty} \frac{1}{N} \sum_{\tau=-(N-1)}^{N-1}(N - |\tau|)r_{xx}(\tau) e^{-j\omega\tau}\nonumber\\
 		& =         \lim_{N\to\infty} \sum_{\tau=-(N-1)}^{N-1} r_{xx}(\tau) e^{-j\omega\tau} -
@@ -263,7 +275,6 @@
 	\subsubsection{Biased ACF Estimator PSDs}
 
 	The process simulated was the following:
-	
 	\begin{equation}
 		\begin{aligned}
 		x(n) = & 2 sin(2 \pi 0.4 n) + 1.75 sin(2 \pi 0.6 n) \\
@@ -486,7 +497,6 @@
 			\hline
 			\textbf{Breathing Type} & \textbf{Expected} (BPM) & \textbf{Observed Peak} (BPM) \\
 			\hline
-			\hline
 			{Normal (Trial 1)} & $10-15$ & $0.31\times60\approx18.7$ \\
 			\hline
 			{Fast (Trial 2)} & $25$ & $0.41\times60\approx25$ \\
@@ -659,24 +669,31 @@
 \section{Adaptive Signal Processing} \label{sec: 2-ASP}
 	\subsection{The Least Mean Square (LMS) Algorithm} \label{sec: 2-1-LMS}
 		\subsubsection{Example Correlation Matrix}
-			A general AR(2) process $x(n)$ with parameters $a_{1}, a_{2}$ satisfies the difference equation:
-			
+			An AR(2) process $x(n)$ with parameters $a_{1}, a_{2}$ satisfies the difference equation:
 			\begin{equation}
 			x(n) = a_{1} x(n - 1) + a_{2} x(n - 2) + \eta(n)
 			\label{eq: 2-1a-ar_2}
 			\end{equation}
 			
-			where $\eta(n) \sim \mathcal{N}(0, \sigma_{\eta}^{2})$. The Least Mean Square (LMS) algorithm is used to approximate
-			the autoregressive parameters $a_{1}, a_{2}$ from data, treating $\mathbf{x}(n) = [x(n-1), x(n-2)]^{T}$ and
-			$y(n) = x(n)$ as the input (features) vector and the output (target), respectively.
+			where $\eta(n) \sim \mathcal{N}(0, \sigma_{\eta}^{2})$. The Least Mean Square (LMS) algorithm is used to approximate the autoregressive parameters $a_{1}, a_{2}$ from data, with input $\mathbf{x}(n) = [x(n-1), x(n-2)]^{T}$ and output
+			$y(n) = x(n)$ .
 			
-			The correlation matrix $\mathbf{R}_{xx}$ of the input vector $\mathbf{x}(n)$ is given by:
+			We will first check for stationarity, we know that for an AR(2) process to be stationary the roots of its characteristic polynomial must lie outside the unit circle, which can be checked if the following are satisfied:
+			\vspace*{-\baselineskip}
+			\begin{align}
+			a_1+a_2 & < 1 \\
+			a_2-a_1 & < 1 \\
+			|a_2| & < 1 
+			\label{eq: 2-1a-cond:stationary}
+			\end{align}
 			
+			We can confirm is valid for our AR(2) process, which has $a_1=0.1$, $a_2=0.8$.\\
+			The correlation matrix $\mathbf{R}_{xx}$ of the stationary input is thereby given by:
 			\begin{equation}
 			\mathbf{R}_{xx} = \E[\mathbf{x}(n) \mathbf{x}^{T}(n)] = \E
 			\begin{bmatrix}
 			x(n-1) x(n-1) & x(n-1) x(n-2) \\
-			x(n-1) x(n-2) & x(n-2) x(n-2)
+			x(n-2) x(n-1) & x(n-2) x(n-2)
 			\end{bmatrix} =
 			\begin{bmatrix}
 			r_{xx}(0) & r_{xx}(1) \\
@@ -685,34 +702,32 @@
 			\label{eq: 2-1a-cov_ar_2}
 			\end{equation}
 			
-			where $r_{xx}(k)$ the autocorrelation function (ACF) of $x(n)$. To obtain the ACF of the AR(2) process, multiply equation (\ref{eq: 2-1a-ar_2}) by $x(n-k)$ and take expectations:
-			
+			where $r_{xx}(k)$ is the autocorrelation function (ACF) of $x(n)$. To obtain the ACF of the AR(2) process, we must then multiply equation (\ref{eq: 2-1a-ar_2}) by $x(n-k)$ and take the Expectation, $\E[\cdot]$:
 			\begin{align}
-			r_{xx}(k) = \E[ x(n) x(n-k) ]   &= \E \bigg[ a_{1} x(n - 1) x(n-k) + a_{2} x(n - 2) x(n-k) + \eta(n) x(n-k) \bigg] \nonumber\\
-			r_{xx}(k) = \E[ x(n) x(n-k) ]   &= a_{1} \E \big[ x(n - 1) x(n-k) \big] + a_{2} \E \big[ x(n - 2) x(n-k) \big] + \E \big[ \eta(n) x(n-k) \big]
+			r_{xx}(k) &= \E[ x(n) x(n-k) ] \nonumber\\
+			  		  &= \E \bigg[ a_{1} x(n - 1) x(n-k) + a_{2} x(n - 2) x(n-k) + \eta(n) x(n-k) \bigg] \nonumber\\
+			  		  &= a_{1} \E \big[ x(n - 1) x(n-k) \big] + a_{2} \E \big[ x(n - 2) x(n-k) \big] + \E \big[ \eta(n) x(n-k) \big]
 			\end{align}
 			
-			Notice that $\E [\eta(n) x(n-k)]$ vanishes when $k > 0$, then:
-			
+			$\E [\eta(n) x(n-k)]$ goes to $0$ when $k > 0$: 
+			\vspace*{-0.2\baselineskip}
 			\begin{align}
-			r_{xx}(0)   &= a_{1} r_{xx}(1) + a_{2} r_{xx}(2) + \sigma_{\eta}^{2} \\
-			r_{xx}(k)   &= a_{1} r_{xx}(k-1) + a_{2} r_{xx}(k-2), k > 0
+			r_{xx}(0)   &= a_{1} r_{xx}(1) + a_{2} r_{xx}(2) + \sigma_{\eta}^{2},  && k = 0 \\
+			r_{xx}(k)   &= a_{1} r_{xx}(k-1) + a_{2} r_{xx}(k-2),   && k > 0
 			\label{eq: 2-1a-acf_ar_2}
 			\end{align}
-			
-			Note that ACF is an even function or equivalently $r_{xx}(-k) = r_{xx}(k), \forall k \in \setInteger$, thus using the true process parameters $a_{1} = 0.1$, $a_{2} = 0.8$
-			and $\sigma_{\eta}^{2} = 0.25$, we obtain the three simultaneous equations with three unknowns:
-			
+			\noindent
+			Using the true process parameters $a_{1} = 0.1$, $a_{2} = 0.8$ and $\sigma_{\eta}^{2} = 0.25$, together with the even propert of the ACF, $r_{xx}(-k) = r_{xx}(k), \forall k \in \setInteger$, we obtain three simultaneous equations with three unknowns:
+			\vspace*{-\baselineskip}
 			\begin{align}
 			r_{xx}(0)   &= a_{1} r_{xx}(1) + a_{2} r_{xx}(2) + \sigma_{\eta}^{2} \\
 			r_{xx}(1)   &= a_{1} r_{xx}(0) + a_{2} r_{xx}(-1) = a_{1} r_{xx}(0) + a_{2} r_{xx}(1) \\
 			r_{xx}(2)   &= a_{1} r_{xx}(1) + a_{2} r_{xx}(0)
 			\end{align}
 			
-			with the unique solution $r_{xx}(k) = [\frac{25}{27}, \frac{25}{54}, \frac{85}{108}]$ for $k=1, 2, 3$.
-			
+			with the unique solution $r_{xx} = [\frac{25}{27}, \frac{25}{54}, \frac{85}{108}]$ for $k=0, 1, 2$. \newline
+			\noindent
 			Hence by substitution in equation (\ref{eq: 2-1a-cov_ar_2}) we obtain the  correlation matrix of the input vector $\mathbf{x}(n)$:
-			
 			\begin{equation}
 			\mathbf{R}_{xx} = 
 			\frac{25}{54}
@@ -722,9 +737,8 @@
 			\end{bmatrix}
 			\label{eq: 2-1a-cov_ar_2_result}
 			\end{equation}
-			
+			\noindent
 			Convergence of the LMS algorithm depends on the step size $\mu$, which should satisfy:
-			
 			\begin{equation}
 			0 < \mu < \frac{2}{\lambda_{max}}
 			\label{eq: 2-1a-cond:mu_max}
@@ -732,11 +746,12 @@
 			
 			where $\lambda_{max}$ the largest eigenvalue of the correlation matrix $\mathbf{R}_{xx}$. Performing the eigendecomposition of $\mathbf{R}_{xx}$, we obtain
 			$\lambda_{1} = 0.4630$ and $\lambda_{2} = \lambda_{max} = 1.3889$ and as a result, convergence to the Wiener optimal solution is guaranteed for:
-			
+			\vspace*{-0.8\baselineskip}
 			\begin{equation}
 			0 < \mu < 1.44
 			\label{eq: 2-1a-cond:mu_max_val}
 			\end{equation}
+			
 		\subsubsection{Example Learning Curve for an AR(2) Process}
 		
 			\begin{figure}[H]
@@ -764,20 +779,19 @@
 		\subsubsection{Misadjustment}
 			
 			The theoretical Misadjustment, $\mathcal{M}_{LMS}$, of the LMS algorithm is obtained by the approximation formula:
-			
+			\vspace*{-0.6\baselineskip}
 			\begin{equation}
-			\mathcal{M}_{LMS} \approx \frac{\mu}{2} Tr\big\{ \mathbf{R}_{xx} \big\} = \frac{\mu}{2} 1.8519
+			\mathcal{M}_{LMS} \approx \frac{\mu}{2} Tr\big\{ \mathbf{R}_{xx} \big\} = \frac{\mu}{2} \left(\frac{100}{54}\right) = \frac{\mu}{2} 1.8519
 			\end{equation}
-			
-			where $\mathbf{R}_{xx}$ from (\ref{eq: 2-1a-cov_ar_2_result}) is used.
-			
-			According to figure \ref{fig: 2-1b} the squared prediction error plateaus for both $\mu$ values after $t > 200$. To guarantee that a steady-state has been reached, we time average the squared prediction error for $t_{0} > 400$, in order to obtain a Mean Squared Error (MSE) estimate. The empirical misadjustment, $\mathcal{M}_{emp}$,
-			is then obtained using the formula:
-			
+			\indent
+			where $\mathbf{R}_{xx}$ from (\ref{eq: 2-1a-cov_ar_2_result}) is used. \newline
+			\noindent
+			Figure \ref{fig: 2-1b} shows that the squared prediction error converges for both $\mu$ after $t > 200$. Looking at $t > 400$ to guarantee that a steady-state has been reached, a Mean Squared Error (MSE) can be estimated. The empirical misadjustment, $\mathcal{M}_{emp}$, is then obtained using the formula:
+%			\vspace*{-0.2\baselineskip}
 			\begin{equation}
 			\mathcal{M}_{emp} = \frac{\mathtt{EMSE}}{\sigma_{\eta}^{2}} = \frac{\mathtt{MSE}}{\sigma_{\eta}^{2}} -1
 			\end{equation}
-			
+			\noindent
 			Table \ref{tab: 2-1c} summarises the empirical, theoretical and practical misadjustments of the simple LMS algorithm for the $x(n)$ process.
 						
 			\begin{table}[H]
@@ -831,38 +845,37 @@
 			\end{figure}
 		The simulation shown in Figure \ref{fig: 2-1d}, shows that convergence to a steady state is faster with larger $\mu$ values, 200 ($\mu=0.05$) vs 900 ($\mu=0.01$), however, we observe that the converged value is less accurate and more noisy, as can be clearly seen for $\hat{a}_1$.
 		\subsubsection{Leaky LMS Derivation}
-			Let the objective function $\mathcal{J}_{2}$, such that:
-			
+			The cost function $\mathcal{J}_{2}$:
+			\vspace*{-0.6\baselineskip}
 			\begin{equation}
 			\mathcal{J}_{2}(n) = \frac{1}{2} \bigg( e^{2}(n) + \gamma \| \vw(n) \|_{2}^{2} \bigg)
 			\label{eq: 2-1e-J_2}
 			\end{equation}
 			
-			Expressing the error term, $e(n)$, in terms of the input vector $\mathbf{x}_{n}$ and the target value $y_{n}$:
-			
+			Expressing the error term, $e(n)$, in terms of the input vector $\mathbf{x}_{n}$ and the (generic) target $y_{n}$:
 			\begin{align}
 			\mathcal{J}_{2}(n)  &= \frac{1}{2} \bigg( \| y(n) - \vw(n)^{T} \mathbf{x}(n) \|_{2}^{2} + \gamma \| \vw(n) \|_{2}^{2} \bigg) \\
-			\mathcal{J}_{2}(n)  &= \frac{1}{2} \bigg( \big( y(n) - \vw(n)^{T} \mathbf{x}(n))^{T} (y(n) - \vw(n)^{T} \mathbf{x}(n) \big) + \gamma \vw(n)^{T} \vw(n) \bigg)
+							    &= \frac{1}{2} \bigg( \big( y(n) - \vw(n)^{T} \mathbf{x}(n))^{T} (y(n) - \vw(n)^{T} \mathbf{x}(n) \big) + \gamma \vw(n)^{T} \vw(n) \bigg)
 			\end{align}
-			
-			Calculating the gradient of the objective function, $\nabla_{\vw} \mathcal{J}_{2}$, with respect to the weights $\vw$:
-			
+			\noindent
+			Calculating the gradient of the cost function, $\nabla_{\vw} \mathcal{J}_{2}$, with respect to the weights $\vw$:
 			\begin{align}
-			\nabla_{\vw} \mathcal{J}_{2}(n) &= - ( y(n) - \vw(n)^{T} \mathbf{x}(n) ) \mathbf{x}(n) + \gamma \vw(n) \\
-			\nabla_{\vw} \mathcal{J}_{2}(n) &= - e(n) \mathbf{x}(n) + \gamma \vw(n)
+			\nabla_{\vw} \mathcal{J}_{2}(n) &= \frac{1}{2} \frac{\partial}{\partial\vw}\bigg( \big( y(n) - \vw(n)^{T} \mathbf{x}(n))^{T} (y(n) - \vw(n)^{T} \mathbf{x}(n) \big) + \gamma \vw(n)^{T} \vw(n) \bigg) \\
+											&= \frac{1}{2} \big( -2 ( y(n) - \vw(n)^{T} \mathbf{x}(n) ) \mathbf{x}(n) + 2\gamma \vw(n) \big)\\
+											&= - ( y(n) - \vw(n)^{T} \mathbf{x}(n) ) \mathbf{x}(n) + \gamma \vw(n) \\
+											&= - e(n) \mathbf{x}(n) + \gamma \vw(n)
 			\end{align}
-			
-			Applying the gradient descent update to weights $\vw$ to minimise the objective function $\mathcal{J}_{2}$:
-			
+			\noindent
+			We take the negative of this gradient, i.e. gradient descent, hence the weight update equation becomes:
+			\vspace*{-\baselineskip}
 			\begin{align}
 			\vw(n + 1)  &= \vw(n) - \mu \nabla_{\vw} \mathcal{J}_{2}(n) \\
-			\vw(n + 1)  &= \vw(n) - \mu \big( - e(n) \mathbf{x}(n) + \gamma \vw(n) \big) \\
-			\vw(n + 1)  &= (1 - \mu \gamma) \vw(n) + \mu e(n) \mathbf{x}(n)
+						&= \vw(n) - \mu \big( - e(n) \mathbf{x}(n) + \gamma \vw(n) \big) \\
+						&= (1 - \mu \gamma) \vw(n) + \mu e(n) \mathbf{x}(n)
 			\label{eq: 2-1e-leaky_lms}
 			\end{align}
-			
-			Hence we proved that the Leaky LMS algorithm following the update rule in (\ref{eq: 2-1e-leaky_lms}) is equivalent to the minimisation of the objective function $\mathcal{J}_{2}$
-			defined in (\ref{eq: 2-1e-J_2}).
+			\noindent
+			Hence we proved that the Leaky LMS algorithm weight update rule, (\ref{eq: 2-1e-leaky_lms}), is derived from the minimisation of the cost function $\mathcal{J}_{2}$, (\ref{eq: 2-1e-J_2}).
 		\subsubsection{Example Leaky LMS for an AR(2) Process}  
 		
 			\begin{figure}[H]
@@ -934,40 +947,32 @@
 		
 		\subsubsection{NLMS Update Equation Equivalence}
 			Starting from the update equation based on the \textit{a posteriori error} $e_{p}(n) = d(n) - \mathbf{x}(n)^{T} \vw(n + 1)$:
-			
 			\begin{equation}
 			\vw(n + 1) = \vw(n) + \mu e_{p}(n) \mathbf{x}(n)
-			\label{eq:nlms_a_error}
 			\end{equation}
 			
 			Multiply both sides with $-\mathbf{x}(n)^{T}$ and add $d(n)$ to construct $e_{p}(n)$ on the LHS:
-			
 			\begin{equation}
 			d(n) - \mathbf{x}(n)^{T} \vw(n + 1) = d(n) - \mathbf{x}(n)^{T} \vw(n) - \mathbf{x}(n)^{T} \mu e_{p}(n) \mathbf{x}(n)
 			\end{equation}
 			
-			Note that the LHS term is the a posteriori error, $e_{p}(n)$, while the first RHS term the a priori error, $e(n)$:
-			
+			The LHS term is the \textit{a posteriori} error, $e_{p}(n)$, while the first RHS term the \textit{a priori error}, $e(n)$:
 			\begin{align}
 			e_{p}(n)    &= e(n) - \mu e_{p}(n) \| \mathbf{x}(n) \|^{2} \\
 			e_{p}(n)    &= e(n) \frac{1}{1 + \mu \| \mathbf{x}(n) \|^{2}}
 			% &= e(n) \bigg[ \frac{1 + \mu \| \mathbf{x}(n) \|^{2} - \mu \| \mathbf{x}(n) \|^{2} }{1 + \mu \| \mathbf{x}(n) \|^{2}} \bigg] \\
 			% &= e(n) \bigg[ 1 - \mu \frac{\| \mathbf{x}(n) \|^{2}}{1 + \mu \| \mathbf{x}(n) \|^{2}} \bigg]
-			\label{eq:aa_errors}
+			\label{eq: 2-2b-aa_errors}
 			\end{align}
 			
-			Substituting (\ref{eq:aa_errors}) in update equation (\ref{eq:nlms_a_error}):
-			
+			Substituting (\ref{eq: 2-2b-aa_errors}) in update equation (\ref{eq: 2-2b-nlms_a_error}):
 			\begin{align}
 			\vw(n + 1)  &= \vw(n) + \mu \frac{1}{1 + \mu \| \mathbf{x}(n) \|^{2}} e(n) \mathbf{x}(n) \\
-			\vw(n + 1)  &= \vw(n) + \frac{1}{\frac{1}{\mu} + \| \mathbf{x}(n) \|^{2}} e(n) \mathbf{x}(n) \\
-			\vw(n + 1)  &= \vw(n) + \frac{\beta}{\epsilon + \| \mathbf{x}(n) \|^{2}} e(n) \mathbf{x}(n) \label{eq:nlms}
+			  &= \vw(n) + \frac{1}{\frac{1}{\mu} + \| \mathbf{x}(n) \|^{2}} e(n) \mathbf{x}(n) \label{eq: 2-2b-nlms}
 			\end{align}
-			
-			where for $\beta = 1$ and $\epsilon = \frac{1}{\mu}$ we showed that the NLMS update (\ref{eq:nlms}) is equivalent to the update equation based on the \textit{a posteriori error},
-			given by (\ref{eq:nlms_a_error}).
+			\noindent
+			Hence, with $\beta = 1$ and $\epsilon = \frac{1}{\mu}$ we have shown that the NLMS algorithm (\ref{eq: 2-2b-nlms}) is equivalent to the weight update equation based on the \textit{a posteriori error}.
 		
-		 
 		\subsubsection{Generalised Normalised Gradient Descent (GNGD) Example for a MA(1) System} 
 		
 			\begin{figure}[H]
@@ -991,9 +996,8 @@
 			As we explored earlier the LMS algorithm's convergence time is closely tied to the value of $\mu$, showing the greatest change for the $\times10$ increase of $\mu$. Figure \ref{fig: 2-2c}, shows that we can surpass the rate of convergence of the Benveniste algorithm when using the NLMS algorithm. The NLMS algorithm allows us to choose large values of $\mu$, that would traditionally cause the output of the LMS to be unstable, due to its GNGD normalisation approach.
 			
 	\subsection{Adaptive Noise Cancellation} \label{sec: 2-3-ANC}
-		Let the pure sine wave $x(n)$, the noisy signal $s(n)$, the noise term $\eta(n)$ and the ALE filter output $\hat{x}(n; \Delta)$, parametrised by the delay parameter $\Delta$.
+		With the: pure sine wave $x(n)$, noisy signal $s(n)$,  noise term $\eta(n)$ and ALE filter output $\hat{x}(n; \Delta)$, parametrised by the delay parameter $\Delta$.
 		Then the Mean Squared Error (MSE) is given by:
-		
 		\begin{align}
 		\mathtt{MSE} =
 		\E \bigg[ \big( s(n) - \hat{x}(n; \Delta) \big)^{2} \bigg]  &=  \E \bigg[ \big( x(n) + \eta(n) - \hat{x}(n; \Delta) \big)^{2} \bigg] \\
@@ -1001,45 +1005,37 @@
 		&=  \E \bigg[ \eta^{2}(n) \bigg] +
 		\E \bigg[ \big( x(n) - \hat{x}(n; \Delta) \big)^{2} \bigg] +
 		2\E \bigg[ \eta(n) \big(x(n) - \hat{x}(n; \Delta) \big) \bigg]
-		\label{eq:ale_mse}
+		\label{eq: 2-3a-ale_mse}
 		\end{align}
-		
-		The first term, noise power $\E [ \eta^{2}(n) ]$, is independent of $\Delta$, while the second term, Mean Squared Prediction Error $\E [ (x(n) - \hat{x}(n; \Delta))^{2} ]$ is not
-		a function of noise $\eta(n)$. Hence, the last term only involves both the delay $\Delta$ (through $\hat{x}(n)$) and the noise term, so we will minimise it:
-		
-		\begin{equation}
-		\underset{\Delta \in \setNatural}{min}\ \E \bigg[ \eta(n) \big(x(n) - \hat{x}(n; \Delta) \big) \bigg]
-		\end{equation}
-		
-		Using the fact that $x(n)$ and $\eta(n)$ are uncorrelated the term $\E [ \eta(n) x(n) ]$ vanished:
-		
+		\noindent
+		The 1st term, noise power $\E [ \eta^{2}(n) ]$, is independent of $\Delta$, the 2nd term, Mean Squared Prediction Error (MSPE) $\E [ (x(n) - \hat{x}(n; \Delta))^{2} ]$ is independent of noise $\eta(n)$, the 3rd term involves both the delay $\Delta$ (through $\hat{x}(n)$) the noise term and a 2 pre-factor, so is a candidate for minimisation:
 		\begin{align}
-		\underset{\Delta \in \setNatural}{min}\ \E \bigg[ \eta(n) \hat{x}(n; \Delta) \bigg] &\rightarrow
-		\underset{\Delta \in \setNatural}{min}\ \E \bigg[ \big( u(n) + 0.5u(n-2) \big) \vw^{T} \vu(n; \Delta) \bigg] \\
-		&\rightarrow
-		\underset{\Delta \in \setNatural}{min}\ \E \bigg[ \big( u(n) + 0.5u(n-2) \big) \sum_{i=0}^{M-1} w_{i} s(n - \Delta - i) \bigg] \\
-		&\rightarrow
-		\underset{\Delta \in \setNatural}{min}\ \E \bigg[ \big( u(n) + 0.5u(n-2) \big) \sum_{i=0}^{M-1} w_{i} \big( x(n - \Delta - i) + \eta(n - \Delta - i) \big) \bigg] \\
-		&\rightarrow
-		\underset{\Delta \in \setNatural}{min}\ \E \bigg[ \big( u(n) + 0.5u(n-2) \big) \sum_{i=0}^{M-1} w_{i} \big( \eta(n - \Delta - i) \big) \bigg] \\
-		&\rightarrow
-		\underset{\Delta \in \setNatural}{min}\ \E \bigg[ \big( u(n) + 0.5u(n-2) \big) \sum_{i=0}^{M-1} w_{i} \big( u(n - \Delta - i) + 0.5 u(n - 2 - \Delta - i) \big) \bigg]
-		\label{con:delta} \\
-		&\rightarrow
-		0, \quad \Delta > 2
+		&\underset{\Delta \in \setNatural}{min}\ \E \bigg[ \eta(n) \big(x(n) - \hat{x}(n; \Delta) \big) \bigg] = \underset{\Delta \in \setNatural}{min}\ \E \bigg[ \eta(n) x(n) \bigg]- \underset{\Delta \in \setNatural}{min}\ \E \bigg[ \eta(n)\hat{x}(n; \Delta) \bigg] \\
+		&\textnormal{As $x(n)$ and $\eta(n)$ are uncorrelated, any  $\E [ \eta(n) x(n) ]$ terms go to $0$:} \nonumber\\
+		&=
+		\underset{\Delta \in \setNatural}{min}\ \E \bigg[ \big( \eta(n) \big) \vw^{T} \vv(n; \Delta) \bigg] \\
+		&=
+		\underset{\Delta \in \setNatural}{min}\ \E \bigg[ \big( \eta(n) \big) \sum_{i=0}^{M-1} w_{i} s(n - \Delta - i) \bigg] \\
+		&=
+		\underset{\Delta \in \setNatural}{min}\ \E \bigg[ \big( \eta(n) \big) \sum_{i=0}^{M-1} w_{i} \big( x(n - \Delta - i) + \eta(n - \Delta - i) \big) \bigg] \\
+		&\textnormal{Now using the definition of $\eta(n) = v(n) + 0.5v(n - 2)$:} \nonumber\\
+		&=
+		\underset{\Delta \in \setNatural}{min}\ \E \bigg[ \big( v(n) + 0.5v(n-2) \big) \sum_{i=0}^{M-1} w_{i} \big( \eta(n - \Delta - i) \big) \bigg] \\
+		&=
+		\underset{\Delta \in \setNatural}{min}\ \E \bigg[ \big( v(n) + 0.5v(n-2) \big) \sum_{i=0}^{M-1} w_{i} \big( v(n - \Delta - i) + 0.5 v(n - 2 - \Delta - i) \big) \bigg]
+		\label{eq: 2-3a-choose-delta} 
 		\end{align}
-		
-		Since $u(n)$ is identically and \textbf{independently} distributed white noise:
-		
+		\noindent
+		Since $v(n)$ is identically and \textbf{independently} distributed (i.i.d), \textit{zero mean} white noise:
 		\begin{equation}
-		\E \bigg[ u(n) u(n - j) \bigg] = 0, \quad \forall j \neq 0
+		\E \bigg[ v(n) v(n - j) \bigg] = 0, \quad \forall j \neq 0
+		\label{eq: 2-3a-iid:helper}
 		\end{equation}
 		
-		therefore the expectation in (\ref{con:delta}) is zero and thus minimised for $\Delta > 2$, since the terms are non time-overlapping.
-		This is an expected result, since the colored noise signal $\eta(n)$ is a second order MA process.
-		
-		The theoretical optimal delay range, $\Delta > 2$ is also verified empirically. \\
-		The MPSE as a function of $\Delta$ is also plotted in Figure \ref{fig: 2-3a}, verifying the improved performance $\Delta > 2$.
+		(\ref{con:delta}) is zero and minimised for $\Delta > 2$ and maximised for $\Delta = 0$, a direct consequence of (\ref{eq: 2-3a-iid:helper}).
+		This is somewhat intuitive as the coloured noise signal $\eta(n)$ is a second order MA process. \newline
+		\noindent
+		MPSE is plotted against $\Delta$, Figure \ref{fig: 2-3a}, verifying the improved performance for $\Delta > 2$.
 		
 		\subsubsection{Adaptive Line Enhancer (ALE) Delay Investigation}
 		\begin{minipage}[b]{0.49\textwidth}
@@ -1125,7 +1121,7 @@
 				\label{fig: 2-3d-orig+paramSweep}
 			\end{figure}
 		
-			As we can see above in Figure \ref{fig: 2-3d-orig+paramSweep}, a hyper parameter heatmap highlights the RMSE tradeoffs we can expect for varying model order, $M$, and learning rate, $\mu$, with this EEG dataset. Using this knowledge we selected $M=10,\mu=0.01$ as the best parameters. 
+			As we can see above in Figure \ref{fig: 2-3d-orig+paramSweep}, a hyper parameter heatmap highlights the RMSE tradeoffs we can expect for varying model order, $M$, and learning rate, $\mu$, with this EEG dataset. Using this knowledge we selected $M=10,\mu=0.01$ as a satisfactory compromise. 
 			
 			\begin{figure}[H]
 				\centering
@@ -1253,132 +1249,123 @@
 			In the voltage magnitude sweep we observe how the is an increase of the ellipse's major axis radius and decrease of the minor axis radius which are proportional to the size of the magnitude bias. We can also clearly see a slight rotation about the origin as the ellipse aligns with its major axis. 
 			
 		\subsubsection{Derivation for estimating Frequency from Filter Weights}
-			Balanced complex $\alpha$$-$$\beta$ voltages satisfy:
-			
+			\noindent
+			\textbf{Balanced Complex Voltage Frequency} \newline
+			\noindent
+			Balanced complex $\alpha$$-$$\beta$ Clarke Voltages are defined with:
+			\vspace*{-0.6\baselineskip}
 			\begin{equation}
-			u(n) = \sqrt{\frac{3}{2}} V e^{j(2\pi \frac{f_{o}}{f_{s}} n + \phi)}
+			v(n) = \sqrt{\frac{3}{2}} V e^{j(2\pi \frac{f_{o}}{f_{s}} n + \phi)}
 			\end{equation}
 			
 			For time index $n+1$:
-			
+			\vspace*{-\baselineskip}
 			\begin{align}
-			u(n+1)  &= \sqrt{\frac{3}{2}} V e^{j(2\pi \frac{f_{o}}{f_{s}} (n+1) + \phi)} \\
+			v(n+1)  &= \sqrt{\frac{3}{2}} V e^{j(2\pi \frac{f_{o}}{f_{s}} (n+1) + \phi)} \\
 			&= \sqrt{\frac{3}{2}} V e^{j(2\pi \frac{f_{o}}{f_{s}} n + \phi)} e^{j 2 \pi \frac{f_{o}}{f_{s}}} \\
-			&= u(n) e^{j 2 \pi \frac{f_{o}}{f_{s}}}
-			\label{eq:u_n+1}
+			&= v(n) e^{j 2 \pi \frac{f_{o}}{f_{s}}}
+			\label{eq: 3-1d-u_n+1}
 			\end{align}
-			
-			Using the strictly linear autoregressive model of order 1, equation, satisfying:
-			
+			\noindent
+			The Strictly Linear autoregressive model of order 1, is defined as:
 			\begin{equation}
-			u(n+1) = u(n) h^{*}(n)
+			v(n+1) = h^{*}(n) v(n) 
 			\end{equation}
 			
-			we express the complex exponential in (\ref{eq:u_n+1}) as a function of the model parameter $h(n)$:
-			
+			We can express coefficient $h^{*}(n)$ as a function of the voltage, then take it's conjugate to give us $h(n)$:
+			\vspace*{-\baselineskip}
 			\begin{align}
-			e^{j 2 \pi \frac{f_{o}}{f_{s}}} &= h^{*}(n) \\
-			e^{-j 2 \pi \frac{f_{o}}{f_{s}}}&= h(n) \\
-			&= | h(n) | e^{j\big( arctan \big(\frac{\Im\{h(n)\}}{\Re\{h(n)\}} \big) \big)}
+			 h^{*}(n) &= \frac{v(n+1)}{v(n)} = \frac{v(n) e^{j 2 \pi \frac{f_{o}}{f_{s}}}}{v(n)} \\
+			 h^{*}(n) &= e^{j 2 \pi \frac{f_{o}}{f_{s}}} \\
+			 h(n) &= e^{-j 2 \pi \frac{f_{o}}{f_{s}}}  \label{eq: 3-1d-h_balanced}\\
+			&= | h(n) | e^{j\big( arctan \left\{\frac{\Im\{h(n)\}}{\Re\{h(n)\}} \right\} \big)} \label{eq: 3-1d-h_general}
 			\end{align}
-			
-			Two complex numbers are equal if and only of both their magnitudes and their angles are equal, therefore we set the angles to be equal, obtaining:
-			
+			\noindent
+			The general complex form, (\ref{eq: 3-1d-h_general}), can only be equal to the derived form, (\ref{eq: 3-1d-h_balanced}), if both their magnitudes and their angles are equal, therefore we can equate and solve for $f_0$: 
 			\begin{align}
-			2 \pi \frac{f_{o}}{f_{s}} = arctan \big(\frac{\Im\{h(n)\}}{\Re\{h(n)\}} \big) 
+			2 \pi \frac{f_{o}}{f_{s}} &= arctan \left\{\frac{\Im\{h(n)\}}{\Re\{h(n)\}} \right\} \\
+			f_{o} &= \frac{f_{s}}{2\pi} arctan \left\{\frac{\Im\{h(n)\}}{\Re\{h(n)\}} \right\}
+			\label{eq: 3-1d-fo_CLMS:proof}
 			\end{align}
 			
-			Solving for $f_{o}$ concludes the proof:
-			
+			\noindent
+			\textbf{Unbalanced Complex Voltage Frequency} \\
+			Unbalanced complex $\alpha$$-$$\beta$ Clarke Voltages are defined with:
+			\vspace*{-0.5\baselineskip}
 			\begin{equation}
-			f_{o} = \frac{f_{s}}{2\pi} arctan \big(\frac{\Im\{h(n)\}}{\Re\{h(n)\}} \big)
-			\label{proof:fo_CLMS}
+			v(n) = A(n) e^{j(2\pi \frac{f_{o}}{f_{s}} n + \phi)} + B(n) e^{-j(2\pi \frac{f_{o}}{f_{s}} n + \phi)}
+			\label{eq: 3-1d-u_unbalanced}
 			\end{equation}
 			
-			The unbalanced system satisfies:
-			
+			The Widely Linear autoregressive model of order 1, is defined as:
+			\vspace*{-0.5\baselineskip}
 			\begin{equation}
-			u(n) = A(n) e^{j(2\pi \frac{f_{o}}{f_{s}} n + \phi)} + B(n) e^{-j(2\pi \frac{f_{o}}{f_{s}} n + \phi)}
-			\label{eq:u_unbalanced}
+			v(n+1) = h^{*}(n) v(n) + g^{*}(n) u^{*}(n)
 			\end{equation}
 			
-			Using the widely linear autoregressive model of order 1, equation, satisfying:
-			
-			\begin{equation}
-			u(n+1) = h^{*}(n) u(n) + g^{*}(n) u^{*}(n)
-			\end{equation}
-			
-			we substitute (\ref{eq:u_unbalanced}) terms:
-			
+			we substitute the Clarke Voltage Definition, (\ref{eq: 3-1d-u_unbalanced}):
+			\vspace*{-0.8\baselineskip}
 			\begin{align}
-			u(n+1) =\ 
-			&h^{*}(n) \bigg[ A(n) e^{j(2\pi \frac{f_{o}}{f_{s}} n + \phi)} + B(n) e^{-j(2\pi \frac{f_{o}}{f_{s}} n + \phi)} \bigg] + \nonumber\\
-			&g^{*}(n) \bigg[ A^{*}(n) e^{-j(2\pi \frac{f_{o}}{f_{s}} n + \phi)} + B^{*}(n) e^{j(2\pi \frac{f_{o}}{f_{s}} n + \phi)} \bigg]
-			\label{eq:u_n+1_ar}
+			v(n+1) =\ 
+			&h^{*}(n) \bigg[ A(n) e^{j(2\pi \frac{f_{o}}{f_{s}} n + \phi)} + B(n) e^{-j(2\pi \frac{f_{o}}{f_{s}} n + \phi)} \bigg] \nonumber\\
+			&+ g^{*}(n) \bigg[ A^{*}(n) e^{-j(2\pi \frac{f_{o}}{f_{s}} n + \phi)} + B^{*}(n) e^{j(2\pi \frac{f_{o}}{f_{s}} n + \phi)} \bigg]
+			\label{eq: 3-1d-u_n+1_ar}
 			\end{align}
 			
-			For time index $n+1$, the complex voltage satisfies:
-			
+			For time index $n+1$:
 			\begin{equation}
-			u(n+1) = A(n+1) e^{j(2\pi \frac{f_{o}}{f_{s}} (n+1) + \phi)} + B(n+1) e^{-j(2\pi \frac{f_{o}}{f_{s}} (n+1) + \phi)}
-			\label{eq:u_n+1_clarke}
+			v(n+1) = A(n+1) e^{j(2\pi \frac{f_{o}}{f_{s}} (n+1) + \phi)} + B(n+1) e^{-j(2\pi \frac{f_{o}}{f_{s}} (n+1) + \phi)}
+			\label{eq: 3-1d-u_n+1_clarke}
 			\end{equation}
 			
-			Equating (\ref{eq:u_n+1_ar}) and (\ref{eq:u_n+1_clarke}), collecting common exponential terms:
-			
+			Equating (\ref{eq: 3-1d-u_n+1_ar}) and (\ref{eq: 3-1d-u_n+1_clarke}), and by inspecting the common exponential terms:
 			\begin{align}
 			A(n+1) e^{j(2\pi \frac{f_{o}}{f_{s}} (n+1) + \phi)} &= \bigg[ h^{*}(n) A(n) + g^{*}(n) B^{*}(n) \bigg] e^{j(2\pi \frac{f_{o}}{f_{s}} n + \phi)} \\
 			B(n+1) e^{-j(2\pi \frac{f_{o}}{f_{s}} (n+1) + \phi)} &= \bigg[ h^{*}(n) B(n) + g^{*}(n) A^{*}(n) \bigg] e^{-j(2\pi \frac{f_{o}}{f_{s}} n + \phi)}
 			\end{align}
 			
-			Assuming that the amplitude change over time is negligible, or equivalently $A(n+1) \approx A(n)$ and $B(n+1) \approx B(n)$, the equations simplify as:
-			
+			Assuming that the amplitude change over time is negligible, $A(n+1) \approx A(n)$ and $B(n+1) \approx B(n)$, the equations simplify as follows:
 			\begin{align}
-			e^{j 2\pi \frac{f_{o}}{f_{s}}} = \frac{h^{*}(n) A(n) + g^{*}(n) B^{*}(n)}{A(n+1)} \approx h^{*}(n) + g^{*}(n) \frac{B^{*}(n)}{A(n)} \label{eq:e_A}\\
-			e^{-j 2\pi \frac{f_{o}}{f_{s}}} = \frac{h^{*}(n) B(n) + g^{*}(n) A^{*}(n)}{B(n+1)} \approx h^{*}(n) + g^{*}(n) \frac{A^{*}(n)}{B(n)} \label{eq:e_B}
+			e^{j 2\pi \frac{f_{o}}{f_{s}}} = \frac{h^{*}(n) A(n) + g^{*}(n) B^{*}(n)}{A(n+1)} \approx h^{*}(n) + g^{*}(n) \frac{B^{*}(n)}{A(n)} \label{eq: 3-1d-e_A}\\
+			e^{-j 2\pi \frac{f_{o}}{f_{s}}} = \frac{h^{*}(n) B(n) + g^{*}(n) A^{*}(n)}{B(n+1)} \approx h^{*}(n) + g^{*}(n) \frac{A^{*}(n)}{B(n)} \label{eq: 3-1d-e_B}
 			\end{align}
 			
-			Note that (\ref{eq:e_A}) is the complex conjugate of (\ref{eq:e_B}, we reach:
-			
-			
+			As (\ref{eq: 3-1d-e_A}) is the complex conjugate of (\ref{eq: 3-1d-e_B}):
 			\begin{align}
 			h^{*}(n) + g^{*}(n) \frac{B^{*}(n)}{A(n)} = h(n) + g(n) \frac{A(n)}{B^{*}(n)}
 			\end{align}
 			
 			Multiplying with $\frac{B^{*}(n)}{A(n)}$ both sides:
-			
 			\begin{align}
 			\bigg( h^{*}(n) - h(n) \bigg) \frac{B^{*}(n)}{A(n)} + g^{*}(n) \bigg( \frac{B^{*}(n)}{A(n)} \bigg)^{2} - g(n) = 0
-			\label{eq:quad}
+			\label{eq: 3-1d-quadratic}
 			\end{align}
 			
-			We note that (\ref{eq:quad}) is quadratic in $\frac{B^{*}(n)}{A(n)}$, hence solving it we obtain:
-			
+			We can solve the quadratic (\ref{eq: 3-1d-quadratic}), to find $\frac{B^{*}(n)}{A(n)}$:
 			\begin{align}
 			\frac{B^{*}(n)}{A(n)}   &= \frac{- \bigg( h^{*}(n) - h(n) \bigg) \pm \sqrt{\bigg( h^{*}(n) - h(n) \bigg)^{2} + 4 g^{*}(n) g(n)}}{2g^{*}(n)} \\
-			&= \frac{2 \Im\{h(n)\}j \pm j\sqrt{-4 \Im\{h(n)\}^{2} + 4 |g(n)|^{2}}}{2g^{*}(n)} \\
-			&= \frac{\Im\{h(n)\}j \pm j\sqrt{\Im\{h(n)\}^{2} - |g(n)|^{2}}}{g^{*}(n)}
+			&= \frac{2 j\Im\{h(n)\} \pm j\sqrt{-4 \Im\{h(n)\}^{2} + 4 |g(n)|^{2}}}{2g^{*}(n)} \\
+			&= \frac{j\Im\{h(n)\} \pm j\sqrt{\Im\{h(n)\}^{2} - |g(n)|^{2}}}{g^{*}(n)}
 			\end{align}
 			
-			Substitution in (\ref{eq:e_A}), yields:
-			
+			Substituting this result into (\ref{eq: 3-1d-e_A}):
 			\begin{align}
 			e^{j 2\pi \frac{f_{o}}{f_{s}}}  &= h^{*}(n) + \Im\{h(n)\}j \pm j\sqrt{\Im\{h(n)\}^{2} - |g(n)|^{2}} \\
 			&= \Re\{h(n)\} \pm j\sqrt{\Im\{h(n)\}^{2} - |g(n)|^{2}} \\
 			\end{align}
 			
-			Keeping one solution ($+$ sign), since $f_{s} \gg f_{o} > 0$:
-			
+			Keeping the positive solution, since $f_{s} \gg f_{o} > 0$:
 			\begin{align}
 			e^{j 2\pi \frac{f_{o}}{f_{s}}}  &= \Re\{h(n)\} + j\sqrt{\Im\{h(n)\}^{2} - |g(n)|^{2}} \\
-			&= \rho e^{j\big(\frac{\sqrt{\Im\{h(n)\}^{2} - |g(n)|^{2}}}{\Re\{h(n)\}}\big)}
+			&= \rho e^{j\big(\frac{\sqrt{\Im\{h(n)\}^{2} - |g(n)|^{2}}}{\Re\{h(n)\}}\big)} \label{eq: 3-1d-h_unbalanced}
 			\end{align}
 			
-			where $\rho > 0$. Set the angles to be equal and solving for $f_{o}$ we complete the proof:
-			
+			where $\rho > 0$. \\
+			\noindent
+			Equating the generic, (\ref{eq: 3-1d-h_general}), and derived form, (\ref{eq: 3-1d-h_unbalanced}), then solving for $f_{o}$:
 			\begin{equation}
-			f_{o} = \frac{f_{s}}{2 \pi} arctan \bigg(\frac{\sqrt{\Im\{h(n)\}^{2} - |g(n)|^{2}}}{\Re\{h(n)\}}\bigg)
-			\label{proof:fo_ACLMS}
+			f_{o} = \frac{f_{s}}{2 \pi} arctan \left\{\frac{\sqrt{\Im\{h(n)\}^{2} - |g(n)|^{2}}}{\Re\{h(n)\}}\right\}
+			\label{eq: 3-1d-fo_ACLMS:proof}
 			\end{equation}
 		\subsubsection{Investigating the Accuracy of the Filter Estimates}
 			\begin{figure}[H]
@@ -1492,113 +1479,45 @@
 			\end{minipage}%
 	\subsection{A Real Time Spectrum Analyser Using Least Mean Square} \label{sec: 3-3-real-time-spectrum-LMS}
 		\subsubsection{The Discrete Fourier Transform (DFT) Formula and the Least Square Solution}
-			Let the $L_{2}$-norm of the prediction error being the objective function $\mathcal{J}$:
-			
+			We know that any signal, $y(n)$, can be expressed as a weighted sum of $N$ harmonically related complex exponentials:
 			\begin{equation}
-			\mathcal{J}(\vw) = \| \vy - \hat{\vy} \|^{2} = \| \vy - \mathbf{F} \vw \|^{2} = (\vy - \mathbf{F} \vw)^{H} (\vy - \mathbf{F} \vw)
-			\label{eq: 3-3a-J_OLS}
+			\hat{y}(n) = \sum_{k=0}^{N-1}w(k)e^{j\frac{2\pi kn}{N}}
 			\end{equation}
 			
-			In order to minimise the objective function $\mathcal{J}$ with respect to the parameters (weights) $\vw$, the first order condition is:
-			
+			\noindent
+			We can collect all $w(k)$ weights into a vector, $\vw$, and similarly all complex exponentials into a symmetric matrix, $\mF$. \\
+			The predicted signal vector is thereby defined as:
 			\begin{equation}
-			\frac{\partial \mathcal{J}(\vw)}{\partial \vw} \bigg\vert_{\vw=\vw_{*}}  = 0
+			\hat{\vy} = \mF\vw
+			\label{eq: 3-3a-y_hat}
 			\end{equation}
 			
-			Substituting from (\ref{eq: 3-3a-J_OLS}):
+			\noindent
+			The Least Squares framework minimises the sum of square error between the true signal $y(n)$ and the estimated signal $\hat{y}(n)$:
+			\begin{equation}
+			\underset{\vw}{min} ||\vy-\hat{\vy}||^2
+			\label{eq: 3-3a-ls-sqrErr}
+			\end{equation}
 			
+			\noindent
+			This minimisation can be done with the gradient descent algorithm, by using the negative gradient of, (\ref{eq: 3-3a-ls-sqrErr}).\\
+			The absolute minimum being $0$, we can solve for $\vw$:
 			\begin{align}
-			\frac{\partial}{\partial \vw} \bigg( \vy^{H} \vy - \vy^{H} \mathbf{F} \vw - \vw^{H} \mathbf{F}^{H} \vy + \vw^{H} \mathbf{F}^{H} \mathbf{F} \vw \bigg) \bigg\vert_{\vw=\vw_{*}}  &= 0 \\
-			0 - \mathbf{F}^{H} \vy - \mathbf{F}^{H} \vy + 2 \mathbf{F}^{H} \mathbf{F} \vw_{*} &= 0
+			0 					&= \nabla_{\vw} \bigg( \underset{\vw}{min} ||\vy-\hat{\vy}||^2 \bigg) \\
+			 					&= \nabla_{\vw} \bigg( (\vy-\mF\vw)^{H} (\vy-\mF\vw) \bigg) \\
+								&= \nabla_{\vw} \bigg( \vy^{H}\vy-\vw^H\mF\vy -\vy^{H}\mF\vw+\vw^{H}\mF^{H}\mF\vw \bigg)\\
+								&= -2\vy^{H}\mF + 2\vw^{H}\mF^{H}\mF\\
+			\vw^{H}\mF^{H}\mF	&= \vy^{H}\mF \\
+			\mF^{H}\mF\vw		&= \mF^{H}\vy \\
+			\vw					&= (\mF^{H}\mF)^{-1}\mF^{H}\vy \label{eq: 3-3a-weight:proof}
 			\end{align}
 			
-			Assuming that $\mathbf{F}^{H} \mathbf{F}$ is invertible (\textbf{semi}-positive as covariance matrix), we solve for $\vw_{*}$, concluding the proof:
-			
-			\begin{equation}
-			\vw_{*} = \bigg( \mathbf{F}^{H} \mathbf{F} \bigg)^{-1} \mathbf{F}^{H} \vy
-			\label{eq: 3-3a-OLS:proof}
-			\end{equation}
-			
-			The Inverse Discrete Fourier Transform (IDFT) of a signal $x(n)$ is given by:
-			
-			\begin{align}
-			\hat{x}(n)  &= \frac{1}{\sqrt{N}} \sum_{k=0}^{N-1} X(k) e^{j \frac{2\pi}{N} n k}
-			= \frac{1}{\sqrt{N}} \sum_{k=0}^{N-1} X(k) F_{N}^{nk}
-			\end{align}
-			
-			where $F_{N} = e^{j \frac{2\pi}{N}}$. If we define:
-			
-			\begin{equation}
-			\renewcommand\arraystretch{1.5}
-			\vf_{n}^{H} = \frac{1}{\sqrt{N}}
-			\begin{bmatrix}
-			1, & F_{N}^{n}, & F_{N}^{2n}, & \ldots, & F_{N}^{n(N-1)}
-			\end{bmatrix}
-			\end{equation}
-			
-			Arranging the sample estimates in a vector, we obtain:
-			
-			\begin{equation}
-			\renewcommand\arraystretch{1.5}
-			\hat{\vx} =
-			\begin{bmatrix}
-			\hat{x}(0) \\ \hat{x}(1) \\ \vdots \\ \hat{x}(N-1)
-			\end{bmatrix}
-			=
-			\begin{bmatrix}
-			\vf_{0}^{H} \mathbf{X} \\ \vf_{1}^{H} \mathbf{X} \\ \vdots \\ \vf_{N-1}^{H} \mathbf{X}
-			\end{bmatrix}
-			=
-			\mathbf{F} \mathbf{X}
-			\label{eq:DFT_OLS}
-			\end{equation}
-			
-			where:
-			
-			\begin{equation}
-			\renewcommand\arraystretch{1.5}
-			\mathbf{F} =
-			\begin{bmatrix}
-			\vf_{0}^{H} \\ \vf_{1}^{H} \\ \vdots \\ \vf_{N-1}^{H}
-			\end{bmatrix}
-			= \frac{1}{\sqrt{N}}
-			\begin{bmatrix}
-			1 & 1 & 1 & \cdots & 1 \\
-			1 & F_{N} & F_{N}^{2} & \cdots & F_{N}^{N-1} \\
-			\vdots & \vdots & \vdots & \ddots & \vdots \\
-			1 & F_{N}^{N-1} & F_{N}^{2(N-1)} & \cdots & F_{N}^{(N-1)^{2}} \\
-			\end{bmatrix}
-			\end{equation}
-			
-			Hence from (\ref{eq: 3-3a-DFT_OLS}), we conclude that IDFT is a linear transformation, where $\mathbf{F}$ the transformation matrix comprises of N harmonically related sinusoids,
-			with mutually orthonormal columns\footnote{Note that the $\frac{1}{\sqrt{N}}$ term is introduce to deal with unit-length columns.}. Then the Fourier coefficients, $\mathbf{X}$, are given by (\ref{eq: 3-3a-OLS:proof}):
-			
-			\begin{equation}
-			\mathbf{X} = \bigg( \mathbf{F}^{H} \mathbf{F} \bigg)^{-1} \mathbf{F}^{H} \hat{\vx} = \mathbf{F}^{H} \hat{\vx}
-			\label{eq: 3-3a-DFT_as_OLS:proof}
-			\end{equation}
-			
-			where the fact that $\mathbf{F}$ is unitary is used\footnote{See Problem \& Answer Sets for the proof.}.
-			Therefore, since (\ref{eq: 3-3a-OLS:proof}) is the optimal least mean squares solution, minimising the squared error and the Fourier coefficients, $\vw$, follow (\ref{eq: 3-3a-OLS:proof}),
-			then Inverse Discrete Fourier Transform, $\hat{x}(n)$, is a linear approximation of the original signal $x(n)$, minimising the squared error:
-			
-			\begin{equation}
-			\underset{\mathbf{X}}{min} \| \vx - \hat{\vx} \|^{2}
-			\end{equation}
-			
+					
 		\subsubsection{Fourier Transform in terms of Changes of Basis \& Projections}
-			According to equation (\ref{eq: 3-3a-DFT_as_OLS:proof}), the Fourier coefficients, $\mathbf{X}$, are a linear combination of the columns of the transformation matrix $\mathbf{F}$, whose columns are orthonormal:
+			As highlighted by equation (\ref{eq: 3-3a-weight:proof}), the Fourier coefficients, i.e. $\vw_{1\times N}$, are a linear combination of the (orthonormal) columns of the matrix $\mF_{N\times N}$.
 			
-			\begin{equation}
-			\vf_{k}^{H} \vf_{l} = \frac{1}{N} \sum_{k=0}^{N-1} e^{j \frac{2\pi}{N} (k-l)} = \left\{
-			\begin{array}{ll}
-			1 & \text{if } k=l\\
-			0 & \text{otherwise}
-			\end{array} \right.
-			\end{equation}
+			The DFT operation can be interpreted as a projection of the time-domain input vector, $\vy$, into the frequency domain, i.e. the subspace defined by the $\mF$ matrix. The columns are the basis of this new (frequency) domain, with each column representing $N$ sinusoids, each a multiple of the frequency $\frac{f_{s}}{N}$, where $f_{s}$ the sampling frequency.
 			
-			Therefore DFT operation can be seen as a projection of a vector, $\vx$, in time domain to the $\mathbf{F}$ matrix subspace, spanned by their orthonormal columns,
-			representing $N$ harmonically related sinusoids, where each sinusoid is a multiple of the frequency $\frac{f_{s}}{N}$, with $f_{s}$ the sampling frequency.
 		\subsubsection{The DFT-CLMS vs. the AR(1) at Spectrum Analysis}
 		
 			\begin{minipage}[b]{0.49\textwidth}
@@ -1697,15 +1616,15 @@
 					&&\\[-1em]
 					\hline
 					\hline
-					\ref{sec: 4-1-LMS}	&	40.10267886		&	5.19578295 \\
+					\ref{sec: 4-1-LMS}	&	40.102		&	5.1957 \\
 					\hline
-					\ref{sec: 4-2-dynamic-perc}	&	196.74102540	&	-23.19005401 \\
+					\ref{sec: 4-2-dynamic-perc}	&	196.74	&	-23.190 \\
 					\hline
-					\ref{sec: 4-3-amplitude-dynamic-perc}	&	8.43746488		&	13.92841215 \\
+					\ref{sec: 4-3-amplitude-dynamic-perc}	&	8.4374		&	13.928 \\
 					\hline
-					\ref{sec: 4-4-biasing-dynamic-perceptron} 	&	\makecell{ Bias: 10 \\ 11.79598862 \\ Bias: 1 \\ 13.60034752 \\}		&	\makecell{ Bias: 10 \\ 12.64497671 \\ Bias: 1 \\ 12.27492921 \\} \\
+					\ref{sec: 4-4-biasing-dynamic-perceptron} 	&	\makecell{ Bias: 10 \\ 11.796 \\ Bias: 1 \\ 13.600 \\}		&	\makecell{ Bias: 10 \\ 12.645 \\ Bias: 1 \\ 12.275 \\} \\
 					\hline
-					\ref{sec: 4-5-weight-training-dynamic-perceptron}	&	10.36045544		&	14.17393309 \\
+					\ref{sec: 4-5-weight-training-dynamic-perceptron}	&	10.360		&	14.174 \\
 					\hline
 				\end{tabular}
 				\captionsetup{justification=centering}
@@ -1726,15 +1645,15 @@
 					&&\\[-1em]
 					\hline
 					\hline
-					\ref{sec: 4-1-LMS}	&	15.61062135		&	9.80437511 \\
+					\ref{sec: 4-1-LMS}	&	15.610		&	9.8044 \\
 					\hline
-					\ref{sec: 4-2-dynamic-perc}	&	158.52919041	&	-22.06743461 \\
+					\ref{sec: 4-2-dynamic-perc}	&	158.53	&	-22.067 \\
 					\hline
-					\ref{sec: 4-3-amplitude-dynamic-perc}	&	5.11315282		&	15.20012655 \\
+					\ref{sec: 4-3-amplitude-dynamic-perc}	&	5.1132		&	15.200 \\
 					\hline
-					\ref{sec: 4-4-biasing-dynamic-perceptron} 	&	\makecell{ Bias: 10 \\ 6.11927320 \\ Bias: 1 \\ 14.65990124 \\}		&	\makecell{ Bias: 10 \\ 14.58218052 \\ Bias: 1 \\ 15.32947450 \\} \\
+					\ref{sec: 4-4-biasing-dynamic-perceptron} 	&	\makecell{ Bias: 10 \\ 6.1193 \\ Bias: 1 \\ 14.660 \\}		&	\makecell{ Bias: 10 \\ 14.582 \\ Bias: 1 \\ 15.3295 \\} \\
 					\hline
-					\ref{sec: 4-5-weight-training-dynamic-perceptron}	&	8.71068672		&	14.13429602 \\
+					\ref{sec: 4-5-weight-training-dynamic-perceptron}	&	8.7107		&	14.134 \\
 					\hline
 				\end{tabular}
 				\captionsetup{justification=centering}
@@ -1851,8 +1770,8 @@
 			\label{fig: 4-7}
 		\end{figure}
 
-		For all algorithms: increasing the number of epochs tends to decrease the Test Loss. This makes sense and is equivalent to overfitting to the train data, which we see negatively impacts Test Loss for much larger epoch numbers, the algorithms most affects by this overfitting in order are: Non-Linear LMS, Deep Network and finally the Linear LMS.
-		% TODO: The figures? Show the point they kick back up
+		For all algorithms: increasing the number of epochs tends to decrease the Test Loss. This makes sense and is equivalent to overfitting to the train data, which we see negatively impacts Test Loss for much larger epoch numbers, the algorithms most affects by this overfitting in order are: Nthe on-Linear LMS, Deep Network and finally the Linear LMS.
+		% TODO: The figures? Show point they kick back up
 		Linear LMS: Increasing the number of epochs also decreases the time to convergence until it reaches some minimum convergence time.
 		Deep network: we observe that there is a phase shift implying the algorithm is predicting the signal.
 
